@@ -2,7 +2,7 @@ package kr.co.sist.badasaja.vo;
 
 public class BannerVO {
 
-	private String bNum, aID, pCode, aURL, postedDate, expiryDate, img;
+	private String bNum, aID, pCode, aURL, local, postedDate, expiryDate, img;
 	private char bStatus;
 	private int bCost;
 
@@ -10,17 +10,26 @@ public class BannerVO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BannerVO(String bNum, String aID, String pCode, String aURL, String postedDate, String expiryDate,
-			String img, char bStatus, int bCost) {
+	public BannerVO(String bNum, String aID, String pCode, String aURL, String local, String postedDate,
+			String expiryDate, String img, char bStatus, int bCost) {
 		this.bNum = bNum;
 		this.aID = aID;
 		this.pCode = pCode;
 		this.aURL = aURL;
+		this.local = local;
 		this.postedDate = postedDate;
 		this.expiryDate = expiryDate;
 		this.img = img;
 		this.bStatus = bStatus;
 		this.bCost = bCost;
+	}
+
+	public String getLocal() {
+		return local;
+	}
+
+	public void setLocal(String local) {
+		this.local = local;
 	}
 
 	public String getbNum() {

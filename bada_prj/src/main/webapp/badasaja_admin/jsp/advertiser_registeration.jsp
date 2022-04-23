@@ -1,5 +1,13 @@
+<%@page import="kr.co.sist.badasaja.admin.dao.AdminAdDAO"%>
+<%@page import="kr.co.sist.badasaja.vo.LocalVO"%>
+<%@page import="java.util.List"%>
+<%@page import="kr.co.sist.badasaja.admin.dao.BaseDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+ <%
+ 	session.setAttribute("insertAdvertiserFlag", false);
+ %>
 <html
   lang="en"
   class="light-style layout-menu-fixed"
@@ -48,10 +56,87 @@
 
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="../assets/js/config.js"></script>
-  </head>
+	<!-- jQuery CDN -->
+	<script	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script type="text/javascript">
+	$(function() {
+		
+		$("#aID").focusout(function() {
+			
+			var aID = $("#aID").val();
+			
+			if(aID == ""){
+				$("#idCheck").html("아이디는 필수 입력 입니다.");
+				return;
+			}
+			
+			$.ajax({
+				url:"id_check.jsp",
+				data: { "aID" : aID},
+				type:"get",
+				dataType:"json",
+				error:function( xhr ){
+					alert( xhr.status)
+				},
+				success:function( jsonObj ){
+					
+					var flag = jsonObj.flag
+					 if(flag){
+						$("#idCheck").css({"color" : "red"});
+						$("#idCheck").html("중복된 아이디 입니다.");
+						return;
+					 }
+						$("#idCheck").css({"color" : ""});
+						$("#idCheck").html("사용 가능한 아이디 입니다");
+					
+				},
+				
+			}) // ajax
+			
+		})
+		
+		$("#send").click(function(){
+			
+			if($("#aID").val().trim() == ""){
+				alert("ID는 필수 입력 입니다.");
+				$("#aID").focus();
+				return;
+			}
+			
+			if($("#idCheck").html() == "중복된 아이디 입니다."){
+				alert("사용 불가능한 아이디 입니다. 다시 입력 해주세요.")
+				$("#aID").focus();
+				return;
+				
+			}
+			
+			if($("#aName").val().trim() == ""){
+				alert("이름은 필수 입력 값 입니다.");
+				$("#aName").focus();
+				return;
+			}
+			if($("#local option:selected").val() == "none"){
+				alert("지역을 선택해주세요.");
+				$("#local").focus();
+				return;
+			}
+			
+			$("#advertiserRegister").submit();
+			
+		}) // click
+		
+	}) // ready  
+    </script>
+    </head>
 
   <body>
+  <%
+  BaseDAO bDAO = BaseDAO.getInstance();
+  List<LocalVO> lList = bDAO.selectLocalList();
+  
+  pageContext.setAttribute("lList", lList);
+  
+  %>
   <%@ include file="nav.jsp"%>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
@@ -75,29 +160,30 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                     </div>
                     <div class="card-body">
-                      <form>
+                      <form action="advertiser_registeration_process.jsp" id="advertiserRegister" method="post">
                         <div class="mb-3">
                           <label class="form-label" for="basic-default-fullname">Advertiser ID</label>
-                          <input type="text" class="form-control" id="basic-default-fullname" placeholder="Advertiser ID" />
+                          <input type="text" class="form-control" id="aID" name="aID" placeholder="Advertiser ID" />
+                          <div id="idCheck">&nbsp;&nbsp;&nbsp;&nbsp;</div>
                         </div>
                         <div class="mb-3">
                           <label class="form-label" for="basic-default-company">Advertiser Name</label>
-                          <input type="text" class="form-control" id="basic-default-company" placeholder="Advertiser Name" />
+                          <input type="text" class="form-control" id="aName" name="aName" placeholder="Advertiser Name" />
                         </div>
                         <div class="mb-3">
                           <div class="input-group input-group-merge">
                           <div class="mb-3">
                         <label for="defaultSelect" class="form-label">Seoul</label>
-                        <select id="defaultSelect" class="form-select">
-                          <option>Gu select</option>
-                          <option value="1">강남구</option>
-                          <option value="2">강북구</option>
-                          <option value="3">마포구</option>
+                        <select id="local" name="local" class="form-select">
+                          <option value="none">지역 선택</option>
+                          <c:forEach items="${ lList }" var="data">
+                          	<option  value="${ data.guCode }">${data.guName }</option>
+                          </c:forEach>
                         </select>
                       </div>
                      </div>
                      </div>
-                        <button type="submit" class="btn btn-primary">Send</button>
+                        <button type="button" id="send" name="send" class="btn btn-primary">Send</button>
                       </form>
                     </div>
                   </div>

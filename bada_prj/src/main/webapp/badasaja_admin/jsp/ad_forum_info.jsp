@@ -1,3 +1,5 @@
+<%@page import="kr.co.sist.badasaja.vo.AdForumVO"%>
+<%@page import="kr.co.sist.badasaja.admin.dao.AdminForumDAO"%>
 <%@page import="kr.co.sist.badasaja.admin.dao.AdminAdDAO"%>
 <%@page import="kr.co.sist.badasaja.vo.ProductVO"%>
 <%@page import="kr.co.sist.badasaja.vo.LocalVO"%>
@@ -10,7 +12,7 @@
 session.setAttribute("insertAdForumFlag", false);
 request.setCharacterEncoding("utf-8");
 int filecounter = 0;
-if (request.getParameter("addcnt") != null) {
+if (request.getParameter("addcnt") != null) { 
 	filecounter = Integer.parseInt(request.getParameter("addcnt"));
 }
 %>
@@ -93,6 +95,27 @@ img {
 	rel="stylesheet" type="text/css" />
 
 <!-- Page CSS -->
+<%
+	BaseDAO bDAO = BaseDAO.getInstance();
+	List<ProductVO> pList = bDAO.selectProductList();
+	
+	String afNum = request.getParameter("afNum");
+	
+	AdminForumDAO afDAO = AdminForumDAO.getInstance();
+	
+	AdForumVO afVO = afDAO.selectAdForum(afNum);
+	
+/* 	String topic = afVO.getAfTopic();
+	String mainImg = afVO.getMainImg();
+	String aID = afVO.getaID();
+	String product = afVO.getpCode();
+	String status = afVO.getAfStatus();
+	String main = afVO.getAfMain();
+	String postedDate = afVO.getPostedDate();
+	String expiryDate = afVO.getExpiryDate(); */
+
+	pageContext.setAttribute("afVO", afVO);
+	%>
 
 <!-- Helpers -->
 <script src="../assets/vendor/js/helpers.js"></script>
@@ -105,131 +128,22 @@ img {
 <script type="text/javascript"
 	src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
-	$(function() {
+	$(function(){
 		
-			$("#aID").focusout(function() {
-			
-			var aID = $("#aID").val();
-			
-			if(aID == ""){
-				$("#idCheck").html("아이디는 필수 입력 입니다.");
-				return;
-			}
-			
-			$.ajax({
-				url:"id_check.jsp",
-				data: { "aID" : aID},
-				type:"get",
-				dataType:"json",
-				error:function( xhr ){
-					alert( xhr.status)
-				},
-				success:function( jsonObj ){
-					
-					var flag = jsonObj.flag
-					 if(flag){
-						$("#idCheck").css({"color" : "red"});
-						$("#idCheck").html("중복된 아이디 입니다.");
-						return;
-					 }
-						$("#idCheck").css({"color" : ""});
-						$("#idCheck").html("사용 가능한 아이디 입니다");
-					
-				},
-				
-			}) // ajax
-			
-		})
-
-		$("#send").click(function() {
-
-			if ($("#topic").val().trim() == "") {
-				alert("제목을 입력해주세요");
-				$("#topic").focus();
-				return;
-			}
-			if ($("#aID").val().trim() == "") {
-				alert("광고주 아이디를 입력해주세요");
-				$("#aID").focus();
-				return;
-			}
-
-			if ($("#category option:selected").val() == "none") {
-				alert("카테고리를 선택해주세요.");
-				return;
-
-			}
-			
-			if($("#status option:selected").val() == "none"){
-				alert("게시글 상태를 선택해주세요.");
-				$("#status").focus();
-				return;
-			}
-
-			if ($("#forumMain").val() == "") {
-				alert("내용을 입력해주세요")
-				$("#forumMain").focus();
-				return;
-			}
-			
-			if( ($("#upImg1").val()=="") && ($("#upImg2").val()=="") && ($("#upImg3").val()=="") ){
-				alert("이미지 1개는 필수 입니다.");
-				$("#upImg1").focus();
-				return;
-			}
-
-			$("#writeAdForum").submit();
-
-		}) // click
+		$("#aID").val("<%= afVO.getaID() %>");
+		$("#topic").val("<%= afVO.getAfTopic() %>");
+		$("#forumMain").val("<%= afVO.getAfMain() %>")
+		$("#status").val("<%= afVO.getAfStatus() %>")
 		
-		$("#test").click(function(){
-			alert($("input[name=upImg1]").val());
-		})
-	});
-
-	function readURL(input) {
-		if (input.files && input.files[0]) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				document.getElementById('preview').src = e.target.result;
-			};
-			reader.readAsDataURL(input.files[0]);
-		} else {
-			document.getElementById('preview').src = "";
-		}
-	}
-	function readURL1(input) {
-		if (input.files && input.files[0]) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				document.getElementById('preview1').src = e.target.result;
-			};
-			reader.readAsDataURL(input.files[0]);
-		} else {
-			document.getElementById('preview1').src = "";
-		}
-	}
-	function readURL2(input) {
-		if (input.files && input.files[0]) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				document.getElementById('preview2').src = e.target.result;
-			};
-			reader.readAsDataURL(input.files[0]);
-		} else {
-			document.getElementById('preview2').src = "";
-		}
-	}
+		$("#preview").attr("src","http://localhost/badasaja/images/" + "<%= afVO.getMainImg() %>" )
+		
+	})
+	
 </script>
 </head>
 
 <body>
-	<%
-	BaseDAO bDAO = BaseDAO.getInstance();
-	List<ProductVO> pList = bDAO.selectProductList();
-
-	pageContext.setAttribute("pList", pList);
-	%>
+	
 	<%@ include file="nav.jsp"%>
 	<!-- Layout wrapper -->
 	<div class="layout-wrapper layout-content-navbar">
@@ -245,7 +159,7 @@ img {
 
 					<div class="container-xxl flex-grow-1 container-p-y">
 						<h4 class="fw-bold py-3 mb-4">
-							<span class="text-muted fw-light">WriteAds/</span> Write Ad Forum
+							<span class="text-muted fw-light">Advertiserment/</span> Ad Forum Info
 						</h4>
 
 						<!-- Basic Layout -->
@@ -256,12 +170,10 @@ img {
 										class="card-header d-flex justify-content-between align-items-center">
 									</div>
 									<div class="card-body">
-										<form action="write_ad_forum_process.jsp" id="writeAdForum"
-											method="post" enctype="multipart/form-data">
 											<div class="mb-3">
 												<label class="form-label" for="basic-default-fullname">Board
 													Topic</label> <input type="text" id="topic" name="topic"
-													class="form-control" id="basic-default-fullname"
+													class="form-control" id="basic-default-fullname" readonly="readonly"
 													placeholder="Banner Topic" />
 											</div>
 
@@ -274,14 +186,11 @@ img {
 													<table style="margin: 0px auto;">
 														<tr>
 															<td><img id="preview" /> <br />
-															<br /> <input type="file" onchange="readURL(this);"
-																class="btnAttach" name="upImg1" id="upImg1"></td>
+															<br/></td>
 															<td><img id="preview1" /> <br />
-															<br /> <input type="file" onchange="readURL1(this);"
-																class="btnAttach" name="upImg2" id="upImg2"></td>
+															<br /> </td>
 															<td><img id="preview2" /> <br />
-															<br /> <input type="file" onchange="readURL2(this);"
-																class="btnAttach" name="upImg3" id="upImg3"></td>
+															<br /></td>
 														</tr>
 													</table>
 												</div>
@@ -296,28 +205,18 @@ img {
 																class="input-group-text"><i
 																class="bx bx-user"></i></span> <input type="text"
 																class="form-control" id="aID" name="aID"
-																placeholder="Advertiser ID"
-																aria-label="Advertiser ID"
+																readonly="readonly"
 																aria-describedby="basic-icon-default-fullname2" />
 														</div>
 														<div id="idCheck">&nbsp;&nbsp;&nbsp;&nbsp;</div>
 													</div>
 													<div class="mb-3" style="margin-right: 5%;">
 														<label for="defaultSelect" class="form-label">카테고리</label>
-														<select id="category" name="category" class="form-select">
-															<option value="none">카테고리 선택</option>
-															<c:forEach items="${ pList }" var="data">
-																<option value="${ data.pCode }">${ data.product }</option>
-															</c:forEach>
-														</select>
+														<input type="text" class="form-control" readonly="readonly" id="category" name="category" class="form-select"/>
 													</div>
 													<div class="mb-3">
-														<label for="defaultSelect" class="form-label">상태</label> <select
-															id="status" name="status" class="form-select">
-															<option value="none">상태</option>
-															<option value="게시중">게시중</option>
-															<option value="게시완료">게시완료</option>
-														</select>
+														<label for="defaultSelect" class="form-label">상태</label>
+														<input type="text" class="form-control" readonly="readonly" id="status" name="status" />
 													</div>
 												</div>
 											</div>
@@ -328,13 +227,13 @@ img {
 												<div class="input-group input-group-merge">
 													<textarea class="form-control" id="forumMain"
 														name="forumMain" aria-label="With textarea"
+														readonly="readonly"
 														style="height: 400px;"></textarea>
 												</div>
 											</div>
 
 											<button type="button" id="send" name="send"
 												class="btn btn-primary">작성</button>
-										</form>
 									</div>
 								</div>
 							</div>
