@@ -1,4 +1,4 @@
-package kr.co.sist.badasaja.dao;
+package kr.co.sist.badasaja.admin.dao;
 
 import java.sql.Connection; 
 import java.sql.DriverManager;

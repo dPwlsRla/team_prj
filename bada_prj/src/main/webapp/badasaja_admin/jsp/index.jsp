@@ -1,4 +1,4 @@
-<%@page import="kr.co.sist.badasaja.dao.DashDAO"%>
+<%@page import="kr.co.sist.badasaja.admin.dao.DashDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
   <html
