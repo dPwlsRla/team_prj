@@ -229,7 +229,7 @@
 </div>
 </div>
    <!--footer  -->
-    	  <%@include file="components/footer.jsp"%>						
+<%@include file="components/footer.jsp"%>						
 
  <script src="../js/jquery-3.3.1.min.js"></script>
   <script src="../js/jquery-ui.js"></script>

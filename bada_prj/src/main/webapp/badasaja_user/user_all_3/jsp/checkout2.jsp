@@ -187,8 +187,8 @@ $(function () {
 			alert("휴대폰 번호를 입력하세요");
 			return false;
 		}
-		if($("[type='date']").val()==""){
-			alert("생년월일을 기입해주세요");
+		if($("#c_country").val()=="0"){
+			alert("지역을선택해주세요");
 			return false;
 		}
 		if($("[type='date']").val()==""){

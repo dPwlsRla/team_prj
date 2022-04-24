@@ -14,7 +14,7 @@ boolean flag = uDAO.selectMember(cuVO);
 
 if(flag) {
 	session.setAttribute("cId", cuVO.getcID());
-	session.setAttribute("cPass", cuVO.getcPass());
+	//session.setAttribute("cPass", cuVO.getcPass());
 	response.sendRedirect("index.jsp");
 	
 }else{

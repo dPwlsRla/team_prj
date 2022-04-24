@@ -8,6 +8,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%><!-- rset=UTF-8" language="java" %> -->
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <title>settings</title>
@@ -29,9 +30,8 @@
     <link rel="stylesheet" href="../css/style.css">
 
 </head>
-<%String password = (String)session.getAttribute("name");%>
 <body onload="load()">
-  <form action="settings2.jsp" id="frm">
+  <form action="settings3.jsp" id="frm" accept-charset="UTF-8">
 <div class="site-wrap">
     <%@include file="components/header.jsp"%>
 
@@ -47,65 +47,83 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>아이디</label>
-                                            <input type="text" class="form-control" value="cok854">
-                                            <span style="float: right;color: red;font-size: 12px">중복 아이디가 있습니다.</span>
+                                            <input type="text" class="form-control" id="id" name="id" readonly="readonly">
+                                            <span style="float: right;color: red;font-size: 12px;" id="red1"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>닉네임</label>
-                                            <input type="text" class="form-control" >
-                                            <span style="float: right;color: red;font-size: 12px">중복된 닉네임이 있습니다.</span>
+                                            <input type="text" class="form-control"  id="nick" name="nick">
+                                            <span style="float: right;color: red;font-size: 12px" id="red2"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>이메일</label>
-                                            <input type="text" class="form-control" value="kiranacharya287@gmail.com">
+                                            <input type="text" class="form-control" id="email" name="email">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>휴대폰 번호</label>
-                                            <input type="text" class="form-control" value="010-1234-1234">
+                                            <input type="text" class="form-control" id="tel" maxlength="11" name="tel"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>주소</label>
-                                            <select id="c_country" class="form-control" >
-                                                <option value="1">구 선택</option>
-                                                <option value="2">강남구</option>
-                                                <option value="3">서초구</option>
-                                                <option value="4">강동구</option>
-                                                <option value="5">송파구</option>
-                                                <option value="6">중랑구</option>
-                                                <option value="7">중구</option>
-                                                <option value="8">구로구</option>
-                                                <option value="9">성동구</option>
+                                            <select id="gu_code" class="form-control" name="gu_code">
+								 				<option value="0">구 선택</option>
+								                <option value="1">강남구</option>
+								                <option value="2">강동구</option>
+								                <option value="3">강북구</option>
+								                <option value="4">강서구</option>
+								                <option value="5">관악구</option>
+								                <option value="6">광진구</option>
+								                <option value="7">구로구</option>
+								                <option value="8">금천구</option>
+								                <option value="9">노원구</option>
+								                <option value="10">도봉구</option>
+								                <option value="11">동대문구</option>
+								                <option value="12">동작구</option>
+								                <option value="13">마포구</option>
+								                <option value="14">서대문구</option>
+								                <option value="15">서초구</option>
+								                <option value="16">성동구</option>
+								                <option value="17">성북구</option>
+								                <option value="18">송파구</option>
+								                <option value="19">양천구</option>
+								                <option value="20">영등포구</option>
+								                <option value="21">용산구</option>
+								                <option value="22">은평구</option>
+								                <option value="23">종로구</option>
+								                <option value="24">중구</option>
+								                <option value="25">중랑구</option>
                                             </select>
                                         </div>
                                     </div>
 
                                     <div class="password-group">
-                                        <div class="col-md-7">
+                                       <!--  <div class="col-md-7">
                                             <div class="form-group">
                                                 <label>현재 비밀번호</label>
                                                 <input type="password" class="form-control">
                                             </div>
-                                        </div>
-                                        <div class="col-md-7">
+                                        </div> -->
+                                    
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>새 비밀번호</label>
-                                                <input type="password" class="form-control">
-                                                <span style="float: right;color: red;font-size: 12px">영문, 숫자 조합 8~16자로 적어주세요.</span>
+                                                <input type="password" class="form-control" id="pass" name="pass">
+                                                <span style="float: right;color: red;font-size: 12px; width: 340px;" id="red3"></span>
                                             </div>
                                         </div>
-                                        <div class="col-md-7">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>비밀번호 확인</label>
-                                                <input type="password" class="form-control">
-                                                <span style="float: right;color: red;font-size: 12px">비밀번호 확인 문자가 다릅니다.</span>
+                                                <input type="password" class="form-control" id="pass2">
+                                                <span style="float: right;color: red;font-size: 12px" id="red4"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -113,7 +131,8 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <button class="btn btn-primary">변경하기</button>
+                                <input type="hidden" id="hid" name="hid" value="ok">
+                                    <button class="btn btn-primary" id="btn">변경하기</button>
                                     <button class="btn btn-danger" style="float:right" id="exit">탈퇴</button>
                                 </div>
                             </div>
@@ -166,6 +185,10 @@
 <script src="../js/main.js"></script>
 
 <script type="text/javascript">
+let id ="";
+let password ="";
+let nick ="";
+let flag = true;
  $(function () {
 		  /* 게시글 작성 완료  */
 		  $('#exit').click(function(e){
@@ -176,22 +199,167 @@
 				e.preventDefault();
 				$('#exit_modal').modal("hide");
 			});
-    	
+		  
+		  $("#id").keyup(function () {
+			if($("#id").val()==""){
+				$("#red1").html("id를 입력해주세요 ")
+				flag=false;
+					return;
+				}//
+			if($("#id").val()!=id){
+				$("#hid").val("id");
+				$.ajax({
+					url:"settings3.jsp",
+					type:"post",
+					data:{"hid":$("#hid").val(),"id":$("#id").val() } ,
+					dataType : "json",
+					error:function(xhr){
+						alert(xhr.status+"/"+xhr.status.text)
+					},
+					success:function(idFlag){
+						 if(!idFlag.data){
+							$("#red1").css("display","none");//중복안됨
+							
+							flag=true;
+						}else{
+							$("#red1").css("display","block");//중복됨
+							$("#red1").html("아이디가 중복되었습니다.")
+							flag=false;
+						}   
+					}//end success
+				})//ajax
+			  }else{
+				  $("#red1").css("display","none");
+				  flag=true;
+			  }//end else
+			})//id_keyup 
+			
+		 $("#nick").keyup(function () {
+			if($("#nick").val()==""){
+				$("#red2").html("닉네임일 입력해주세요 ")
+				flag=false;
+					return;
+				}//
+			if($("#nick").val()!=nick){
+				$("#hid").val("nick");
+				$.ajax({
+					url:"settings3.jsp",
+					type:"post",
+					data:{"hid":$("#hid").val(),"nick":$("#nick").val() } ,
+					dataType : "json",
+					error:function(xhr){
+						alert(xhr.status+"/"+xhr.status.text)
+					},
+					success:function(idFlag){
+						 if(!idFlag.data){
+							$("#red2").css("display","none");//중복안됨
+							
+							flag=true;
+						}else{
+							$("#red2").css("display","block");//중복됨
+							$("#red2").html("닉네임이 중복되었습니다.")
+							flag=false;
+						}   
+					}//end success
+				})//ajax
+			  }else{
+				  $("#red2").css("display","none");
+				  flag=true;
+			  }//end else
+			})//id_keyup 
+			
+		$("#pass").focusout(function () {
+			var pass = $("#pass").val();
+			if($("#pass").val()==""){
+				$("#red3").css("display","none");
+				flag=true;
+				return;
+			}//비밀번호를 변경하고 싶지않을떄
+			if(pass!=password){
+			//8이상16자 이하의 영 숫 기호 
+			var passwordRule = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/
+	 		if(!passwordRule.test(pass)){
+	 			$("#red3").html("비밀번호는 영문, 숫자 조합 8~16자로 적어주세요.")
+	 			flag=false;
+			}else{
+				$("#red3").css("width","340px");
+				$("#red3").html("")
+				flag=true;
+			}//end else
+			}else{
+				$("#red3").html("과거 비밀번호와같습니다.")
+				flag=false;
+			}
+		})
+		
+		
+		$("#pass2").focusout(function () {
+			var pass = $("#pass").val();
+			var pass2 = $("#pass2").val();
+			if(pass!=pass2){
+				$("#red4").html("비밀번호 확인 문자가 다릅니다.")
+				$("#red4").css("display","block");
+				flag=false;
+			}else{
+				
+				$("#red4").css("display","none");//중복안됨
+				flag=true;
+			}
+		})//"#c_pass2"
+		$("#btn").click(function () {
+			
+			
+			if($("#tel").val().length<10){
+				alert("전화번호는 '-'자를 뺴고 11자를 입력해주세요")
+				return false;
+			} 
+			if($("#email").val()==""){
+				alert("이메일을 입력해주세요")
+				return false;
+			}
+		 	if($("#email").val().indexOf("@")==-1){
+				alert("이메일 형식을 지켜주세요")
+				return false;
+			} 
+			if($("#tel").val()==""){
+				alert("전화번호를 입력해주세요")
+				return false;
+			}
+			if($("#gu_code").val()=="0"){
+				alert("지역을 선택해주세요")
+				return false;
+			}
+			
+			if(!flag){
+				alert("수정을 똑바로해주세요");
+				return false;
+			}
+			$("#hid").val("ok");
+			$("#frm").submit()
+		})	
 	})//ready
     function load() {
 	 $.ajax({
 			url:"settings2.jsp",
 			type:"post",
-			data:{"password":<%=password%>} ,
-			dataType : "text",
+			dataType : "json",
 			error:function(xhr){
 				alert(xhr.status+"/"+xhr.status.text)
 			},
 			success:function(data){
-				alert(data)
+				id = data.id;
+				password = data.password;
+				nick=data.nick;
+				alert(password)
+	
+				$("#id").val(id);
+				$("#nick").val(nick);
+				$("#email").val(data.email);
+				$("#tel").val(data.tel.replaceAll("-",""));
+				$("#gu_code").val(data.gucode).attr("selected","selected")
+				
 			}
 		})//ajax
-		
 	}//load
  
 </script>

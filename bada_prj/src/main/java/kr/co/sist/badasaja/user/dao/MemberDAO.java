@@ -1,5 +1,8 @@
 package kr.co.sist.badasaja.user.dao;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection; 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,13 +14,14 @@ import javax.naming.NamingException;
 
 import kr.co.sist.badasaja.dbConnection.DbConnection;
 import kr.co.sist.badasaja.vo.CuVO;
+import kr.co.sist.util.cipher.DataEncrypt;
 
 
 
 
 public class MemberDAO {
 	
- public boolean selectMember(CuVO cuVO) throws SQLException, NamingException{
+ public boolean selectMember(CuVO cuVO) throws SQLException, NamingException, UnsupportedEncodingException, NoSuchAlgorithmException, GeneralSecurityException{
 	 	boolean flag= false;
 		Connection con =null;
 		PreparedStatement pstmt=null;
@@ -34,8 +38,11 @@ public class MemberDAO {
 			login.append("select c_id,c_pass from customer where c_id= ? and c_pass= ?");
 			pstmt=con.prepareStatement(login.toString());
 			 
+			DataEncrypt de = new DataEncrypt("abcefghijklmn1234");//키가 안맞아서 에러 났어요
+	
+			
 			pstmt.setString(1, cuVO.getcID());
-			pstmt.setString(2, cuVO.getcPass());
+			pstmt.setString(2, de.encryption(cuVO.getcPass()));
 			
 			rs=pstmt.executeQuery(); 
 			

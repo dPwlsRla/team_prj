@@ -7,22 +7,18 @@
 <%
 CuVO cuvo = new CuVO();
 cuvo.setcPass(request.getParameter("pass"));
-
+cuvo.setcID((String)session.getAttribute("cId"));
 
 MypageDAO mDAO = new MypageDAO();
 String flag = mDAO.selectAccount(cuvo); 
-
 
 
 if(flag=="none"){
 	out.println("<script>alert('패스워드가 틀립니다.')</script>");
 	out.println("<script>history.go(-1);</script>");
 }else{
-	DataDecrypt de= new DataDecrypt("abcefghijklmn1234");
-
-	String data = de.decryption(flag);
 	session.setMaxInactiveInterval(60*2); //세션에 생존시간
-	session.setAttribute("name", data);
+	session.setAttribute("name", flag);
 	out.println("<script>location.href='settings.jsp'</script>");
 }
 
