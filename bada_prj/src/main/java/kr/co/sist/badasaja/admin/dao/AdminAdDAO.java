@@ -404,5 +404,35 @@ public class AdminAdDAO {
 			dc.close(null, pstmt, con);
 		}
 	}
+	
+	public void insertBanner(BannerVO bVO) throws SQLException, NamingException {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		DbConnection dc = DbConnection.getInstance();
+
+		try {
+
+			con = dc.getConn();
+
+			StringBuilder query = new StringBuilder();
+
+			query.append("insert into banner(b_num, a_id, a_url, p_code, img)").append(" values('b'||PRO1.BANNER_SEQ.NEXTVAL, ?, ?, ?, ?)");
+
+			pstmt = con.prepareStatement(query.toString());
+
+			pstmt.setString(1, bVO.getaID());
+			pstmt.setString(2, bVO.getaURL());
+			pstmt.setString(3, bVO.getpCode());
+			pstmt.setString(4, bVO.getImg());
+
+			pstmt.executeUpdate();
+
+		} finally {
+			dc.close(null, pstmt, con);
+		}
+	} // insertBanner
+	
 
 }

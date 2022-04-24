@@ -2,7 +2,7 @@
 <%@page import="kr.co.sist.badasaja.vo.ProductVO"%>
 <%@page import="kr.co.sist.badasaja.admin.dao.BaseDAO"%>
 <%@page import="kr.co.sist.badasaja.vo.BannerVO"%>
-<%@page import="java.util.List"%>
+<%@page import="java.util.List"%> 
 <%@page import="kr.co.sist.badasaja.admin.dao.AdminAdDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
@@ -62,7 +62,7 @@
     $(function(){
     	
     	$.ajax({
-			url:"http://localhost/badasaja/jsp/ad_banner_list_process.jsp",
+			url:"http://localhost/bada_prj/badasaja_admin/jsp/ad_banner_list_process.jsp",
 			type:"post",
 			dataType:"json",
 			error:function( xhr ){
@@ -128,7 +128,7 @@
     
     function getSelectData(){
     	$.ajax({
-			url:"http://localhost/badasaja/jsp/ad_banner_list_process.jsp",
+			url:"http://localhost/bada_prj/badasaja_admin/jsp/ad_banner_list_process.jsp",
 			 data: {
 				   aID : $("#aID").val(),
 				   gu : $("#gu").val(),

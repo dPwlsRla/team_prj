@@ -10,6 +10,7 @@ import java.util.List;
 import javax.naming.NamingException;
 
 import kr.co.sist.badasaja.vo.AdForumVO;
+import kr.co.sist.badasaja.vo.AdImgVO;
 import kr.co.sist.badasaja.vo.BannerVO;
 import oracle.net.aso.af;
  
@@ -285,6 +286,43 @@ public class AdminForumDAO {
 		}
 
 		return afVO;
+	}
+	
+	public String selectAdImg (String afNum) throws SQLException, NamingException{
+		String imgs = "";
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		DbConnection dc = DbConnection.getInstance();
+		
+		try {
+			
+			con = dc.getConn();
+			
+			StringBuilder query = new StringBuilder();
+			
+			query.append("  	select img from ad_img")
+			.append(" 			where af_num = ?");
+			
+			pstmt = con.prepareStatement(query.toString());
+			
+			pstmt.setString(1, afNum);
+			
+			rs = pstmt.executeQuery();
+			
+			
+			if( rs.next() ) {
+				imgs = rs.getString("img");
+			}
+			
+			
+		} finally {
+			dc.close(rs, pstmt, con);
+		}
+		
+		return imgs;
 	}
 
 }

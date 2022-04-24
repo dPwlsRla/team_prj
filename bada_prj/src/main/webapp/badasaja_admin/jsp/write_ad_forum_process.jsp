@@ -15,7 +15,7 @@
 		
  		try{ 
 			
-			File saveDirectory = new File("E:/dev/workspace/badasaja/src/main/webapp/images");
+			File saveDirectory = new File("C:/Users/user/git/team_prj/bada_prj/src/main/webapp/badasaja_admin/upload");
 			
 			int fileSize = 1024*1024*10; 
 			
@@ -78,7 +78,7 @@
 	%>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 		<script type="text/javascript">
-		alert("서비스가 원할하지 못합니다. \n 다시 시도 해주세요.")
+		alert("서비스가 원할하지 못합니다. /n 다시 시도 해주세요.")
 		location.replace('write_ad_forum.jsp');
 		</script>
 	<%
@@ -92,6 +92,14 @@
 		</script>
 		<%		
 	 } 
+ 		%>
+ 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+		<script type="text/javascript">
+		alert("업로드 되었습니다.")
+		</script>		
+ 		
+ 		<%
+ 		response.sendRedirect("ad_forum_list.jsp");
 	} else{
 		%>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -105,5 +113,4 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 		<script type="text/javascript">
 		alert("업로드 되었습니다.")
-		location.replace('ad_forum_list.jsp');
 		</script>		
