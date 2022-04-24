@@ -22,7 +22,7 @@ import kr.co.sist.util.cipher.DataEncrypt;
 public class MypageDAO {
 
 	/**
-	 * 패스워드 찾는 다오
+	 * 패스워드 찾는 다오 수정
 	 * @param cuVO
 	 * @return
 	 * @throws SQLException

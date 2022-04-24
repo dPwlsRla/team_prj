@@ -3,7 +3,8 @@
 <%@page import="kr.co.sist.util.cipher.DataEncrypt"%>
 <%@page import="kr.co.sist.badasaja.vo.CuVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+    info="수정"%>
 <%
 CuVO cuvo = new CuVO();
 cuvo.setcPass(request.getParameter("pass"));

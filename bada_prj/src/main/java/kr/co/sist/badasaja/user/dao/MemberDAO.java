@@ -19,6 +19,10 @@ import kr.co.sist.util.cipher.DataEncrypt;
 
 
 
+/**
+ * @author user
+ *info="¼öÁ¤"
+ */
 public class MemberDAO {
 	
  public boolean selectMember(CuVO cuVO) throws SQLException, NamingException, UnsupportedEncodingException, NoSuchAlgorithmException, GeneralSecurityException{

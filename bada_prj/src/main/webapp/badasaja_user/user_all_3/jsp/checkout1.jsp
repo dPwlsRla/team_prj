@@ -7,7 +7,7 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
-    info="수정중"%>
+    info="수정"%>
 <%request.setCharacterEncoding("UTF-8"); %>
 <!DOCTYPE html>
 <html lang="en">
