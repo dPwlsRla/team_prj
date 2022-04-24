@@ -1,5 +1,9 @@
+<%@page import="kr.co.sist.badasaja.vo.LocalVO"%>
+<%@page import="java.util.List"%>
+<%@page import="kr.co.sist.badasaja.admin.dao.BaseDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
   <html
         lang="en"
         class="light-style layout-menu-fixed"
@@ -7,7 +11,7 @@
         data-theme="theme-default"
         data-assets-path="../assets/"
         data-template="vertical-menu-template-free"
->
+> 
   <head>
     <meta charset="utf-8" />
     <meta
@@ -54,6 +58,13 @@
 
 
 <body>
+<%
+	BaseDAO bDAO = BaseDAO.getInstance();
+
+	List<LocalVO> lList = bDAO.selectLocalList();
+	
+	pageContext.setAttribute("lList", lList);
+%>
 <%@ include file="nav.jsp"%>
 
 <!-- Layout wrapper -->
@@ -78,19 +89,24 @@
                             <div class="nav-item d-inline">
                                 <button type="button" class="btn btn-outline-primary dropdown-toggle float-end" data-bs-toggle="dropdown" style="margin:15px" >상태</button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="javascript:void(0);">게시중</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0);">게시종료</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0);">정상계정</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0);">휴먼계정</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0);">정지계정</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0);">탈퇴계정</a></li>
                                 </ul>
                                 <button type="button" class="btn btn-outline-primary dropdown-toggle float-end" data-bs-toggle="dropdown" style="margin-top:15px; margin-left:15px; " >지역</button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="javascript:void(0);">종로구</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0);">서대문구</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0);">성동구</a></li>
+                                	<li><a class="dropdown-item" href="javascript:void(0)">지역</a></li>
+                                    <c:forEach var="data" items="${lList }">
+										<li><a class="dropdown-item" href="javascript:void(0)"><c:out value="${ data.guName }" /> </a></li>
+									</c:forEach>
                                 </ul>
                                 <a href="#" class="btn btn-primary float-end shadow-none" style="margin-top:15px; margin-left:10px">검색</a>
                                 <input
                                         type="text"
                                         class="form-control shadow-none float-end"
+                                        id="cID"
+                                        name="cID"
                                         placeholder="Customer_ID검색"
                                         style="margin-top: 15px;width: 150px;"
                                 />

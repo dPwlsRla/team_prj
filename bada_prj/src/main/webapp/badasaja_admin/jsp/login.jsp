@@ -1,5 +1,8 @@
+<%@page import="javax.print.attribute.standard.PrinterMakeAndModel"%>
+<%@page import="kr.co.sist.badasaja.admin.dao.AdminDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     
 <!DOCTYPE html>
 
@@ -65,11 +68,32 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
+    <!-- jQuery CDN -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+    
+    		$(function() {
+    			$("#adminLogin").click(function() {
+    				
+    				if($("#admin_id").val() == ""){
+    					alert("id를 입력해주세요");
+    					return;
+    				}
+    				
+    				if($("#admin_pass").val() == ""){
+    					alert("password를 입력해주세요.");
+    					return;
+    				}
+    					$("#formAuthentication").submit();
+    		
+    			})
+    			
+    		})
+    </script>
   </head>
 
   <body>
     <!-- Content -->
-
     <div class="container-xxl">
       <div class="authentication-wrapper authentication-basic container-p-y">
         <div class="authentication-inner">
@@ -83,14 +107,14 @@
 	              <p class="mb-4">Please sign-in to your account</p>
               </div>
 
-              <form id="formAuthentication" class="mb-3" action="index.jsp" method="POST">
+              <form id="formAuthentication" class="mb-3" action="login_check.jsp" method="POST">
                 <div class="mb-3">
                   <label for="email" class="form-label">UserID</label>
                   <input
                     type="text"
                     class="form-control"
-                    id="email"
-                    name="email-username"
+                    id="admin_id"
+                    name="admin_id"
                     placeholder="Enter your ID"
                     autofocus
                   />
@@ -105,9 +129,9 @@
                   <div class="input-group input-group-merge">
                     <input
                       type="password"
-                      id="password"
+                      id="admin_pass"
                       class="form-control"
-                      name="password"
+                      name="admin_pass"
                       placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                       aria-describedby="password"
                     />
@@ -115,7 +139,8 @@
                   </div>
                 </div>
                 <div class="mb-3">
-                  <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
+                  <button class="btn btn-primary d-grid w-100" type="button" id="adminLogin">Sign in</button>
+                  
                 </div>
               </form>
             </div>

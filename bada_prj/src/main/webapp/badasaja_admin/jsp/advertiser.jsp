@@ -1,5 +1,12 @@
+<%@page import="kr.co.sist.badasaja.vo.AdvertiserVO"%>
+<%@page import="kr.co.sist.badasaja.admin.dao.AdminAdDAO"%>
+<%@page import="kr.co.sist.badasaja.vo.LocalVO"%>
+<%@page import="kr.co.sist.badasaja.vo.ProductVO"%>
+<%@page import="java.util.List"%>
+<%@page import="kr.co.sist.badasaja.admin.dao.BaseDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
   <html
         lang="en"
         class="light-style layout-menu-fixed"
@@ -8,6 +15,7 @@
         data-assets-path="../assets/"
         data-template="vertical-menu-template-free"
 >
+
   <head>
     <meta charset="utf-8" />
     <meta
@@ -49,9 +57,58 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
+      <!-- jQuery CDN -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(function(){
+    	
+		$("#idSearch").click(function() {
+			
+			 var local = '<%= request.getParameter("local") %>';
+			 
+			if(local == 'null'){
+				pr="지역";
+			} 
+			
+			$("#local").attr("value", local);
+			$("#lc").html(local)
+			$("#searchFrm").submit();
+			
+		})
+		
+		$(".lc").click(function(){
+			var local = $(this).text();
+			
+			$("#local").attr("value", local);
+			$("#lc").html(local)
+			
+			$("#searchFrm").submit();
+		})
+    	
+    	
+    }) // ready
+    
+    </script>
  </head>
 
 <body>
+<%
+	BaseDAO bDAO = BaseDAO.getInstance();
+	List<LocalVO> lList = bDAO.selectLocalList();
+	
+	String aID = request.getParameter("aID");
+	String local = request.getParameter("local");
+	
+	if( local == null || local.equals("지역")){
+		local="";
+	}
+	
+	AdminAdDAO adDAO = AdminAdDAO.getInstance();
+	List<AdvertiserVO> avList = adDAO.selectAllAdvertiser(aID, local);
+	
+	pageContext.setAttribute("lList", lList);
+	pageContext.setAttribute("avList", avList);
+%>
 <%@ include file="nav.jsp"%>
 
 <!-- Layout wrapper -->
@@ -72,29 +129,39 @@
                    	<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Advertiser /</span>광고주</h4>
                     <div class="card" style="height:800px; overflow-y:scroll">
                         <!-- Search -->
+                       <form action="advertiser.jsp" id="searchFrm" name="searchFrm">
                         <div class="navbar-nav mb-3">
                             <div class="nav-item d-inline">
-                                <a href="#" class="btn btn-primary float-end shadow-none" style="margin:15px">검색</a>
+                                <a href="#void" id="idSearch" class="btn btn-primary float-end shadow-none" style="margin:15px">검색</a>
                                 <input
                                         type="text"
+                                        name="aID"
+                                        value="${ param.aID }"
                                         class="form-control shadow-none float-end"
                                         placeholder="광고주_ID 검색"
                                         style="margin-top: 15px;width: 200px;"
                                 />
-                            	<button type="button" class="btn btn-outline-primary dropdown-toggle float-end" data-bs-toggle="dropdown" style="margin-top:15px; margin-right:15px;" >지역</button>
+                            	<button type="button" class="btn btn-outline-primary dropdown-toggle float-end" data-bs-toggle="dropdown" style="margin-top:15px; margin-right:15px;" >
+                            	      <c:choose>
+								 	<c:when test="${ not empty param.local }">${ param.local }</c:when>
+									<c:when test="${ empty param.local }">지역</c:when>
+								</c:choose>
+                            	</button>
+                            	<input type="hidden" name="local" id="local"/>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="javascript:void(0);">종로구</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0);">서대문구</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0);">성동구</a></li>
+                                		<li class="lc"><a class="dropdown-item" href="javascript:void(0)">지역</a></li>
+                                	<c:forEach var="data" items="${lList }">
+										<li class="lc"><a class="dropdown-item" href="javascript:void(0)"><c:out value="${ data.guName }"/></a></li>
+									</c:forEach>
                                 </ul>
                             </div>
                         </div>
+                       </form> 
                         <!-- /Search -->
                         <div class="table-responsive text-nowrap">
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th>광고주코드</th>
                                     <th>광고주_ID</th>
                                     <th>광고주명</th>
                                     <th>지역</th>
@@ -103,86 +170,23 @@
                                 </tr>
                                 </thead>
                                 <tbody class="table-border-bottom-0">
-                                <tr>
-                                    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>1</strong></td>
-                                    <td>fed</td>
-                                    <td>종로돼지</td>
-                                    <td>종로구</td>
-                                    <td>2022.04.01</td>
-                                    <td>2022.04.01</td>
-                                </tr>
-                                <tr>
-                                    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>2</strong></td>
-                                    <td>fed</td>
-                                    <td>종로돼지</td>
-                                    <td>종로구</td>
-                                    <td>2022.04.01</td>
-                                    <td>2022.04.01</td>
-                                </tr>
-                                <tr>
-                                    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>3</strong></td>
-                                    <td>fed</td>
-                                    <td>종로돼지</td>
-                                    <td>종로구</td>
-                                    <td>2022.04.01</td>
-                                    <td>2022.04.01</td>
-                                </tr>
-                                <tr>
-                                    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>4</strong></td>
-                                    <td>fed</td>
-                                    <td>종로돼지</td>
-                                    <td>종로구</td>
-                                    <td>2022.04.01</td>
-                                    <td>2022.04.01</td>
-                                </tr>
-                                <tr>
-                                    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>5</strong></td>
-                                    <td>fed</td>
-                                    <td>종로돼지</td>
-                                    <td>종로구</td>
-                                    <td>2022.04.01</td>
-                                    <td>2022.04.01</td>
-                                </tr>
-                                <tr>
-                                    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>6</strong></td>
-                                    <td>fed</td>
-                                    <td>종로돼지</td>
-                                    <td>종로구</td>
-                                    <td>2022.04.01</td>
-                                    <td>2022.04.01</td>
-                                </tr>
-                                <tr>
-                                    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>7</strong></td>
-                                    <td>fed</td>
-                                    <td>종로돼지</td>
-                                    <td>종로구</td>
-                                    <td>2022.04.01</td>
-                                    <td>2022.04.01</td>
-                                </tr>
-                                <tr>
-                                    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>8</strong></td>
-                                    <td>fed</td>
-                                    <td>종로돼지</td>
-                                    <td>종로구</td>
-                                    <td>2022.04.01</td>
-                                    <td>2022.04.01</td>
-                                </tr>
-                                <tr>
-                                    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>9</strong></td>
-                                    <td>fed</td>
-                                    <td>종로돼지</td>
-                                    <td>종로구</td>
-                                    <td>2022.04.01</td>
-                                    <td>2022.04.01</td>
-                                </tr>
-                                <tr>
-                                    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>10</strong></td>
-                                    <td>fed</td>
-                                    <td>종로돼지</td>
-                                    <td>종로구</td>
-                                    <td>2022.04.01</td>
-                                    <td>2022.04.01</td>
-                                </tr>
+                                <c:choose>
+										<c:when test="${ empty avList }">
+											<tr>
+												<td colspan="5"><strong>조회결과 없음</strong></td>
+											</tr>
+										</c:when>
+									</c:choose>
+										<c:forEach items="${ avList }" var="data">
+											<tr>
+												<td><i class="fab fa-angular fa-lg text-danger me-3"></i>
+												<strong><c:out value="${ data.aID }" /></strong></td>
+												<td><c:out value="${ data.aName }" /></td>
+												<td><c:out value="${ data.guCode }" /></td>
+												<td><c:out value="${ data.contractDate }" /></td>
+												<td><c:out value="${ data.expiryDate }" /></td>
+											</tr>
+										</c:forEach>
                                 </tbody>
                             </table>
                         </div>

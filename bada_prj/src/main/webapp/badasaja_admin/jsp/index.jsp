@@ -59,6 +59,7 @@
 <%
 DashDAO dDAO = new DashDAO();
 %>
+String aID = request.getParameter("aID");
 
 <%@ include file="nav.jsp"%>
 
@@ -220,7 +221,7 @@ DashDAO dDAO = new DashDAO();
                                 <small class="text-success text-nowrap fw-semibold"
                                   ><i class="bx bx-chevron-up"></i> 68.2%</small
                                 >
-                                <h3 id="profit" class="mb-0">$<%=dDAO.revenue("dd") %></h3>
+                                <h3 id="profit" class="mb-0"><%=dDAO.revenue("dd") %>원</h3>
                               </div>
                               <div class="text-center">
                               <img src="../assets/img/icons/unicons/profit.PNG" height="200"/>
@@ -449,13 +450,13 @@ DashDAO dDAO = new DashDAO();
 		<%int profit= 0;%>
 		if(value=="MM"){
 			<%profit= dDAO.revenue("MM");%>
-			$("#profit").html(<%=profit %>);
+			$("#profit").html(<%=profit %>+"원");
 		}else if(value=="dd"){
 			<%profit= dDAO.revenue("dd");%>
-			$("#profit").html(<%=profit %>);
+			$("#profit").html(<%=profit %>+"원");
 		}else{
 			<%profit= dDAO.revenue("yy");%>
-			$("#profit").html(<%=profit %>);
+			$("#profit").html(<%=profit %>+"원");
 		}//end else
 	} 
 	

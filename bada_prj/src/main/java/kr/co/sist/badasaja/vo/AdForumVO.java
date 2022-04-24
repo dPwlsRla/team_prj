@@ -1,19 +1,20 @@
 package kr.co.sist.badasaja.vo;
 
-public class AdForumVO {
+public class AdForumVO { 
 
-	private String afNum, aID, pCode, afTopic, afMain, postedDate, expiryDate, afStatus, mainImg, type;
+	private String afNum, aID, pCode, local, afTopic, afMain, postedDate, expiryDate, afStatus, mainImg, type;
 	private int afCost;
 
 	public AdForumVO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public AdForumVO(String afNum, String aID, String pCode, String afTopic, String afMain, String postedDate,
-			String expiryDate, String afStatus, String mainImg, String type, int afCost) {
+	public AdForumVO(String afNum, String aID, String pCode, String local, String afTopic, String afMain,
+			String postedDate, String expiryDate, String afStatus, String mainImg, String type, int afCost) {
 		this.afNum = afNum;
 		this.aID = aID;
 		this.pCode = pCode;
+		this.local = local;
 		this.afTopic = afTopic;
 		this.afMain = afMain;
 		this.postedDate = postedDate;
@@ -22,6 +23,14 @@ public class AdForumVO {
 		this.mainImg = mainImg;
 		this.type = type;
 		this.afCost = afCost;
+	}
+
+	public String getLocal() {
+		return local;
+	}
+
+	public void setLocal(String local) {
+		this.local = local;
 	}
 
 	public String getAfNum() {
