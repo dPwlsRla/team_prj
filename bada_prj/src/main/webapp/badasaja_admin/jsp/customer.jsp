@@ -53,6 +53,42 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
+    <!-- jQuery CDN -->
+	<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		$.ajax({
+			url:"http://localhost/bada_prj/badasaja_admin/jsp/customer_process.jsp",
+			type:"post",
+			dataType:"json",
+			error:function( xhr ){
+				alert( xhr.text + "/" + xhr.status);
+				
+			},
+			success:function(jsonObj){
+				$("tbody").empty();
+				$.each(jsonObj.resultData, function(i, jsonObj){
+				$("#tab > tbody").append("<tr><td class='cID'>"+jsonObj.cID+"</td><td>"+jsonObj.nickname
+						+"</td><td>"+jsonObj.status+"</td><td>"+jsonObj.local+"</td><td>"+jsonObj.signDate
+						+"</td><td>"+jsonObj.accessDate+"</td></tr>") 
+				}) 
+					$("#tab tr").click(function(evt) {
+						
+						var tr = $(this);
+						var td = tr.children();
+						
+						var data = td.eq(0).text();
+						<% String test = "test"; %>
+						
+						alert('<%= test %>')
+						
+					})	
+			},
+			
+		}) //ajax
+	})
+	</script>
  </head>
 
 
@@ -114,7 +150,7 @@
                         </div>
                         <!-- /Search -->
                         <div class="table-responsive text-nowrap">
-                            <table class="table">
+                            <table id="tab" class="table">
                                 <thead>
                                 <tr>
                                     <th>아이디</th>
@@ -126,14 +162,6 @@
                                 </tr>
                                 </thead>
                                 <tbody class="table-border-bottom-0">
-                                <tr>
-                                    <td>cok854</td>
-                                    <td>하하하하</td>
-                                    <td>휴면 계정</td>
-                                    <td>종로구</td>
-                                    <td>2022.04.01</td>
-                                    <td>2022.04.01</td>
-                                </tr>
                                 </tbody>
                             </table>
 

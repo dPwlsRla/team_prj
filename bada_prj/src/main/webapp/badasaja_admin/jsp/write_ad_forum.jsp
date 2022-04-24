@@ -128,12 +128,12 @@ img {
 					
 					var flag = jsonObj.flag
 					 if(flag){
-						$("#idCheck").css({"color" : "red"});
-						$("#idCheck").html("중복된 아이디 입니다.");
-						return;
-					 }
 						$("#idCheck").css({"color" : ""});
-						$("#idCheck").html("사용 가능한 아이디 입니다");
+						$("#idCheck").html("");
+						return
+					 }
+						$("#idCheck").css({"color" : "red"});
+						$("#idCheck").html("존재하지 않는 아이디 입니다.");
 					
 				},
 				
@@ -150,6 +150,12 @@ img {
 			}
 			if ($("#aID").val().trim() == "") {
 				alert("광고주 아이디를 입력해주세요");
+				$("#aID").focus();
+				return;
+			}
+			
+			if ($("#idCheck").val() == "존재하지 않는 아이디 입니다.") {
+				alert("광고주 아이디를 확인 해주세요");
 				$("#aID").focus();
 				return;
 			}

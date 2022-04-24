@@ -105,16 +105,15 @@ img {
 	
 	AdForumVO afVO = afDAO.selectAdForum(afNum);
 	
-/* 	String topic = afVO.getAfTopic();
-	String mainImg = afVO.getMainImg();
-	String aID = afVO.getaID();
-	String product = afVO.getpCode();
-	String status = afVO.getAfStatus();
-	String main = afVO.getAfMain();
-	String postedDate = afVO.getPostedDate();
-	String expiryDate = afVO.getExpiryDate(); */
-
 	pageContext.setAttribute("afVO", afVO);
+	
+	String imgs = afDAO.selectAdImg(afNum);
+	
+	if(imgs != ""){
+	String[] imgArr = imgs.split(",");
+	}
+	
+
 	%>
 
 <!-- Helpers -->
@@ -130,12 +129,23 @@ img {
 <script type="text/javascript">
 	$(function(){
 		
+		<%-- var arr = [<%= imgArr %>];
+		
+		alert( arr.length );
+		
+		//alert(img1)
+		$("#preview1").attr("src","http://localhost/bada_prj/badasaja_admin/upload/" +  )
+		$("#preview2").attr("src","http://localhost/bada_prj/badasaja_admin/upload/" +  )
+		 --%>
 		$("#aID").val("<%= afVO.getaID() %>");
 		$("#topic").val("<%= afVO.getAfTopic() %>");
 		$("#forumMain").val("<%= afVO.getAfMain() %>")
+		$("#category").val("<%= afVO.getpCode() %>")
 		$("#status").val("<%= afVO.getAfStatus() %>")
 		
-		$("#preview").attr("src","http://localhost/badasaja/images/" + "<%= afVO.getMainImg() %>" )
+		$("#preview").attr("src","http://localhost/bada_prj/badasaja_admin/upload/" + "<%= afVO.getMainImg() %>" )
+		
+		
 		
 	})
 	

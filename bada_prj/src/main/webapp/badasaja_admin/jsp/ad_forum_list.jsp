@@ -60,7 +60,7 @@
 $(function(){
 	
 	$.ajax({
-		url:"http://localhost/badasaja/jsp/ad_forum_list_process.jsp",
+		url:"http://localhost/bada_prj/badasaja_admin/jsp/ad_forum_list_process.jsp",
 		type:"post",
 		dataType:"json",
 		error:function( xhr ){
@@ -137,7 +137,7 @@ $(function(){
 
 function getSelectData(){
 	$.ajax({
-		url:"http://localhost/badasaja/jsp/ad_forum_list_process.jsp",
+		url:"http://localhost/bada_prj/badasaja_admin/jsp/ad_forum_list_process.jsp",
 		 data: {
 			   aID : $("#aID").val(),
 			   gu : $("#gu").val(),
@@ -159,8 +159,14 @@ function getSelectData(){
 			$("#tab > tbody").append("<tr><td class='afNum'>"+jsonObj.afNum+"</td><td>"+jsonObj.aID
 					+"</td><td>"+jsonObj.topic+"</td><td>"+jsonObj.local+"</td><td>"+jsonObj.category
 					+"</td><td>"+jsonObj.status+"</td><td>"+jsonObj.postedDate+"</td><td>"+jsonObj.expiryDate+"</td></tr>") 
-				$("tr td").click(function(evt) {
-						window.location.href = "ad_forum_info.jsp?afNum=" + $('.afNum').html();
+				$("#tab tr").click(function(e) {
+						
+						var tr = $(this);
+						var td = tr.children();
+						
+						var data = td.eq(0).text();
+						
+						window.location.href = "ad_forum_info.jsp?afNum=" + data;
 					})
 			})
 		},

@@ -1,25 +1,26 @@
 package kr.co.sist.badasaja.vo;
 
 public class CuVO {
-	
-	private String cID, cPass, nickName, birth, tel, profile,
-			email, cStatus, score, signDate, accessDate, ipAddress,gender;
+
+	private String cID, cPass, nickName, birth, tel, profile, guName, email, cStatus, score, signDate, accessDate,
+			ipAddress, gender;
 
 	private int guCode;
-	
+
 	public CuVO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CuVO(String cID, String cPass, String nickName, String birth, String tel, String profile, String email,
-			String cStatus, String score, String signDate, String accessDate, String ipAddress, String gender,
-			int guCode) {
+	public CuVO(String cID, String cPass, String nickName, String birth, String tel, String profile, String guName,
+			String email, String cStatus, String score, String signDate, String accessDate, String ipAddress,
+			String gender, int guCode) {
 		this.cID = cID;
 		this.cPass = cPass;
 		this.nickName = nickName;
 		this.birth = birth;
 		this.tel = tel;
 		this.profile = profile;
+		this.guName = guName;
 		this.email = email;
 		this.cStatus = cStatus;
 		this.score = score;
@@ -28,6 +29,14 @@ public class CuVO {
 		this.ipAddress = ipAddress;
 		this.gender = gender;
 		this.guCode = guCode;
+	}
+
+	public String getGuName() {
+		return guName;
+	}
+
+	public void setGuName(String guName) {
+		this.guName = guName;
 	}
 
 	public String getcID() {
@@ -140,8 +149,6 @@ public class CuVO {
 
 	public void setGuCode(int guCode) {
 		this.guCode = guCode;
-	} 
-	
-	
+	}
 
 }
