@@ -161,7 +161,7 @@ public class AdminDAO {
 
 			} else if ((cID == null || cID.equals("")) && (gu == null || gu.equals(""))
 					&& (st != null && !st.equals(""))) {
-				query.append("   select c_id, gu_name, , nickname, birth, gender, tel, profile, email, c_status,")
+				query.append("   select c_id, gu_name,  nickname, birth, gender, tel, profile, email, c_status,")
 						.append("        to_char(sign_date,'yyyy-mm-dd') sign_date,  to_char(access_date,'yyyy-mm-dd') access_date, ipaddress   ")
 						.append("        from customer c ").append("        inner join local l ")
 						.append("        on c.gu_code = l.gu_code").append("        where c_status like ?");
@@ -173,7 +173,7 @@ public class AdminDAO {
 				query.append("   select c_id, gu_name,  nickname, birth, gender, tel, profile, email, c_status,")
 						.append("        to_char(sign_date,'yyyy-mm-dd') sign_date,  to_char(access_date,'yyyy-mm-dd') access_date, ipaddress   ")
 						.append("        from customer c ").append("        inner join local l ")
-						.append("        on c.gu_code = l.gu_code").append("        where c_id like ? and gu_name ?");
+						.append("        on c.gu_code = l.gu_code").append("        where c_id like ? and gu_name like ?");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -185,7 +185,7 @@ public class AdminDAO {
 				query.append("   select c_id, gu_name,  nickname, birth, gender, tel, profile, email, c_status,")
 						.append("        to_char(sign_date,'yyyy-mm-dd') sign_date,  to_char(access_date,'yyyy-mm-dd') access_date, ipaddress   ")
 						.append("        from customer c ").append("        inner join local l ")
-						.append("        on c.gu_code = l.gu_code").append("        where c_id like ? and c_status ?");
+						.append("        on c.gu_code = l.gu_code").append("        where c_id like ? and c_status like ?");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -198,7 +198,7 @@ public class AdminDAO {
 						.append("        to_char(sign_date,'yyyy-mm-dd') sign_date,  to_char(access_date,'yyyy-mm-dd') access_date, ipaddress   ")
 						.append("        from customer c ").append("        inner join local l ")
 						.append("        on c.gu_code = l.gu_code")
-						.append("        where gu_name like ? and c_status ?");
+						.append("        where gu_name like ? and c_status like ?");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -211,7 +211,7 @@ public class AdminDAO {
 						.append("        to_char(sign_date,'yyyy-mm-dd') sign_date,  to_char(access_date,'yyyy-mm-dd') access_date, ipaddress   ")
 						.append("        from customer c ").append("        inner join local l ")
 						.append("        on c.gu_code = l.gu_code")
-						.append("        where c_id like ? and gu_name like ? and c_status ?");
+						.append("        where c_id like ? and gu_name like ? and c_status like ?");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -257,5 +257,72 @@ public class AdminDAO {
 		}
 
 		return list;
+	}
+	
+	public CuVO selectCostomerInfo(String cID) throws SQLException, NamingException {
+		
+		CuVO cVO = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		DbConnection dc = DbConnection.getInstance();
+
+		try {
+
+			con = dc.getConn();
+			
+			pstmt = con.prepareStatement("select * from customer_info where c_id = ?");
+			
+			pstmt.setString(1, cID);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				cVO = new CuVO();
+				cVO.setcID(rs.getString("c_id"));
+				cVO.setForumCount(rs.getInt("forum_count"));
+				cVO.setReportCount(rs.getInt("report_count"));
+				cVO.setGuName(rs.getString("gu_name"));
+				cVO.setNickName(rs.getString("nickname"));
+				cVO.setBirth(rs.getString("birth"));
+				cVO.setGender(rs.getString("gender"));
+				cVO.setTel(rs.getString("tel"));
+				cVO.setProfile(rs.getString("profile"));
+				cVO.setEmail(rs.getString("email"));
+				cVO.setcStatus(rs.getString("c_status"));
+				cVO.setSignDate(rs.getString("sign_date"));
+				cVO.setAccessDate(rs.getString("access_date"));
+				cVO.setIpAddress(rs.getString("ipaddress"));
+			}
+
+		} finally {
+			dc.close(rs, pstmt, con);
+		}
+		return cVO;
+	}
+	
+	public void updateStatus(String cID, String ust) throws SQLException, NamingException {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		DbConnection dc = DbConnection.getInstance();
+		
+		try {
+			
+			con = dc.getConn();
+			
+			pstmt = con.prepareStatement(" update customer set c_status = ? where c_id = ? ");
+			
+			pstmt.setString(1, ust);
+			pstmt.setString(2, cID);
+			
+			pstmt.executeUpdate();
+			
+		} finally {
+			dc.close(null, pstmt, con);
+		}
 	}
 }

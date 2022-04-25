@@ -5,7 +5,7 @@ public class CuVO {
 	private String cID, cPass, nickName, birth, tel, profile, guName, email, cStatus, score, signDate, accessDate,
 			ipAddress, gender;
 
-	private int guCode;
+	private int guCode, forumCount, reportCount;
 
 	public CuVO() {
 		// TODO Auto-generated constructor stub
@@ -13,7 +13,7 @@ public class CuVO {
 
 	public CuVO(String cID, String cPass, String nickName, String birth, String tel, String profile, String guName,
 			String email, String cStatus, String score, String signDate, String accessDate, String ipAddress,
-			String gender, int guCode) {
+			String gender, int guCode, int forumCount, int report_count) {
 		this.cID = cID;
 		this.cPass = cPass;
 		this.nickName = nickName;
@@ -29,6 +29,24 @@ public class CuVO {
 		this.ipAddress = ipAddress;
 		this.gender = gender;
 		this.guCode = guCode;
+		this.forumCount = forumCount;
+		this.reportCount = report_count;
+	}
+
+	public int getForumCount() {
+		return forumCount;
+	}
+
+	public void setForumCount(int forumCount) {
+		this.forumCount = forumCount;
+	}
+
+	public int getReportCount() {
+		return reportCount;
+	}
+
+	public void setReportCount(int report_count) {
+		this.reportCount = report_count;
 	}
 
 	public String getGuName() {

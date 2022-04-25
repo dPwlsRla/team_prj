@@ -12,8 +12,6 @@
 	String gu = request.getParameter("gu");
 	
 	AdminDAO aDAO = AdminDAO.getInstance();
-	
-
     
     if(gu == null || gu.equals("지역")){
     	gu = "";
@@ -21,28 +19,30 @@
 
     if(st == null || st.equals("상태")){
     	st = "";
-    } else if( st.equals("정지 계정")){
-    	st="";
-    } else if( st.equals("휴면 계정")){
-    	st="";
-    } else if( st.equals("탈퇴 계정")){
-    	st="";
-    } else if( st.equals("정상 계정")){
-    	st="";
+    } else if( st.equals("정지계정")){
+    	st="st";
+    } else if( st.equals("휴면계정")){
+    	st="do";
+    } else if( st.equals("탈퇴계정")){
+    	st="se";
+    } else if( st.equals("정상계정")){
+    	st="no";
     }
     
-    cID = "";
-    st = "";
-    gu = "";
+    //cID = "t";
+   // gu = "강남구";
+    //st = "ne";
     
-    List<CuVO> cuList = aDAO.selectAllCoustomer(cID, st, gu);
+    gu = gu.trim();
+   // gu ="강남구";
+    List<CuVO> cuList = aDAO.selectAllCoustomer(cID, gu, st);
     
     JSONObject jsonObj = new JSONObject();
 
     JSONArray jsonArr = new JSONArray();
 
     JSONObject jsonTemp = null;
-
+	String status = "";
     for(CuVO cuVO : cuList){
     	jsonTemp = new JSONObject();
     	jsonTemp.put("cID", cuVO.getcID());
@@ -53,7 +53,16 @@
     	jsonTemp.put("tel", cuVO.getTel());
     	jsonTemp.put("profile", cuVO.getProfile());
     	jsonTemp.put("email", cuVO.getEmail());
-    	jsonTemp.put("status", cuVO.getcStatus());
+    	if(  cuVO.getcStatus().equals("st")){
+    		status="정지계정";
+        } else if( cuVO.getcStatus().equals("do")){
+        	status="휴면계정";
+        } else if( cuVO.getcStatus().equals("se")){
+        	status="탈퇴계정";
+        } else if( cuVO.getcStatus().equals("no")){
+        	status="정상계정";
+        }
+    	jsonTemp.put("status", status);
     	jsonTemp.put("signDate", cuVO.getSignDate());
     	jsonTemp.put("accessDate", cuVO.getAccessDate());
     	jsonTemp.put("ipaddress", cuVO.getIpAddress());

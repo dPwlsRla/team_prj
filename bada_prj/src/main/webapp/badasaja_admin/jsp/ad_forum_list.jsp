@@ -59,38 +59,12 @@
 <script type="text/javascript">
 $(function(){
 	
-	$.ajax({
-		url:"http://localhost/bada_prj/badasaja_admin/jsp/ad_forum_list_process.jsp",
-		type:"post",
-		dataType:"json",
-		error:function( xhr ){
-			alert( xhr.text + "/" + xhr.status);
-			
-		},
-		success:function(jsonObj){
-			$("tbody").empty();
-			$.each(jsonObj.resultData, function(i, jsonObj){
-			$("#tab > tbody").append("<tr><td class='afNum'>"+jsonObj.afNum+"</td><td>"+jsonObj.aID
-					+"</td><td>"+jsonObj.topic+"</td><td>"+jsonObj.local+"</td><td>"+jsonObj.category
-					+"</td><td>"+jsonObj.status+"</td><td>"+jsonObj.postedDate+"</td><td>"+jsonObj.expiryDate+"</td></tr>") 
-			}) 
-					$("#tab tr").click(function(e) {
-						
-						var tr = $(this);
-						var td = tr.children();
-						
-						var data = td.eq(0).text();
-						
-						window.location.href = "ad_forum_info.jsp?afNum=" + data;
-					})
-		},
-		
-	}) //ajax
+	 getSearchData()
 	
 	$("#idSearch").click(function(){
 		
 		
-		getSelectData();
+		getSearchData();
 		
 	}) // click
 	
@@ -102,7 +76,7 @@ $(function(){
 		$("#local").html(gu);
 		
 		
-		getSelectData();
+		getSearchData();
 	})
 	
 	$(".category").click(function(){
@@ -112,7 +86,7 @@ $(function(){
 		$("#category").html(pr);
 		
 		
-		getSelectData();
+		getSearchData();
 		
 	})
 	
@@ -127,7 +101,7 @@ $(function(){
 		$("#st").attr("value", st);
 		$("#status").html(st);
 		
-		getSelectData();
+		getSearchData();
 		
 	})
 	
@@ -135,7 +109,7 @@ $(function(){
 	
 }) //ready
 
-function getSelectData(){
+function getSearchData(){
 	$.ajax({
 		url:"http://localhost/bada_prj/badasaja_admin/jsp/ad_forum_list_process.jsp",
 		 data: {
@@ -144,7 +118,7 @@ function getSelectData(){
 			   st : $("#st").val(),
 			   pr : $("#pr").val(),			
 		},
-		type:"post",
+		type:"get",
 		dataType:"json",
 		error:function( xhr ){
 			alert( xhr.text + "/" + xhr.status);
@@ -159,7 +133,8 @@ function getSelectData(){
 			$("#tab > tbody").append("<tr><td class='afNum'>"+jsonObj.afNum+"</td><td>"+jsonObj.aID
 					+"</td><td>"+jsonObj.topic+"</td><td>"+jsonObj.local+"</td><td>"+jsonObj.category
 					+"</td><td>"+jsonObj.status+"</td><td>"+jsonObj.postedDate+"</td><td>"+jsonObj.expiryDate+"</td></tr>") 
-				$("#tab tr").click(function(e) {
+			})
+				$("tbody tr").click(function(e) {
 						
 						var tr = $(this);
 						var td = tr.children();
@@ -168,7 +143,6 @@ function getSelectData(){
 						
 						window.location.href = "ad_forum_info.jsp?afNum=" + data;
 					})
-			})
 		},
 		
 	}) //ajax

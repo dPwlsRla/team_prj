@@ -58,40 +58,161 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 	<script type="text/javascript">
 	$(function(){
+		
+		getSearchData();
+		
+		$("#idSearch").click(function(){
+			getSearchData()
+		}) // click
+		
+		$(".local").click(function() {
+			
+			var gu = $(this).text();
+			
+			$("#gu").attr("value", gu);
+			$("#local").html(gu);
+			
+			getSearchData()
+			
+			
+		}) // click
+		
+		$(".status").click(function(){
+			var st = $(this).text();
+			
+			if(st == 'null'){
+				st = "상태";
+				
+			}
+			
+			$("#st").attr("value", st);
+			$("#status").html(st);
+			
+			getSearchData()
+		}) // click
+		
+		$(".ustatus").click(function(){
+			var ust = $(this).text();
+			var cID = $("#customer-id").html().substr(5);
+			
+			if(ust == 'null'){
+				ust = "상태";
+			}
+			
+			$("#ust").attr("value", ust);
+			$("#ustatus").html(ust);
+			
+			alert(ust)
+			var param = "cID="+cID+"&ust="+ust;
+			
+			 modifyStatus(param);
+			 
+			})
+			
+		
+	}) //ready 
+	
+	function getSearchData(){
+		
 		$.ajax({
 			url:"http://localhost/bada_prj/badasaja_admin/jsp/customer_process.jsp",
-			type:"post",
+			data: {
+				cID : $("#cID").val(),
+				gu : $("#gu").val(),
+				st : $("#st").val(),
+			},
+			type:"get",
+			async: true,
+			dataType:"json",
+			error:function(xhr){
+				alert( xhr.text + "/" + xhr.status);
+			},
+			success:function(jsonObj){
+				 $("#tab tbody").empty();
+					if(jsonObj.resultData.length == 0){
+						$("#tab > tbody").append("<tr><td colspan='5'<strong>조회결과 없음</strong></td></tr>"  )					
+					}
+				$.each(jsonObj.resultData, function(i, jsonObj){
+			 	$("#tab > tbody").append("<tr><td class='cID'>"+jsonObj.cID+"</td><td>"+jsonObj.nickname
+			+"</td><td>"+jsonObj.status+"</td><td>"+jsonObj.local+"</td><td>"+jsonObj.signDate
+			+"</td><td>"+jsonObj.accessDate+"</td></tr>") 
+					}) 
+						
+						var tr = $("#tab tbody tr");
+						var td = tr.children();
+						var data = td.eq(0).text();
+						if(data == '조회결과 없음'){
+							return
+						}
+						var param = "cID=" + data
+						
+						 getInfoData(param)
+					
+				 		$("tbody tr").click(function(evt) {
+						
+						 tr = $(this);
+						 td = tr.children();
+						 data = td.eq(0).text();
+						 param = "cID=" + data
+						
+						 getInfoData(param)
+					})// click
+				},
+							
+		}) // ajax 
+		
+	}
+	
+	function getInfoData(param){
+		$.ajax({
+			url:"http://localhost/bada_prj/badasaja_admin/jsp/customer_info_process.jsp",
+			type:"get",
+			data: param,
+			async: true,
 			dataType:"json",
 			error:function( xhr ){
 				alert( xhr.text + "/" + xhr.status);
-				
 			},
 			success:function(jsonObj){
-				$("tbody").empty();
-				$.each(jsonObj.resultData, function(i, jsonObj){
-				$("#tab > tbody").append("<tr><td class='cID'>"+jsonObj.cID+"</td><td>"+jsonObj.nickname
-						+"</td><td>"+jsonObj.status+"</td><td>"+jsonObj.local+"</td><td>"+jsonObj.signDate
-						+"</td><td>"+jsonObj.accessDate+"</td></tr>") 
-				}) 
-					$("#tab tr").click(function(evt) {
-						
-						var tr = $(this);
-						var td = tr.children();
-						
-						var data = td.eq(0).text();
-						<% String test = "test"; %>
-						
-						alert('<%= test %>')
-						
-					})	
-			},
+				 printCustomerInfo(jsonObj)
+			}
 			
-		}) //ajax
-	})
+		}) // ajax
+	}
+	
+	function modifyStatus(param){
+		$.ajax({
+			url:"http://localhost/bada_prj/badasaja_admin/jsp/customer_status_process.jsp",
+			type:"get",
+			data: param,
+			async: true,
+			error:function( xhr ){
+				alert( xhr.text + "/" + xhr.status);
+			},
+			success:function(){
+				alert("변경 되었습니다.")
+				getSearchData();
+			}
+			
+		}) // ajax
+	}
+	
+	function printCustomerInfo(jsonObj){
+		
+		$("#customer_nickcname").html(jsonObj.nickname);
+		$("#customer-id").html('ID : ' + jsonObj.cID);
+		$("#customer-gender").html('gender : ' + jsonObj.gender);
+		$("#customer-writes").html('게시글 수 : ' + jsonObj.forumCount);
+		$("#customer-register").html('가입일 : ' + jsonObj.signDate);
+		$("#customer-email").html('email : ' + jsonObj.email);
+		$("#customer-score").html('거래만족도 : 확인필요');
+		$("#customer-login").html('접속일 : ' + jsonObj.accessDate);
+		$("#phone").html('phone number : ' + jsonObj.tel);
+		$("#reports").html('신고 받은 건수 : ' + jsonObj.reportCount);
+		$("#ustatus").html(jsonObj.status)
+	}
 	</script>
  </head>
-
-
 
 <body>
 <%
@@ -115,29 +236,30 @@
             <!-- Content wrapper -->
             <div class="content-wrapper">
                 <!-- Content -->
-
                 <div class="container-xxl flex-grow-1 container-p-y">
-
                     <!-- Basic Bootstrap Table -->
                     <div class="card" style="margin-bottom:100px">
                         <!-- Search -->
                         <div class="navbar-nav mb-3">
                             <div class="nav-item d-inline">
-                                <button type="button" class="btn btn-outline-primary dropdown-toggle float-end" data-bs-toggle="dropdown" style="margin:15px" >상태</button>
+                                <button type="button" id="status" name="status" class="btn btn-outline-primary dropdown-toggle float-end" data-bs-toggle="dropdown" style="margin:15px" >상태</button>
+                                <input type="hidden" name="st" id="st"/>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="javascript:void(0);">정상계정</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0);">휴먼계정</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0);">정지계정</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0);">탈퇴계정</a></li>
+                                <li class="status"><a class="dropdown-item" href="javascript:void(0);">상태</a></li>
+                                    <li class="status"><a class="dropdown-item" href="javascript:void(0);">정상계정</a></li>
+                                    <li class="status"><a class="dropdown-item" href="javascript:void(0);">휴면계정</a></li>
+                                    <li class="status"><a class="dropdown-item" href="javascript:void(0);">정지계정</a></li>
+                                    <li class="status"><a class="dropdown-item" href="javascript:void(0);">탈퇴계정</a></li>
                                 </ul>
-                                <button type="button" class="btn btn-outline-primary dropdown-toggle float-end" data-bs-toggle="dropdown" style="margin-top:15px; margin-left:15px; " >지역</button>
+                                <button type="button" id="local" name="local" class="btn btn-outline-primary dropdown-toggle float-end" data-bs-toggle="dropdown" style="margin-top:15px; margin-left:15px; " >지역</button>
+                                <input type="hidden" name="gu" id="gu"/>
                                 <ul class="dropdown-menu">
-                                	<li><a class="dropdown-item" href="javascript:void(0)">지역</a></li>
+                                	<li class="local"><a class="dropdown-item" href="javascript:void(0)">지역</a></li>
                                     <c:forEach var="data" items="${lList }">
-										<li><a class="dropdown-item" href="javascript:void(0)"><c:out value="${ data.guName }" /> </a></li>
+										<li class="local"><a class="dropdown-item" href="javascript:void(0)"><c:out value="${ data.guName }" /> </a></li>
 									</c:forEach>
                                 </ul>
-                                <a href="#" class="btn btn-primary float-end shadow-none" style="margin-top:15px; margin-left:10px">검색</a>
+                                <a href="javascript:void(0)" id="idSearch" class="btn btn-primary float-end shadow-none" style="margin-top:15px; margin-left:10px">검색</a>
                                 <input
                                         type="text"
                                         class="form-control shadow-none float-end"
@@ -177,9 +299,9 @@
                         <!-- /Search -->
                         <div class="user-grid">
                             <div class="user-avatar">
-                                <img id="avatar" src="../assets/img/avatars/1.png"/>
+                                <img id="profile" src="../assets/img/avatars/1.png"/>
                                 <a href="#" class="avatar-name">
-                                    <span class="app-brand-text demo fw-bolder ms-2">User Name</span>
+                                    <span class="app-brand-text demo fw-bolder ms-2" id="customer_nickcname">User Name</span>
                                 </a>
                             </div>
                             <div>
@@ -198,12 +320,13 @@
                                     <div class = "customer-div3"><span class="customer-info" id="phone">phone number : 010-3824-3932</span></div>
                                     <div class = "customer-div3"><span class="customer-info" id="reports">신고 받은 건수 : 1</span></div>
                                     <div class = "customer-div3"><span class="customer-info">계정 상태</span>
-                                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" style="width: 50px; height: 30px;
-    																																margin-left: 10px; padding:0px" >no</button>
+                                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" id="ustatus" data-bs-toggle="dropdown" style="margin-left: 10px; padding:0px" >정상계정</button>
+                                         <input type="hidden" name="ust" id="ust"/>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="javascript:void(0);">가전제품</a></li>
-                                            <li><a class="dropdown-item" href="javascript:void(0);">의류</a></li>
-                                            <li><a class="dropdown-item" href="javascript:void(0);">식품</a></li>
+                                            <li class="ustatus"><a class="dropdown-item" href="javascript:void(0);">정상계정</a></li>
+                                            <li class="ustatus"><a class="dropdown-item" href="javascript:void(0);">휴면계정</a></li>
+                                            <li class="ustatus"><a class="dropdown-item" href="javascript:void(0);">정지계정</a></li>
+                                            <li class="ustatus"><a class="dropdown-item" href="javascript:void(0);">탈퇴계정</a></li>
                                         </ul></div>
                                 </div>
                             </div>

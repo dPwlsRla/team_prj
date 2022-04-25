@@ -61,24 +61,7 @@
     <script type="text/javascript">
     $(function(){
     	
-    	$.ajax({
-			url:"http://localhost/bada_prj/badasaja_admin/jsp/ad_banner_list_process.jsp",
-			type:"post",
-			dataType:"json",
-			error:function( xhr ){
-				alert( xhr.text + "/" + xhr.status);
-				
-			},
-			success:function(jsonObj){
-				 $("tbody").empty();
-				$.each(jsonObj.resultData, function(i, jsonObj){
-				$("#tab > tbody").append("<tr><td>"+jsonObj.bNum+"</td><td>"+jsonObj.aID
-						+"</td><td>"+jsonObj.URL+"</td><td>"+jsonObj.local+"</td><td>"+jsonObj.category
-						+"</td><td>"+jsonObj.status+"</td><td>"+jsonObj.postedDate+"</td><td>"+jsonObj.expiryDate+"</td></tr>") 
-				})
-			},
-			
-		}) //ajax
+    	getSelectData()
 		
 		$("#idSearch").click(function(){
 			
@@ -135,7 +118,7 @@
 				   st : $("#st").val(),
 				   pr : $("#pr").val(),			
 			},
-			type:"post",
+			type:"get",
 			dataType:"json",
 			error:function( xhr ){
 				alert( xhr.text + "/" + xhr.status);
