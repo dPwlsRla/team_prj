@@ -9,21 +9,15 @@
 <%
 	EntireForumDAO efDAO = new EntireForumDAO();
 	WishListVO wVO = new WishListVO();
-	
+	String process = request.getParameter("process");
 	wVO.setCfNum(request.getParameter("cfNum"));
-	wVO.setcID("test");
+	wVO.setcID(request.getParameter("cId"));
+	if(process.equals("insert")){
+		efDAO.insertWishList(wVO);
+	}
 	
-	
-	//if(request.getParameter("cfNum")==wVO.getCfNum()){
-		%>
-		<!--  out.println("<script>alert("찜목록을 취소하시겠습니까?")</script>")-->
-		<%
-	//}
-	
-	//로그인 페이지 연결 후 세션 ID값 가져오기 주석 해제
-	//wVO.setcID(session.getAttribute("cId").toString());
-	efDAO.insertWishList(wVO);
-	
-	response.sendRedirect("trade.jsp");
-	
+	else if(process.equals("delete")){
+		efDAO.deleteWishList(wVO);
+	}
+		
 %>

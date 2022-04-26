@@ -29,7 +29,7 @@ public boolean insertForum(CForumVO cForumVO, CImgVO[] ciVOarr, HashTagVO[] htVO
 		StringBuilder query = new StringBuilder();  
 		
 		query.append("insert into C_Forum(cf_num,c_id,p_code,cf_topic,cf_main,cf_status,main_img)"
-				+ " values('cf'||PRO1.C_FORUM_SEQ.NEXTVAL, ? , ? , ? , ? , ? , ?)");
+				+ " values('cf'||PRO2.C_FORUM_SEQ.NEXTVAL, ? , ? , ? , ? , ? , ?)");
 		pstmt=con.prepareStatement(query.toString());
 		 
 		pstmt.setString(1, cForumVO.getcID());
@@ -49,7 +49,7 @@ public boolean insertForum(CForumVO cForumVO, CImgVO[] ciVOarr, HashTagVO[] htVO
 			System.out.println(ciVO.getImg());
 	
 			query1.append("insert into C_IMG(cf_num,img)"
-					+ " values('cf'||PRO1.C_FORUM_SEQ.CURRVAL, ? )");
+					+ " values('cf'||PRO2.C_FORUM_SEQ.CURRVAL, ? )");
 			pstmt=con.prepareStatement(query1.toString());
 			pstmt.setString(1, ciVO.getImg());
 			rs=pstmt.executeQuery();
@@ -61,7 +61,7 @@ public boolean insertForum(CForumVO cForumVO, CImgVO[] ciVOarr, HashTagVO[] htVO
 				continue;
 			}
 			query1.append("insert into hashtag(cf_num,hash)"
-					+ " values('cf'||PRO1.C_FORUM_SEQ.CURRVAL, ? )");
+					+ " values('cf'||PRO2.C_FORUM_SEQ.CURRVAL, ? )");
 			pstmt=con.prepareStatement(query1.toString());
 			
 			pstmt.setString(1, htVO.getHash());

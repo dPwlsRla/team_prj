@@ -1,5 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="kr.co.sist.badasaja.user.dao.CForumDAO"%>
+<%@page import="kr.co.sist.badasaja.vo.CForumVO" %>
+<%@page import="kr.co.sist.badasaja.vo.CImgVO" %>
+<%@page import="kr.co.sist.badasaja.vo.HashTagVO" %>
+<%@page import="kr.co.sist.badasaja.vo.CuVO" %>
+
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,15 +19,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700"> 
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <link rel="stylesheet" href="../fonts/icomoon/style.css">
 	<link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css" rel="stylesheet">
 	
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/magnific-popup.css">
     <link rel="stylesheet" href="../css/jquery-ui.css">
     <link rel="stylesheet" href="../css/owl.carousel.min.css">
     <link rel="stylesheet" href="../css/owl.theme.default.min.css">
-
 
     <link rel="stylesheet" href="../css/aos.css">
 
@@ -140,20 +152,22 @@
 				margin-bottom: 50px;
 				}
 	#commentDiv{
-						border: 1px solid #dfdfdf;
+						border-bottom: 1px solid #dfdfdf;
 						width:700px;
 						height:300px;
 						margin: 0px auto;
 						margin-bottom: 20px;
 						color: #333;
 						font-family: 'NanumSquareRound'';
+						overflow: scroll;
 						}
-	#commentText{
+	.commentText{
 					width:580px;
 					height:30px;
 					border: 1px solid #dfdfdf;
+					font-family: 'NanumSquareRound'';
 					}
-	#commentBtn{
+	.commentBtn{
 						background-color: #5e5e5e;
 						border: 0px;
 						border-radius: 3px;
@@ -164,13 +178,22 @@
 	#commentArea{
 						width: 700px;
 						margin: 0px auto;
+						font-family: 'NanumSquareRound'';
+						}
+	.oneComment{
+						width: 700px;
+						margin: 0px auto;
+						font-family: 'NanumSquareRound'';
 						}
 	#parentCom{
 					width: 700px;
+					border-bottom: 1px solid #dfdfdf;
+					font-family: 'NanumSquareRound'';
 					}
 	#childCom{
 					width: 700px;
 					padding-left: 30px;
+					font-family: 'NanumSquareRound'';
 					}
 					
 	.checkbox{	
@@ -188,8 +211,115 @@
 	  			text-align: center; 
 	  			padding-top: 30px;"
 	  			}
+	 #carouselExampleControls{
+									width: 600px;
+   									margin: 0px auto;
+									}
+	.commentProfile{
+							width: 30px;
+    						height: 30px; 
+    						border-radius: 70%;
+    						overflow: hidden;
+    						border: 1px solid #dfdfdf;
+    						margin-right: 5px;
+    						display: inline-block;
+							}
+	
+	.nicknameCom{
+			font-weight: bold;
+			font-size: 20px;
+		   }
+ 	.addr{
+ 			font-size: 12px;
+ 			display: inline-block;
+ 			margin-left: 5px;
+ 		   }
+ 	.writerLabel{
+					border: 1px solid #868e96;
+					border-radius:5px;
+					color: #868e96;
+					font-size: 10px;
+					display: inline-block;
+ 					}
+ 	.replyMark{
+ 					width: 9px;
+   				    height: 9px;
+    				border-bottom: 1px solid #adb5bd;
+    				border-left: 1px solid #adb5bd;
+    				display: inline-block;
+    				margin-right: 16px;
+    				vertical-align: top;
+ 				  }
+ 	.date{
+ 			font-size: 12px;
+ 			color:#868e96;
+ 			display: inline-block;
+ 			width:630px;
+ 		   }
+ 	.commentContent{
+ 							border-bottom:  1px solid #dfdfdf;
+ 							margin-bottom: 10px;
+ 							}
+ 	.replyDiv{
+ 				border: 1px solid #adb5bd;
+ 				border-radius:3px;
+ 				font-size: 13px;
+ 				display: inline-block;
+ 				text-decoration: none;
+ 				color: #333;
+ 				width: 60px;
+ 				}
+ 
 						
   </style>
+  <%
+  	CForumDAO cDAO = new CForumDAO();
+  	String cfNum = request.getParameter("cfNum");
+  	CForumVO cVO = cDAO.getCForumVO(cfNum);
+  	List<CImgVO> cImgList = cDAO.getCImgVOList(cfNum);
+  	List<HashTagVO> hashTagList = cDAO.getHashTagVOList(cfNum);
+  	CuVO cuVO = cDAO.getCuVO(cfNum);
+  	
+	pageContext.setAttribute("cVO", cVO);
+	pageContext.setAttribute("cuVO", cuVO);
+
+	int i = 1;
+	for (CImgVO cIVO : cImgList){
+		pageContext.setAttribute("cImg"+ i,cIVO); // cImg1 : 첫번째 원소, cImg2 : 두번쨰 원소...
+		i++;
+	}
+	pageContext.setAttribute("hashTagList", hashTagList);
+
+	
+	
+
+  %>
+  
+  <script type="text/javascript">
+  console.log();
+$(function(){
+	$(".replyDiv").click(function() {
+		alert("댓글을 입력하시겠습니까");
+		var reply =   "<div style='font-weight: bold;'><div class='replyMark'></div>"+
+		 						"<img class='commentProfile' src='http://localhost/html_prj/badasaja/images/person_1.jpg'/>바나나가좋아"+
+    							"<div class='addr'>안산시 상록구 사동</div>"+
+    							"<label class='writerLabel'>작성자</label>"+
+    							"</div>"+
+    							"<div class='commentContent' >"+
+    							"<input type='text' style='width:620px'/><input type='button' value='댓글 달기' class='commentBtn'>"+
+    							"<div>" +
+    							"<div class='date'>2022-04-17</div>"+
+    							
+    							"</div></div></div>"
+     $("#oneComment").append(reply);
+	});//click
+	
+	 
+});//ready 
+
+  </script>
+  
+  
   <body>
  
   <%@include file="components/header.jsp"%>
@@ -201,46 +331,41 @@
     <div class="container1"  >
     	<table style="width: 700px">
     	<tr>
-    	<td style="font-size: 20px; font-weight: bold;">제목 : 바나나우유 딸기 우유</td>
+    	<td style="font-size: 20px; font-weight: bold;">제목 : ${cVO.cfTopic}</td>
     	<td></td>
-    	<td style="text-align: right">2022-03-31 02:57AM</td>
+    	<td style="text-align: right">${cVO.writeDate}</td>
     	</tr>
     	</table>
     </div>
-    </div>
     									<!---container2 : 사진 div-->
-  
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="nonloop-block-3 owl-carousel">
-              <div class="item">
-                <div class="block-4 text-center">
-                  <figure class="block-4-image">
-                    <img src="../images/cloth_1.jpg" alt="Image placeholder" class="img-fluid">
-                  </figure>
-                </div>
-              </div>
-              <div class="item">
-                <div class="block-4 text-center">
-                  <figure class="block-4-image">
-                    <img src="../images/cloth_1.jpg" alt="Image placeholder" class="img-fluid">
-                  </figure>
-                </div>
-              </div>
-              <div class="item">
-                <div class="block-4 text-center">
-                  <figure class="block-4-image">
-                    <img src="../images/cloth_2.jpg" alt="Image placeholder" class="img-fluid">
-                  </figure>
-                </div>
-              </div>
-            
-              
-            </div>
-          </div>
-        </div>
-      </div>
+  <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+  	
+    <div class="carousel-item active">
+      <img src="../images/c_img/${cImg1.img}" class="d-block w-100" alt="...">
+    </div>
+    <c:if test="${cImg2.img!=null}">
+    <div class="carousel-item">
+      <img src="../images/c_img/${cImg2.img}" class="d-block w-100" alt="...">
+    </div>
+    </c:if>
+    <c:if test="${cImg3.img!=null}">
+    <div class="carousel-item">
+      <img src="../images/c_img/${cImg3.img}" class="d-block w-100" alt="...">
+    </div>
+    </c:if>
+    
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+     
     
      
    									  <!--프로필 거래상태 div  -->
@@ -248,10 +373,13 @@
 	    <table  style="width: 700px; height: 100%">
 	    	<tr>
 	    		<td ><img src="" style="width:50px; height:50px" onerror="this.src='../images/user.png'"></td>
-	    		<td style="padding-left: 10px"><span id="nickname">닉네임: 바나나가 좋아<br/> 거래만족도: 4.5</span></td>
-	    		<td style="width: 100px; padding: 10px; "><label id="lb1">#딸기우유</label></td>
-	    		<td style="width: 100px; padding: 10px;"><label id="lb2">#딸기우유</label></td>
-	    		<td style="width: 100px; padding: 10px;" ><label id="lb3">#딸기우유</label></td>
+	    		<td style="padding-left: 10px"><span id="nickname">닉네임: ${cuVO.nickName}<br/> 거래만족도: ${cuVO.score}</span></td>
+	    		<!-- for(HashTagVO hashTagVO : hashTagList){
+	    				System.out.println(hashTagVO.getHash());
+	    			} -->
+	    		<c:forEach var="hVO" items="${hashTagList}" varStatus="idx">
+		    		<td style="width: 100px; padding: 10px; "><label id="lb${idx.count}">${hVO.hash}</label></td>
+	    		</c:forEach>
 	    		<td style="text-align: right">
 		    			<label id="onBoard">거래가능</label>
 		    	</td>
@@ -263,65 +391,65 @@
     	<div id="container4">
     	<!--게시글 전문  -->
     	<div id="textDiv">
-    	
+    	${cVO.cfMain}
     	</div>
+    	
     	<!--댓글 div-->
     	<div id= "commentDiv">
-    	<div id="commentArea">
+    	<div style=" font-family: 'NanumSquareRoundB'; font-size: 20px; margin-bottom: 20px; border-bottom: 1px solid #dfdfdf;">댓글</div>
+    	<div id="oneComment">
     	
     	<!--부모 댓글  -->
-    	<div id="parentCom">
-    	<table>
-    	<tr>
-    	<td width="600px;">작성자1 : 이거 교환 가능한가요?</td>
-    	<td>2022.04.15.10:00AM</td>
-    	<td><img src="../images/dots.png" style="width:20px; height:20px; vertical-align: middle; padding-bottom: 3px"></td>
-    	</tr>
-    	</table>
+    	<div class="parent">
+    	<div style=" font-weight: bold; "><img class="commentProfile"src="../images/person_1.jpg" alt=""/>닉네임
+    	<div class="addr" >안산시 단원구 초지동</div>
     	</div>
+    	<div class="commentContent">
+    	<p>지금 교환 가능한가요?</p>
+    	<div>
+    	<div>
+    	<div class="date">2022-04-17</div>
+    	<a href="#" class="replyDiv">답글 쓰기</a>
+    	</div>
+    	</div>
+    	</div>
+    	</div>
+    
+    	<!--자식 댓글-->
+    	<!-- <div>
     	
-    	<div id="childCom">
-    	<table>
-    	<tr>
-    	<td width="600px;"><img id="replyArrow" src="../images/right-arrow.png">작성자2 : 가능합니다.</td>
-    	<td>2022.04.15.10:00AM</td>
-    	<td><img src="../images/dots.png" style="width:20px; height:20px; vertical-align: middle; padding-bottom: 3px"></td>
-    	</tr>
-    	</table>
+    	<div style=" font-weight: bold; "><div class="replyMark"></div><img class="commentProfile"src="http://localhost/html_prj/badasaja/images/person_1.jpg" alt=""/>바나나가좋아
+    	<div class="addr">안산시 상록구 사동</div>
+    	<label class="writerLabel">작성자</label>
     	</div>
-    	<!--부모 댓글  -->
-    	<div id="parentCom">
-    	<table>
-    	<tr>
-    	<td>🔒</td>
-    	<td width="600px;">작성자3 : 공짜로 받을 수 없나요?</td>
-    	<td>2022.04.15.10:00AM</td>
-    	<td><img src="../images/dots.png" style="width:20px; height:20px; vertical-align: middle; padding-bottom: 3px"></td>
-    	</tr>
-    	</table>
+    	<div class="commentContent" >
+    	<p>가능합니다</p>
+    	<div>
+    	<div class="date">2022-04-17</div>
+    	<a href="#" class="replyDiv">답글 쓰기</a>
     	</div>
+    	</div>
+    	</div> -->
     	
-    									<!--대댓글 구현  -->
-    	<input type="text" placeholder="댓글을 입력해주세요." id="commentText">
-    	🔒<input type="checkbox" class="checkbox">
-    	<input type="button" value="댓글 달기" id="commentBtn">
-    	</div>										
     	</div>
+    	</div>
+    	</div>	
     	<div id="commentArea">
     	<!-- 댓글 달기 input & button -->
-    	<input type="text" placeholder="댓글을 입력해주세요." id="commentText">
+    	<input type="text" placeholder="댓글을 입력해주세요." class="commentText">
     	🔒<input type="checkbox" class="checkbox">
-    	<input type="button" value="댓글 달기" id="commentBtn">
+    	<input type="button" value="댓글 달기" class="commentBtn">
     	</div>											
     	
-    	</div><!--container4/-->
     	
     	<!--footer  -->
     	<%@include file="components/footer.jsp"%>
     
     										
     <!-- js 파일  -->
-   <script src="../js/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+  <script src="../js/jquery-3.3.1.min.js"></script>
   <script src="../js/jquery-ui.js"></script>
   <script src="../js/popper.min.js"></script>
   <script src="../js/bootstrap.min.js"></script>

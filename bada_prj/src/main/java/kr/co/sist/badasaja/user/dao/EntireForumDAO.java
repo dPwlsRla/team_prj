@@ -39,6 +39,7 @@ public class EntireForumDAO {
 			
 			StringBuilder entireQuery = new StringBuilder();
 			entireQuery.append("SELECT CF_NUM, CF_TOPIC, MAIN_IMG, P_CODE FROM C_FORUM");
+			// 1, 2, 3, 4, ... 
 			pstmt=con.prepareStatement(entireQuery.toString());
 			
 			StringBuilder hashQuery = new StringBuilder();
@@ -84,6 +85,8 @@ public class EntireForumDAO {
 	 * 찜목록 추가하기 
 	 */
 	public void insertWishList(WishListVO wlVO) throws SQLException, NamingException {
+		System.out.println(wlVO.getCfNum());
+		System.out.println(wlVO.getcID());
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs= null;
@@ -95,6 +98,9 @@ public class EntireForumDAO {
 			con =dc.getConn();
 			
 		String WishQuery = "INSERT INTO WISH_LIST VALUES(?,?,SYSDATE)";
+		System.out.println(wlVO.getCfNum());
+		System.out.println(wlVO.getcID());
+
 		pstmt=con.prepareStatement(WishQuery);
 		
 		pstmt.setString(1,wlVO.getCfNum());
@@ -103,7 +109,6 @@ public class EntireForumDAO {
 		rs=pstmt.executeQuery();
 		}finally {
 			dc.close(rs, pstmt, con);
-			
 		}
 		
 	}//insertWishList
@@ -111,6 +116,31 @@ public class EntireForumDAO {
 	/**
 	 * 찜목록 삭제하기
 	 */
+	
+	public void deleteWishList(WishListVO wlVO) throws SQLException, NamingException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs= null;
+		
+		
+		DbConnection dc= DbConnection.getInstance();
+		
+		try {
+			con =dc.getConn();
+		
+		String WishQuery = "DELETE FROM WISH_LIST WHERE CF_NUM = ? AND C_ID = ?";
+		pstmt=con.prepareStatement(WishQuery);
+		
+		pstmt.setString(1,wlVO.getCfNum());
+		pstmt.setString(2,wlVO.getcID());
+		
+		rs=pstmt.executeQuery();
+		}finally {
+			dc.close(rs, pstmt, con);
+		}
+		
+	}//delete
+
 
 
 }//class

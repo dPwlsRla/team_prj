@@ -60,8 +60,6 @@ public class DetailCForumDAO {
 			dc.close(rs, pstmt, con);
 		}//end finally
 
-		
-		
 		return cfoList;
 	}// selectForum
 	
