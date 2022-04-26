@@ -35,7 +35,7 @@ info ="물물교환 게시판 메인"%>
 	
 	//DAO 불러오기
 	EntireForumDAO efDAO = new EntireForumDAO();
-	efList = efDAO.selectEntireForum();
+	efList = efDAO.selectEntireForum((String)session.getAttribute("cId"));
 	
 	// TODO
 	pageContext.setAttribute("efList", efList);
@@ -63,7 +63,7 @@ info ="물물교환 게시판 메인"%>
 						"cfNum":cfNum,
 						"cId":cId,
 					},
-				success: function(resp){alert("wishlist added");},
+				success: function(resp){alert("찜목록에 추가되었습니다");},
 			})
 		}
 		else{
@@ -77,7 +77,7 @@ info ="물물교환 게시판 메인"%>
 						"cfNum":cfNum,
 						"cId":cId,
 					},
-				success: function(resp){alert("wishlist deleted");},
+				success: function(resp){alert("찜목록에서 삭제되었습니다");},
 			})
 		}
 	}
@@ -119,7 +119,10 @@ info ="물물교환 게시판 메인"%>
 	                            <div class="block-4 text-center">
 	                                <div class="block-4-text p-4">
 	                                    <a href="javascript:void(0);"  onclick="goForum('${efVO.cfNum}')" ><h3>${efVO.title}</h3></a>
-	                                    <img src = "../images/unlike.png" id="like_${efVO.cfNum}" onclick="wishProcess('${efVO.cfNum}')">
+	                                    <c:choose>
+	                                    	<c:when test="${efVO.isWish}"><img src = "../images/like.png" id="like_${efVO.cfNum}" onclick="wishProcess('${efVO.cfNum}')"></c:when>
+      										<c:when test="${!efVO.isWish}"><img src = "../images/unlike.png" id="like_${efVO.cfNum}" onclick="wishProcess('${efVO.cfNum}')"></c:when>	
+	                                    </c:choose>
 	                                </div>
 	                                <figure class="block-4-image">
 	                                    <a href="javascript:void(0);"  onclick="goForum('${efVO.cfNum}')"><img src="../images/c_img/${efVO.img}" alt="Image placeholder" class="img-fluid"></a>
