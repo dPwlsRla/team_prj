@@ -289,6 +289,7 @@
 		i++;
 	}
 	pageContext.setAttribute("hashTagList", hashTagList);
+	pageContext.setAttribute("cId",session.getAttribute("cId"));
 
 	
 	
@@ -325,7 +326,7 @@ $(function(){
   <%@include file="components/header.jsp"%>
   
 	<div style="margin: 0px auto; width: 700px; text-align: right; ">
-	<input type="button" value="수정하기" class="editBtn">
+	<c:if test = "${cVO.cID eq cId}"><input type="button" value="수정하기" class="editBtn"></c:if>
 	</div>
 									<!--container1: 제목 및 작성일시 div-->
     <div class="container1"  >
