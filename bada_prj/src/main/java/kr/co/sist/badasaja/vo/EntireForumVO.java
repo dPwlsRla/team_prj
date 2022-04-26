@@ -5,6 +5,7 @@ import java.util.List;
 public class EntireForumVO {
 	
 	private String title, img, cfNum;
+	private boolean isWish;
 	private List<HashTagVO> list;
 
 	public EntireForumVO() {
@@ -50,4 +51,11 @@ public class EntireForumVO {
 		this.list = list;
 	}
 	
+	public void setIsWish(boolean isWish) {
+		this.isWish = isWish;
+	}
+
+	public boolean getIsWish() {
+		return isWish;
+	}
 }

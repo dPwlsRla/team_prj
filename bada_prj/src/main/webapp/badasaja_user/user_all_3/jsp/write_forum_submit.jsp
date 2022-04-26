@@ -12,14 +12,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-// !!!중요!!!!!! 절대경로 바꿔야함 !!!중요!!!
-File saveDirectory=new File("D:/dev/workspace_new/jsp_prj/src/main/webapp/badasaja_user/user_all_3/images/c_img");
-
+// TODO
+File saveDirectory=new File("D:/dev/workspace_new/team_prj/team_prj/bada_prj/src/main/webapp/badasaja_user/user_all_3/images/c_img");
 int fileSize=1024*1024*10;
 
 MultipartRequest mr=new MultipartRequest(request, saveDirectory.getPath() , fileSize,"UTF-8",
 		 new DefaultFileRenamePolicy()); // mr을 쓰면 request가 동작하지 않아서 request.getParameter를 다 mr.get...로 바꿈
-
 String fileSystemName1=mr.getFilesystemName("upImg1");
 String fileSystemName2=mr.getFilesystemName("upImg2");
 String fileSystemName3=mr.getFilesystemName("upImg3");

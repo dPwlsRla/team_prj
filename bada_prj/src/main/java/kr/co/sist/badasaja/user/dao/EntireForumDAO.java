@@ -20,7 +20,7 @@ import kr.co.sist.badasaja.vo.WishListVO;
  */
 public class EntireForumDAO {
 	
-	public List<EntireForumVO> selectEntireForum() throws SQLException, NamingException{
+	public List<EntireForumVO> selectEntireForum(String cId) throws SQLException, NamingException{
 		
 		List<EntireForumVO> eVOList = new ArrayList<EntireForumVO>();
 		
@@ -28,8 +28,11 @@ public class EntireForumDAO {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		PreparedStatement pstmt2 = null;
+		PreparedStatement pstmt3 = null;
+
 		ResultSet rs = null;
 		ResultSet rs2 = null;
+		ResultSet rs3 = null;
 		
 		DbConnection dc= DbConnection.getInstance();
 		
@@ -39,13 +42,13 @@ public class EntireForumDAO {
 			
 			StringBuilder entireQuery = new StringBuilder();
 			entireQuery.append("SELECT CF_NUM, CF_TOPIC, MAIN_IMG, P_CODE FROM C_FORUM");
+			// 1, 2, 3, 4, ... 
 			pstmt=con.prepareStatement(entireQuery.toString());
+			rs = pstmt.executeQuery();
 			
 			StringBuilder hashQuery = new StringBuilder();
 			hashQuery.append("SELECT C.CF_NUM, H.HASH, C.CF_TOPIC FROM C_FORUM C, HASHTAG H WHERE C.CF_NUM = H.CF_NUM AND H.CF_NUM = ? ");
-			
-			rs = pstmt.executeQuery();
-			
+
 			while(rs.next()) {
 				
 				EntireForumVO efVO = new EntireForumVO();
@@ -68,12 +71,26 @@ public class EntireForumDAO {
 				
 				efVO.setList(hashList);
 				
+				StringBuilder hashQuery2 = new StringBuilder();
+				hashQuery2.append("SELECT CF_NUM FROM WISH_LIST WHERE CF_NUM = ? AND C_ID = ?");
+				pstmt3 = con.prepareStatement(hashQuery2.toString());
+				pstmt3.setString(1, efVO.getCfNum());
+				pstmt3.setString(2, cId);
+				rs3 = pstmt3.executeQuery();
+				if(rs3.next()) {
+					efVO.setIsWish(true);
+				}
+				else {
+					efVO.setIsWish(false);
+				}
 				eVOList.add(efVO);
 			}
 			
 		}finally {
 			dc.close(rs, pstmt, con);
 			dc.close(rs2, pstmt2, con);
+			dc.close(rs3, pstmt3, con);
+
 		}//end finally
 
 		return eVOList ;
@@ -84,6 +101,8 @@ public class EntireForumDAO {
 	 * 찜목록 추가하기 
 	 */
 	public void insertWishList(WishListVO wlVO) throws SQLException, NamingException {
+		System.out.println(wlVO.getCfNum());
+		System.out.println(wlVO.getcID());
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs= null;
@@ -103,7 +122,6 @@ public class EntireForumDAO {
 		rs=pstmt.executeQuery();
 		}finally {
 			dc.close(rs, pstmt, con);
-			
 		}
 		
 	}//insertWishList
@@ -111,6 +129,31 @@ public class EntireForumDAO {
 	/**
 	 * 찜목록 삭제하기
 	 */
+	
+	public void deleteWishList(WishListVO wlVO) throws SQLException, NamingException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs= null;
+		
+		
+		DbConnection dc= DbConnection.getInstance();
+		
+		try {
+			con =dc.getConn();
+		
+		String WishQuery = "DELETE FROM WISH_LIST WHERE CF_NUM = ? AND C_ID = ?";
+		pstmt=con.prepareStatement(WishQuery);
+		
+		pstmt.setString(1,wlVO.getCfNum());
+		pstmt.setString(2,wlVO.getcID());
+		
+		rs=pstmt.executeQuery();
+		}finally {
+			dc.close(rs, pstmt, con);
+		}
+		
+	}//delete
+
 
 
 }//class
