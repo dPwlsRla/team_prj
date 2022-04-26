@@ -126,7 +126,7 @@
 			success:function(jsonObj){
 				 $("tbody").empty();
 				if(jsonObj.resultData.length == 0){
-					$("#tab > tbody").append("<tr><td colspan='5'<strong>조회결과 없음</strong></td></tr>"  )					
+					$("#tab > tbody").append("<tr><td colspan='5'><strong>조회결과 없음</strong></td></tr>"  )					
 				}
 				
 				$.each(jsonObj.resultData, function(i, jsonObj){

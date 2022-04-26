@@ -102,7 +102,6 @@
 			$("#ust").attr("value", ust);
 			$("#ustatus").html(ust);
 			
-			alert(ust)
 			var param = "cID="+cID+"&ust="+ust;
 			
 			 modifyStatus(param);
@@ -301,24 +300,24 @@
                             <div class="user-avatar">
                                 <img id="profile" src="../assets/img/avatars/1.png"/>
                                 <a href="#" class="avatar-name">
-                                    <span class="app-brand-text demo fw-bolder ms-2" id="customer_nickcname">User Name</span>
+                                    <span class="app-brand-text demo fw-bolder ms-2" id="customer_nickcname"></span>
                                 </a>
                             </div>
                             <div>
                                 <div class="customer-line">
-                                    <div class = "customer-div4"><span class="customer-info" id="customer-id">ID : cok854</span></div>
-                                    <div class = "customer-div4"><span class="customer-info" id="customer-gender">gender : f</span></div>
-                                    <div class = "customer-div4"><span class="customer-info" id="customer-writes">게시글 수 : 12</span></div>
-                                    <div class = "customer-div4"><span class="customer-info" id="customer-register">가입일 : 2022.04.01</span></div>
+                                    <div class = "customer-div4"><span class="customer-info" id="customer-id"></span></div>
+                                    <div class = "customer-div4"><span class="customer-info" id="customer-gender"></span></div>
+                                    <div class = "customer-div4"><span class="customer-info" id="customer-writes"></span></div>
+                                    <div class = "customer-div4"><span class="customer-info" id="customer-register"></span></div>
                                 </div>
                                 <div class="customer-line">
-                                    <div class = "customer-div3"><span class="customer-info" id="customer-email">email: cok854@naver.com</span></div>
-                                    <div class = "customer-div3"><span class="customer-info" id="customer-score">거래만족도 : 4.2</span></div>
-                                    <div class = "customer-div3"><span class="customer-info" id="customer-login">접속일 : 2022.04.01</span></div>
+                                    <div class = "customer-div3"><span class="customer-info" id="customer-email"></span></div>
+                                    <div class = "customer-div3"><span class="customer-info" id="customer-score"></span></div>
+                                    <div class = "customer-div3"><span class="customer-info" id="customer-login"></span></div>
                                 </div>
                                 <div class="customer-line">
-                                    <div class = "customer-div3"><span class="customer-info" id="phone">phone number : 010-3824-3932</span></div>
-                                    <div class = "customer-div3"><span class="customer-info" id="reports">신고 받은 건수 : 1</span></div>
+                                    <div class = "customer-div3"><span class="customer-info" id="phone"></span></div>
+                                    <div class = "customer-div3"><span class="customer-info" id="reports"></span></div>
                                     <div class = "customer-div3"><span class="customer-info">계정 상태</span>
                                         <button type="button" class="btn btn-outline-secondary dropdown-toggle" id="ustatus" data-bs-toggle="dropdown" style="margin-left: 10px; padding:0px" >정상계정</button>
                                          <input type="hidden" name="ust" id="ust"/>

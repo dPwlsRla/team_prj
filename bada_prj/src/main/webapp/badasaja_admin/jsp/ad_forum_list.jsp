@@ -126,7 +126,7 @@ function getSearchData(){
 		success:function(jsonObj){
 			 $("tbody").empty();
 			if(jsonObj.resultData.length == 0){
-				$("#tab > tbody").append("<tr><td colspan='5'<strong>조회결과 없음</strong></td></tr>"  )					
+				$("#tab > tbody").append("<tr><td colspan='5'><strong>조회결과 없음</strong></td></tr>"  )					
 			}
 			
 			$.each(jsonObj.resultData, function(i, jsonObj){
@@ -160,8 +160,6 @@ function getSearchData(){
  	
 
 	AdminForumDAO afDAO = AdminForumDAO.getInstance();
-	
-	//List<AdForumVO> allList = afDAO.selectAdForum(aID, pr, gu, st);
 	
 
 	pageContext.setAttribute("pList", pList);
@@ -261,6 +259,7 @@ function getSearchData(){
 								<table id="tab" class="table">
 									<thead>
 										<tr>
+											<th>번호</th>
 											<th>광고주ID</th>
 											<th>제목</th>
 											<th>지역</th>

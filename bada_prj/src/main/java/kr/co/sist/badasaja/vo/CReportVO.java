@@ -2,7 +2,7 @@ package kr.co.sist.badasaja.vo;
 
 public class CReportVO {
 
-	private String reportedID, reportID, crMain, crDate;
+	private String reportedID, reportID, crMain, rCategory, crDate;
 	private int rCode;
 	private char crStatus;
 
@@ -10,14 +10,23 @@ public class CReportVO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CReportVO(String reportedID, String reportID, String crMain, String crDate, int rCode, char crStatus) {
-		super();
+	public CReportVO(String reportedID, String reportID, String crMain, String rCategory, String crDate, int rCode,
+			char crStatus) {
 		this.reportedID = reportedID;
 		this.reportID = reportID;
 		this.crMain = crMain;
+		this.rCategory = rCategory;
 		this.crDate = crDate;
 		this.rCode = rCode;
 		this.crStatus = crStatus;
+	}
+
+	public String getrCategory() {
+		return rCategory;
+	}
+
+	public void setrCategory(String rCategory) {
+		this.rCategory = rCategory;
 	}
 
 	public String getReportedID() {

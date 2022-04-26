@@ -2,23 +2,31 @@ package kr.co.sist.badasaja.vo;
 
 public class CForumVO {
 
-	private String cfNum, cID, pCode, cfTopic, 
-			cfMain, writeDate, cfStatus, mainImg;
-	
+	private String cfNum, cID, pCode, cfTopic, local, cfMain, writeDate, cfStatus, mainImg;
+
 	public CForumVO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CForumVO(String cfNum, String cID, String pCode, String cfTopic, String cfMain, String writeDate,
-			String cfStatus, String mainImg) {
+	public CForumVO(String cfNum, String cID, String pCode, String cfTopic, String local, String cfMain,
+			String writeDate, String cfStatus, String mainImg) {
 		this.cfNum = cfNum;
 		this.cID = cID;
 		this.pCode = pCode;
 		this.cfTopic = cfTopic;
+		this.local = local;
 		this.cfMain = cfMain;
 		this.writeDate = writeDate;
 		this.cfStatus = cfStatus;
 		this.mainImg = mainImg;
+	}
+
+	public String getLocal() {
+		return local;
+	}
+
+	public void setLocal(String local) {
+		this.local = local;
 	}
 
 	public String getCfNum() {
@@ -84,5 +92,5 @@ public class CForumVO {
 	public void setMainImg(String mainImg) {
 		this.mainImg = mainImg;
 	}
-	
+
 }

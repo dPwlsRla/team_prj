@@ -2,7 +2,7 @@ package kr.co.sist.badasaja.vo;
 
 public class FReportVO {
 
-	private String cfrNum, cfNum, cID, cfrMain, frDate;
+	private String cfrNum, cfNum, cID, cfrMain, frDate, rCategory, cfrDate, cfrReport;
 	private int rCode;
 	private char cfrStatus;
 
@@ -10,15 +10,42 @@ public class FReportVO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public FReportVO(String cfrNum, String cfNum, String cID, String cfrMain, String frDate, int rCode,
-			char cfrStatus) {
+	public FReportVO(String cfrNum, String cfNum, String cID, String cfrMain, String frDate, String rCategory,
+			String cfrDate, String cfrReport, int rCode, char cfrStatus) {
 		this.cfrNum = cfrNum;
 		this.cfNum = cfNum;
 		this.cID = cID;
 		this.cfrMain = cfrMain;
 		this.frDate = frDate;
+		this.rCategory = rCategory;
+		this.cfrDate = cfrDate;
+		this.cfrReport = cfrReport;
 		this.rCode = rCode;
 		this.cfrStatus = cfrStatus;
+	}
+
+	public String getrCategory() {
+		return rCategory;
+	}
+
+	public void setrCategory(String rCategory) {
+		this.rCategory = rCategory;
+	}
+
+	public String getCfrDate() {
+		return cfrDate;
+	}
+
+	public void setCfrDate(String cfrDate) {
+		this.cfrDate = cfrDate;
+	}
+
+	public String getCfrReport() {
+		return cfrReport;
+	}
+
+	public void setCfrReport(String cfrReport) {
+		this.cfrReport = cfrReport;
 	}
 
 	public String getCfrNum() {

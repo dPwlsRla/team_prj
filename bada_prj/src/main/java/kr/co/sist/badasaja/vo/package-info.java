@@ -1,1 +1,0 @@
-package kr.co.sist.badasaja.vo;

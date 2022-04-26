@@ -1,16 +1,25 @@
 package kr.co.sist.badasaja.vo;
 
 public class NoticeVO {
-	private String nNum, oMain, postedDate;
-	
+	private String nNum, oMain, oID, postedDate;
+
 	public NoticeVO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public NoticeVO(String nNum, String oMain, String postedDate) {
+	public NoticeVO(String nNum, String oMain, String oID, String postedDate) {
 		this.nNum = nNum;
 		this.oMain = oMain;
+		this.oID = oID;
 		this.postedDate = postedDate;
+	}
+
+	public String getoID() {
+		return oID;
+	}
+
+	public void setoID(String oID) {
+		this.oID = oID;
 	}
 
 	public String getnNum() {
@@ -36,5 +45,5 @@ public class NoticeVO {
 	public void setPostedDate(String postedDate) {
 		this.postedDate = postedDate;
 	}
-	
+
 }

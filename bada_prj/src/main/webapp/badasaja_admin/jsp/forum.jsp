@@ -1,5 +1,11 @@
+<%@page import="kr.co.sist.badasaja.admin.dao.AdminForumDAO"%>
+<%@page import="kr.co.sist.badasaja.vo.LocalVO"%>
+<%@page import="kr.co.sist.badasaja.vo.ProductVO"%>
+<%@page import="java.util.List"%>
+<%@page import="kr.co.sist.badasaja.admin.dao.BaseDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
   <html
         lang="en"
         class="light-style layout-menu-fixed"
@@ -49,10 +55,117 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
+    <!-- jQuery CDN -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	
+	 getSearchData()
+	
+	$("#idSearch").click(function(){
+		
+		
+		getSearchData();
+		
+	}) // click
+	
+	$(".local").click(function() {
+		
+		var gu = $(this).text();
+		
+		$("#gu").attr("value", gu);
+		$("#local").html(gu);
+		
+		
+		getSearchData();
+	})
+	
+	$(".category").click(function(){
+		var pr = $(this).text();
+		
+		$("#pr").attr("value", pr);
+		$("#category").html(pr);
+		
+		
+		getSearchData();
+		
+	})
+	
+	$(".status").click(function(){
+		var st = $(this).text();
+		
+		if(st == 'null'){
+			st = "상태";
+			
+		}
+		
+		$("#st").attr("value", st);
+		$("#status").html(st);
+		
+		getSearchData();
+		
+	})
+	
+	
+	
+}) //ready
+
+function getSearchData(){
+	$.ajax({
+		url:"http://localhost/bada_prj/badasaja_admin/jsp/forum_list_process.jsp",
+		 data: {
+			   aID : $("#cID").val(),
+			   gu : $("#gu").val(),
+			   st : $("#st").val(),
+			   pr : $("#pr").val(),			
+		},
+		type:"get",
+		dataType:"json",
+		error:function( xhr ){
+			alert( xhr.text + "/" + xhr.status);
+		},
+		success:function(jsonObj){
+			 $("tbody").empty();
+			if(jsonObj.resultData.length == 0){
+				$("#tab > tbody").append("<tr><td colspan='5'><strong>조회결과 없음</strong></td></tr>"  )					
+			}
+			
+			$.each(jsonObj.resultData, function(i, jsonObj){
+			$("#tab > tbody").append("<tr><td class='cfNum'>"+jsonObj.cfNum+"</td><td>"+jsonObj.topic
+					+"</td><td>"+jsonObj.local+"</td><td>"+jsonObj.status+"</td><td>"+jsonObj.category
+					+"</td><td>"+jsonObj.writeDate+"</td><td>"+jsonObj.cID+"</td></tr>") 
+			})
+				$("tbody tr").click(function(e) {
+						
+						var tr = $(this);
+						var td = tr.children();
+						
+						var data = td.eq(0).text();
+						// 보류
+						//window.location.href = "forum_info.jsp?cfNum=" + data;
+					})
+		},
+		
+	}) //ajax
+}
+</script>
  </head>
 
 
 <body>
+	<%
+	BaseDAO bDAO = BaseDAO.getInstance();
+	List<ProductVO> pList = bDAO.selectProductList();
+	List<LocalVO> lList = bDAO.selectLocalList();
+ 	
+
+	AdminForumDAO afDAO = AdminForumDAO.getInstance();
+	
+
+	pageContext.setAttribute("pList", pList);
+	pageContext.setAttribute("lList", lList);
+	%>
 <%@ include file="nav.jsp"%>
 
 <!-- Layout wrapper -->
@@ -76,28 +189,64 @@
                         <!-- Search -->
                         <div class="navbar-nav mb-3">
                             <div class="nav-item d-inline">
-                                <button type="button" class="btn btn-outline-primary dropdown-toggle float-end" data-bs-toggle="dropdown" style="margin:15px;" >상태</button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="javascript:void(0);">거래중</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0);">거래완료</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0);">거래약속</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0);">게시삭제</a></li>
-                                </ul>
-                                <button type="button" class="btn btn-outline-primary dropdown-toggle float-end" data-bs-toggle="dropdown" style="margin-top:15px; margin-left:20px;" >지역</button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="javascript:void(0);">종로구</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0);">서대문구</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0);">성동구</a></li>
-                                </ul>
-                                <button type="button" class="btn btn-outline-primary dropdown-toggle float-end" data-bs-toggle="dropdown" style="margin-top:15px; margin-left:20px;" >카테고리 필터</button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="javascript:void(0);">가전제품</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0);">의류</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0);">식품</a></li>
-                                </ul>
-                                <a href="#" class="btn btn-primary float-end shadow-none" style="margin-top:15px; margin-left:10px">검색</a>
+                                <button type="button"
+											class="btn btn-outline-primary dropdown-toggle float-end"
+											data-bs-toggle="dropdown"
+											name="status"
+											id="status"
+											style="margin-top: 15px; margin-left: 20px;">
+												<c:choose>
+												<c:when test="${ not empty param.st }">${ param.st }</c:when>
+												<c:when test="${ empty param.st }">상태</c:when>
+											</c:choose>
+											</button>
+											<input type="hidden" name="st" id="st"/>
+										<ul class="dropdown-menu">
+											<li class="status"><a class="dropdown-item" href="javascript:void(0);">상태</a></li>
+											<li class="status"><a class="dropdown-item" href="javascript:void(0);">거래중</a></li>
+											<li class="status"><a class="dropdown-item" href="javascript:void(0);">거래약속</a></li>
+											<li class="status"><a class="dropdown-item" href="javascript:void(0);">거래완료</a></li>
+											<li class="status"><a class="dropdown-item" href="javascript:void(0);">게시삭제</a></li>
+										</ul>
+										 <input type="hidden" name="gu" id="gu"/>
+										<button type="button"
+											class="btn btn-outline-primary dropdown-toggle float-end"
+											data-bs-toggle="dropdown"
+											id="local"
+											style="margin-top: 15px; margin-left: 20px;">지역</button>
+										<ul class="dropdown-menu">
+											<li class="local"><a class="dropdown-item" href="javascript:void(0)">지역</a></li>
+											<c:forEach var="data" items="${lList }">
+												<li class="local"><a class="dropdown-item" href="javascript:void(0)"><c:out
+															value="${ data.guName }" /> </a></li>
+											</c:forEach>
+										</ul>
+										<button type="button"
+											class="btn btn-outline-primary dropdown-toggle float-end"
+											data-bs-toggle="dropdown"
+											name="category"
+											id="category"
+											style="margin-top: 15px; margin-left: 20px;">
+											<c:choose>
+												<c:when test="${ not empty param.product }">${ param.product }</c:when>
+												<c:when test="${ empty param.product }">카테고리 선택</c:when>
+											</c:choose>
+											
+											</button>
+										<input type="hidden" name="pr" id="pr"/>
+										<ul class="dropdown-menu">
+												<li class="category"><a class="dropdown-item" href="javascript:void(0)">카테고리 선택</a></li>
+											<c:forEach var="data" items="${ pList }">
+												<li class="category"><a class="dropdown-item" href="javascript:void(0)"><c:out
+															value="${ data.product }" /> </a></li>
+											</c:forEach>
+										</ul>
+										
+                                <a href="javascript:void(0);" id="idSearch" class="btn btn-primary float-end shadow-none" style="margin-top:15px; margin-left:10px">검색</a>
                                 <input
                                         type="text"
+                                        id="cID"
+                                        name="cID"
                                         class="form-control shadow-none float-end"
                                         placeholder="작성자_ID검색"
                                         style="margin-top: 15px;width: 150px;"
@@ -106,7 +255,7 @@
                         </div>
                         <!-- /Search -->
                         <div class="table-responsive text-nowrap">
-                            <table class="table">
+                            <table id="tab" class="table">
                                 <thead>
                                 <tr>
                                     <th>번호</th>
@@ -119,15 +268,6 @@
                                 </tr>
                                 </thead>
                                 <tbody class="table-border-bottom-0">
-                                <tr>
-                                    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>1</strong></td>
-                                    <td>바나나우유 딸기...</td>
-                                    <td>종로구</td>
-                                    <td>거래완료</td>
-                                    <td>생필품</td>
-                                    <td>2022.04.01</td>
-                                    <td>cok893</td>
-                                </tr>
                                 </tbody>
                             </table>
                         </div>

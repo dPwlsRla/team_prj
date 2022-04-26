@@ -1,8 +1,13 @@
+<%@page import="kr.co.sist.badasaja.vo.ReportVO"%>
+<%@page import="java.util.List"%>
+<%@page import="kr.co.sist.badasaja.admin.dao.AdminReportDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
+         
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
   <html
         lang="en"
-        class="light-style layout-menu-fixed"
+        class="light-style layout-menu-fixed" 
         dir="ltr"
         data-theme="theme-default"
         data-assets-path="../assets/"
@@ -49,11 +54,134 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
+        <script	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script type="text/javascript">
+	$(function() {
+		
+		getSearchData()
+		
+		$("#idSearch").click(function(){
+			
+			getSearchData();
+			
+		}) // click 
+		
+		$(".ty").click(function() {
+			
+			var ty = $(this).text();
+			
+			$("#type").attr("value", ty);
+			$("#ty").html(ty);
+			
+			
+			getSearchData();
+		})
+		
+		$(".status").click(function(){
+		var st = $(this).text();
+		
+		if(st == 'null'){
+			st = "상태";
+			
+		}
+		
+		$("#st").attr("value", st);
+		$("#status").html(st);
+		
+		getSearchData();
+		
+	})
+		
+	}) // ready
+	
+	function getSearchData(){
+		
+		$.ajax({
+			
+			url:"http://localhost/bada_prj/badasaja_admin/jsp/report_user_process.jsp",
+			data : {
+				rID : $("#rID").val(),
+				ty : $("#type").val(),
+				st : $("#st").val(),
+			},
+			type:"get",
+			dataType:"json",
+			error:function( xhr ){
+				alert( xhr.text + "/" + xhr.status);
+			},
+			success:function(jsonObj){
+			 	 $("tbody").empty();
+				if(jsonObj.resultData.length == 0){
+					$("#tab > tbody").append("<tr><td colspan='5'><strong>조회결과 없음</strong></td></tr>"  )					
+				}
+				
+				$.each(jsonObj.resultData, function(i, jsonObj){
+				$("#tab > tbody").append("<tr><td class='redNum'>"+jsonObj.reportedID+"</td><td>"+jsonObj.reportID
+						+"</td><td>"+jsonObj.crMain+"</td><td>"+jsonObj.rCategory+"</td><td>"+jsonObj.crDate
+						+"</td><td>"+jsonObj.cfrStatus+"</td></tr>") 
+				})	
+					
+					var tr = $("#tab tbody tr");
+					var td = tr.children();
+					var data = td.eq(0).text();
+					if(data == '조회결과 없음'){
+						$("#output").html("");
+						return
+					}
+					var param = "redID=" + data
+					
+					printCrMain(param)
+					
+					$("tbody tr").click(function(e) {
+							
+							var tr = $(this);
+							var td = tr.children();
+							
+							var data = td.eq(0).text();
+							
+							var param = "redID=" + data
+							
+							printCrMain(param)
+						}) 
+			},
+			
+		})
+		
+	} //getSearchData
+	
+	function printCrMain(param){
+		
+		$.ajax({
+			url:"http://localhost/bada_prj/badasaja_admin/jsp/report_user_info_process.jsp",
+			type:"get",
+			data: param,
+			async: true,
+			dataType:"json",
+			error:function( xhr ){
+				alert( xhr.text + "/" + xhr.status);
+			},
+			success:function(jsonObj){
+				$("#output").html(jsonObj.crMain);
+			}
+			
+		}) // ajax
+		
+	}
+	
+	
+	</script>
  </head>
 
 
 
 <body>
+<%
+AdminReportDAO arDAO = AdminReportDAO.getInstance();
+
+List<ReportVO> rList = arDAO.selectReport();
+
+pageContext.setAttribute("rList", rList);
+%>
 
 <%@ include file="nav.jsp"%>
 
@@ -75,29 +203,40 @@
                         <!-- Search -->
                         <div class="navbar-nav mb-3">
                             <div class="nav-item d-inline">
-                                <button type="button" class="btn btn-outline-primary dropdown-toggle float-end" data-bs-toggle="dropdown" style="margin:15px;" >상태</button>
+                                <input type="hidden" id="st" name="st">
+                                <button type="button" id="status" name="status" class="btn btn-outline-primary dropdown-toggle float-end" data-bs-toggle="dropdown" style="margin:15px;" >상태</button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="javascript:void(0);">처리중</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0);">처리완료</a></li>
+                                    <li class="status"><a class="dropdown-item" href="javascript:void(0);">상태</a></li>
+                                    <li class="status"><a class="dropdown-item" href="javascript:void(0);">처리중</a></li>
+                                    <li class="status"><a class="dropdown-item" href="javascript:void(0);">처리완료</a></li>
                                 </ul>
-                                <button type="button" class="btn btn-outline-primary dropdown-toggle float-end" data-bs-toggle="dropdown" style="margin-top:15px; margin-left:20px;" >카테고리 필터</button>
+                                <input type="hidden" id="type" name="type"/>
+                                <button type="button" id="ty" name="ty" class="btn btn-outline-primary dropdown-toggle float-end" data-bs-toggle="dropdown" style="margin-top:15px; margin-left:20px;" >
+                                <c:choose>
+												<c:when test="${ not empty param.type }">${ param.type }</c:when>
+												<c:when test="${ empty param.type }">신고사유</c:when>
+                                </c:choose>
+                                </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="javascript:void(0);">사기매물</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0);">욕설</a></li>
-                                    <li><a class="dropdown-item" href="javascript:void(0);">성희롱</a></li>
+                                    <li class="ty"><a class="dropdown-item" href="javascript:void(0);">신고사유</a></li>
+                                    <c:forEach var="data" items="${rList }">
+										<li class="ty"><a class="dropdown-item" href="javascript:void(0)"><c:out	value="${ data.rCategory }" /></a></li>
+								  </c:forEach>
                                 </ul>
-                                <a href="#" class="btn btn-primary float-end shadow-none" style="margin-top:15px; margin-left:10px">검색</a>
+                                <a href="javascript:void(0)" id="idSearch" class="btn btn-primary float-end shadow-none" style="margin-top:15px; margin-left:10px">검색</a>
                                 <input
                                         type="text"
+                                        id="rID"
+                                        name="rID"
                                         class="form-control shadow-none float-end"
-                                        placeholder="작성자_ID검색"
+                                        placeholder="신고자_ID검색"
                                         style="margin-top: 15px;width: 150px;"
                                 />
                             </div>
                         </div>
                    <!-- /Search -->
                     	<div class="table-responsive text-nowrap">
-        					<table class="table table-hover">
+        					<table id="tab" class="table table-hover">
        							<thead>
         						  <tr>
 				                   <th>원고_ID</th>
@@ -109,26 +248,6 @@
        							  </tr>
       						    </thead>
        						    <tbody class="table-border-bottom-0">
-       							 <tr>
-						          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>cok854</strong></td>
-						          <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>ked903</strong></td>
-						          <td>인신공격을 퍼부...</td>
-						          <td>욕설</td>
-						          <td>2022.04.03</td>
-						          <td>
-           							 <span class="badge bg-label-primary me-1">처리완료</span>
-          						  </td>
-       							 </tr>
-     			   				 <tr>	
-          						  <td><i class="fab fa-react fa-lg text-info me-3"></i> <strong>ked893</strong></td>
-          						  <td><i class="fab fa-react fa-lg text-info me-3"></i> <strong>cok894</strong></td>
-          						  <td>매매사기를 당한..</td>
-          						  <td>사기매매</td>
-						          <td>2022.04.01</td>
-						          <td>
-						            <span class="badge bg-label-info me-1">처리중</span>
-						          </td>
-        						 </tr>
      						    </tbody>
     					  </table>
    						</div>
@@ -136,8 +255,7 @@
    				<!-- /Report -->		
    						<h5 class="card-header">상세보기</h5>
   						<div class="card">
-     						<div class="card-body" >
-        						ddd
+     						<div id="output" class="card-body" >
       						</div>
     					</div>
     			 </div>

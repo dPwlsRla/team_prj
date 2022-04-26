@@ -1,5 +1,9 @@
+<%@page import="kr.co.sist.badasaja.vo.NoticeVO"%>
+<%@page import="java.util.List"%>
+<%@page import="kr.co.sist.badasaja.admin.dao.KyhNoticeDAO"%> 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
   <html
         lang="en"
         class="light-style layout-menu-fixed"
@@ -49,12 +53,83 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
+        <script	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script type="text/javascript">
+	$(function() {
+		
+		getSearchData()
+		
+		$("#keySearch").click(function(){
+			
+			getSearchData();
+			
+		}) // click 
+		
+		$("#writeKey").click(function(){
+			
+			var iKey = $("#iKey").val();
+			
+			$.ajax({
+				url:"http://localhost/bada_prj/badasaja_admin/jsp/prohibit_process.jsp",
+				data : { ikey : iKey},
+				type:"get",
+				error:function( xhr ){
+					alert( xhr.text + "/" + xhr.status);
+				},
+				success:function(){
+					alert("추가 되었습니다.")
+					getSearchData()
+				},
+				
+			})
+			
+		})
+		
+		
+	}) // ready
+	
+	function getSearchData(){
+		
+		$.ajax({
+			
+			url:"http://localhost/bada_prj/badasaja_admin/jsp/operation_process.jsp",
+			data : {
+				key : $("#key").val(),
+			},
+			type:"get",
+			dataType:"json",
+			error:function( xhr ){
+				alert( xhr.text + "/" + xhr.status);
+			},
+			success:function(jsonObj){
+			 	 $("#tab > tbody").empty();
+				if(jsonObj.resultData.length == 0){
+					$("#tab > tbody").append("<tr><td colspan='2'><strong>조회결과 없음</strong></td></tr>"  )					
+				}
+				$.each(jsonObj.resultData, function(i, jsonObj){
+					$("#tab > tbody").append("<tr><td>"+jsonObj.keyNum+"</td><td>"+jsonObj.keyword + "</td></tr>") 
+				})	
+			},
+			
+		})
+		
+	} //getSearchData
+	
+	
+	
+	</script>
  </head>
 
 
 
 <body>
+<%
+	KyhNoticeDAO knDAO = KyhNoticeDAO.getInstance();
 
+	List<NoticeVO> nList = knDAO.selectAllNotice();
+	
+	pageContext.setAttribute("nList", nList);
+%>
 <%@ include file="nav.jsp"%>
 
 <div class="layout-wrapper layout-content-navbar">
@@ -75,13 +150,6 @@
                    <!-- Search -->
                    <div class="navbar-nav mb-3">
                        <div class="nav-item d-inline">
-                           <a href="#" class="btn btn-primary float-end shadow-none" style="margin:15px;">검색</a>
-                           <input
-                                 type="text"
-                                 class="form-control shadow-none float-end"
-                                 placeholder="운영자 ID 검색"
-                                 style="margin-top: 15px; width: 150px;"
-                           />
                        </div>
                    </div>
                    <!-- /Search -->
@@ -96,35 +164,20 @@
                            </tr>
                            </thead>
                            <tbody class="table-border-bottom-0">
+                           <c:forEach var="data"  items="${nList }">
                            <tr>
-                              <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>1</strong></td>
-                              <td>UI 디자인이 상당수 바뀌었습니다. 확인바랍니다.</td>
-                              <td>cok893</td>
-                              <td>2022.04.18</td>
-                           </tr>  
-                           <tr>
-                              <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>2</strong></td>
-                              <td>UI 디자인이 상당수 바뀌었습니다. 확인바랍니다.</td>
-                              <td>cok893</td>
-                              <td>2022.04.18</td>
-                           </tr>  
-                           <tr>
-                              <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>3</strong></td>
-                              <td>UI 디자인이 상당수 바뀌었습니다. 확인바랍니다.</td>
-                              <td>cok893</td>
-                              <td>2022.04.18</td>
-                           </tr>  
-                           <tr>
-                              <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>4</strong></td>
-                              <td>UI 디자인이 상당수 바뀌었습니다. 확인바랍니다.</td>
-                              <td>cok893</td>
-                              <td>2022.04.18</td>
-                           </tr>  
+                           	<td><c:out value="${data.nNum }"/></td>
+                           	<td><c:out value="${data.oMain }"/></td>
+                           	<td><c:out value="${data.oID }"/></td>
+                           	<td><c:out value="${data.postedDate }"/></td>
+                           </tr>
+                           </c:forEach>
                            </tbody>
                       </table>
                   </div>
              </div>            
 	  	 </div>	
+	  	 </div>
 	  				
 		 <div class="container-xxl flex-grow-1 container-p-y">
             <!-- Basic Bootstrap Table -->
@@ -133,9 +186,11 @@
                    <!-- Search -->
                    <div class="navbar-nav mb-3">
                        <div class="nav-item d-inline">
-                           <a href="#" class="btn btn-primary float-end shadow-none" style="margin:15px;">검색</a>
+                           <a href="javascript:void(0)" id="keySearch" class="btn btn-primary float-end shadow-none" style="margin:15px;">검색</a>
                            <input
                                  type="text"
+                                 id="key"
+                                 name="key"
                                  class="form-control shadow-none float-end"
                                  placeholder="단어 검색"
                                  style="margin-top: 15px;width: 150px;"
@@ -144,7 +199,7 @@
                    </div>
                    <!-- /Search -->
                    <div class="table-responsive text-nowrap">
-                      <table class="table">
+                      <table id="tab" class="table">
                           <thead>
                           <tr>
                              <th>번호</th>
@@ -152,14 +207,6 @@
                            </tr>
                            </thead>
                            <tbody class="table-border-bottom-0">
-                           <tr>
-                              <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>1</strong></td>
-                              <td>담배</td>
-                           </tr>  
-                           <tr>
-                              <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>2</strong></td>
-                              <td>술</td>
-                           </tr>  
                            </tbody>
                       </table>
                   </div>
@@ -168,7 +215,7 @@
 
 			<form>
 			<div class="input-group mb-3">
-  				<input type="text" class="form-control" placeholder="게시글 작성 금지 키워드를 입력해주세요">
+  				<input type="text" id="iKey" name="iKey" class="form-control" placeholder="게시글 작성 금지 키워드를 입력해주세요">
   				<button class="btn btn-outline-secondary" type="button" id="writeKey">입력</button>
 			</div>
 			</form>
