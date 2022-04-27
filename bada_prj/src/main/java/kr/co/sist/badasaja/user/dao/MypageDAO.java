@@ -15,6 +15,7 @@ import javax.naming.NamingException;
 import kr.co.sist.badasaja.dbConnection.DbConnection;
 import kr.co.sist.badasaja.vo.CForumVO;
 import kr.co.sist.badasaja.vo.CuVO;
+import kr.co.sist.badasaja.vo.MyPostBoardVO;
 import kr.co.sist.util.cipher.DataDecrypt;
 import kr.co.sist.util.cipher.DataEncrypt;
 
@@ -154,4 +155,211 @@ public class MypageDAO {
 		}
 		
 	}
+	
+	/**
+	 * 내가 쓴 글 목록 조회하기 
+	 * 내가 쓴 글 : 내가 작성한 게시글 모아보기
+	 * 변수를 쉽게 받기 위해 MyPostBoardVO를 생성했음.
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
+	public List<MyPostBoardVO> selectMyForum(String id) throws SQLException, NamingException{
+		
+		List<MyPostBoardVO> mpbList = new ArrayList<MyPostBoardVO>();
+		
+		Connection con =null;
+		PreparedStatement pstmt=null;
+		ResultSet rs =null;
+		
+		DbConnection dc= DbConnection.getInstance();
+		
+		try {
+				con=dc.getConn();
+				StringBuilder myForum = new StringBuilder();	
+				//화면에서 조회 될 데이터 : 게시글 제목, 게시물 작성일, 거래 대상자 닉네임 
+				//입력 받을 데이터 : 사용자 아이디
+				
+				myForum
+				 .append(" select c.cf_num, c.c_id, t.c_id buyer_id, c.cf_topic, to_char(c.write_date, 'yyyy-mm-dd') write_date, c.main_img,")
+				 .append(" (select nickname from customer where c_id like t.c_id) nickname ")
+				 .append(" from c_forum c , transaction t ")
+				 .append(" where c.cf_num=t.cf_num and c.c_id like ? ")
+				 .append(" order by c.write_date desc ");
+				
+				
+				pstmt=con.prepareStatement(myForum.toString());
+				
+				pstmt.setString(1,id);
+				
+				rs=pstmt.executeQuery();
+				
+				MyPostBoardVO mpbVO = 	null;
+				while(rs.next()) {
+					mpbVO =new MyPostBoardVO();
+					
+					mpbVO.setCfNum(rs.getString("cf_num"));
+					mpbVO.setcID(rs.getString("c_id"));
+					mpbVO.setBuyerID(rs.getString("buyer_id"));
+					mpbVO.setCfTopic(rs.getString("cf_topic"));
+					mpbVO.setWriteDate(rs.getString("write_date"));
+					mpbVO.setMainImg(rs.getString("main_img"));
+					mpbVO.setNickname(rs.getString("nickname"));
+					
+					mpbList.add(mpbVO);
+				}//end while
+				
+			}finally {
+			dc.close(rs, pstmt, con);
+			}
+		
+		return mpbList;
+	}
+	
+	/**
+	 * 거래한글 조회 하기
+	 * 거래 한글 : 거래 약속이 성사되어 물물교환이 완료된 글 모아보기
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
+	public List<MyPostBoardVO> selectDoneForum(String id) throws SQLException, NamingException{
+		List<MyPostBoardVO> mpbList = new ArrayList<MyPostBoardVO>();
+		
+		Connection con =null;
+		PreparedStatement pstmt=null;
+		ResultSet rs =null;
+		
+		DbConnection dc= DbConnection.getInstance();
+		
+		try {
+			con=dc.getConn();
+			
+			StringBuilder doneForum = new StringBuilder();	
+			//화면에서 조회 될 데이터 : 게시글 제목, 게시물 작성일, 거래 대상자 닉네임 
+			//입력 받을 데이터 : 사용자 아이디
+			
+			doneForum
+			 .append(" select c.cf_num, c.c_id, t.c_id buyer_id, ")
+			 .append(" c.cf_topic, to_char(c.write_date, 'yyyy-mm-dd') write_date, c.main_img, c.cf_status, ")
+			 .append(" (select nickname from customer where c_id like t.c_id) nickname ")
+			 .append(" from c_forum c , transaction t ")
+			 .append(" where c.cf_num = t.cf_num ")
+			.append(" and c.c_id= ? and c.cf_status= '거래완료' ")
+			.append(" order by c.write_date desc ");
+			
+			pstmt=con.prepareStatement(doneForum.toString());
+			
+			// 세션 구현 후 주석 해제
+			//pstmt.setString(1,id);
+			
+			pstmt.setString(1, "test");
+			
+			rs=pstmt.executeQuery();
+			MyPostBoardVO mpbVO =null;
+			
+			while(rs.next()) {
+				
+				mpbVO = new MyPostBoardVO();
+				mpbVO.setCfNum(rs.getString("cf_num"));
+				mpbVO.setcID(rs.getString("c_id"));
+				mpbVO.setBuyerID(rs.getString("buyer_id"));
+				mpbVO.setCfTopic(rs.getString("cf_topic"));
+				mpbVO.setWriteDate(rs.getString("write_date"));
+				mpbVO.setMainImg(rs.getString("main_img"));
+				mpbVO.setCfStatus(rs.getString("cf_status"));
+				mpbVO.setNickname(rs.getString("nickname"));
+				
+				mpbList.add(mpbVO);
+				
+			}//end while
+			
+		}finally {
+		dc.close(rs, pstmt, con);
+		}
+	
+		return mpbList;
+	}//selectDoneForum
+	
+	public List<MyPostBoardVO> selectMyTransaction(String id) throws SQLException, NamingException{
+		List<MyPostBoardVO> mpbList = new ArrayList<MyPostBoardVO>();
+		
+		Connection con =null;
+		PreparedStatement pstmt=null;
+		ResultSet rs =null;
+		
+		DbConnection dc= DbConnection.getInstance();
+		
+		try {
+			con=dc.getConn();
+			
+			StringBuilder selectTrans = new StringBuilder();
+			
+			selectTrans
+			.append(" select cf_num, cf_topic, main_img, TO_CHAR(WRITE_DATE, 'YYYY-MM-DD') write_date ")
+			.append(" from c_forum ")
+			.append(" where c_id=? and cf_status='거래중'  ");
+			
+			pstmt=con.prepareStatement(selectTrans.toString());
+			
+			MyPostBoardVO mpbVO = 	null;
+			
+			pstmt.setString(1,id);
+			
+			rs=pstmt.executeQuery();
+			
+			while(rs.next()) {
+				mpbVO = new MyPostBoardVO();
+				mpbVO.setCfNum(rs.getString("cf_num"));
+				mpbVO.setCfTopic(rs.getString("cf_topic"));
+				mpbVO.setMainImg(rs.getString("main_img"));
+				mpbVO.setWriteDate(rs.getString("write_date"));
+				
+				mpbList.add(mpbVO);
+				
+			}//end while
+			
+		}finally {
+			dc.close(rs, pstmt, con);
+			
+		}//end finally
+		
+		return mpbList;
+	}//selectMyTransaction
+	
+	public List<MyPostBoardVO> updateMyTransaction(String cfNum) throws SQLException, NamingException{
+		List<MyPostBoardVO> mpbList = new ArrayList<MyPostBoardVO>();
+		MyPostBoardVO mpbVO = new MyPostBoardVO();
+		
+		Connection con =null;
+		PreparedStatement pstmt=null;
+		ResultSet rs =null;
+		
+		DbConnection dc= DbConnection.getInstance();
+		try {
+			con=dc.getConn();
+			
+			StringBuilder updateTrans = new StringBuilder();
+			
+			updateTrans
+			.append(" 	update c_forum			   ")
+			.append("  set cf_status ='거래완료' ")
+			.append("  where cf_num = ? ");
+			
+			pstmt=con.prepareStatement(updateTrans.toString());
+			
+			pstmt.setString(1,cfNum);
+			
+			rs=pstmt.executeQuery();
+				
+				mpbList.add(mpbVO);
+				
+			
+		}finally {
+			dc.close(rs, pstmt, con);
+			
+		}//end finally
+		return mpbList;
+	}//updateMyTransaction
 }
