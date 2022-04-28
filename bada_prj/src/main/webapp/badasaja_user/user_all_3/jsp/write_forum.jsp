@@ -237,9 +237,9 @@ function readURL2(input) {
     	
     <div class="container4">
     	<label id="trans_obj">교환물품</label>
-    	<input name="upHash1" type="text" placeholder="#내용입력" style="width: 100px; height: 30px;">
-    	<input name="upHash2" type="text" placeholder="#내용입력" style="width: 100px; height: 30px;">
-    	<input name="upHash3" type="text" placeholder="#내용입력" style="width: 100px; height: 30px;">
+    	#<input name="upHash1" type="text" placeholder="내용입력" style="width: 100px; height: 30px;">
+    	#<input name="upHash2" type="text" placeholder="내용입력" style="width: 100px; height: 30px;">
+    	#<input name="upHash3" type="text" placeholder="내용입력" style="width: 100px; height: 30px;">
     	<br/>
     	<input type="button" value="취소" style="background-color: #fada95; border: 0px; color:#ffffff; margin-top: 50px; margin-bottom: 50px">
     	<input id="btn_submit" type="button" value="작성 하기" style="background-color: #2a90ab; border: 0px; color:#ffffff; margin-top: 50px; margin-bottom: 50px">
@@ -287,14 +287,14 @@ function readURL2(input) {
     			return;
     		}
     		
-    		if($("#preview")[0].src == ""){
-    			alert("최소 한개의 이미지 파일은 필수입니다.");
-    		    return;
-    		}
+    		if( ($("#upImg1").val()=="") && ($("#upImg2").val()=="") && ($("#upImg3").val()=="") ){
+				alert("이미지 1개는 필수 입니다.");
+				$("#upImg1").focus();
+				return;
+			}
     		$('#write_forum_frm').submit();
     	})
     })
-    $function
     
     </script>
   </body>

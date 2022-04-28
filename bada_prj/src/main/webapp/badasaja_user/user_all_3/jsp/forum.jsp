@@ -315,8 +315,13 @@ $(function(){
      $("#oneComment").append(reply);
 	});//click
 	
+	
 	 
 });//ready 
+
+function goEditForum(){
+	$("#fFrm").submit();
+}
 
   </script>
   
@@ -325,8 +330,12 @@ $(function(){
  
   <%@include file="components/header.jsp"%>
   
+  <form action="edit_forum.jsp" id="fFrm" name="fFrm" method="post">
+	<input type="hidden" name="cfNum" value="<%=cfNum%>">
+</form>
+  
 	<div style="margin: 0px auto; width: 700px; text-align: right; ">
-	<c:if test = "${cVO.cID eq cId}"><input type="button" value="수정하기" class="editBtn"></c:if>
+	<c:if test = "${cVO.cID eq cId}"><a href="javascript:void(0);" onclick="goEditForum()"><input type="button" value="수정하기" class="editBtn"></a></c:if>
 	</div>
 									<!--container1: 제목 및 작성일시 div-->
     <div class="container1"  >

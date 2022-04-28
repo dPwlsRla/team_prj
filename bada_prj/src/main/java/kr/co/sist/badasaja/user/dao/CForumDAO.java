@@ -116,7 +116,6 @@ public class CForumDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		DbConnection dc= DbConnection.getInstance();
-		
 		try{
 			con = dc.getConn();
 			StringBuilder entireQuery = new StringBuilder();
@@ -133,14 +132,21 @@ public class CForumDAO {
 			float score = 0;
 
 			if(rs.next()) {
-				score += rs.getInt("one");
-				score += 2 * rs.getInt("two");
-				score += 3 * rs.getInt("three");
-				score += 4 * rs.getInt("four");
-				score += 5 * rs.getInt("five");
-				score = score / (rs.getInt("one") + rs.getInt("two") + rs.getInt("three") + rs.getInt("four") + rs.getInt("five")); 
-				cuVO.setScore(String.format("%.1f", score));
+				int total = rs.getInt("one") + rs.getInt("two") + rs.getInt("three") + rs.getInt("four") + rs.getInt("five");
+				if (total==0) {
+					cuVO.setScore("0");
+				}
+				else {
+					score += rs.getInt("one");
+					score += 2 * rs.getInt("two");
+					score += 3 * rs.getInt("three");
+					score += 4 * rs.getInt("four");
+					score += 5 * rs.getInt("five");
+					score = score / total; 
+					cuVO.setScore(String.format("%.1f", score));
+				}
 				cuVO.setNickName(rs.getString("nickname"));
+
 			}
 			
 			
