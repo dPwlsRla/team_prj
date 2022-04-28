@@ -269,7 +269,39 @@
  				color: #333;
  				width: 60px;
  				}
- 
+ #FReportDiv{
+ 				text-align: right; 
+ 				width:700px; 
+ 				margin: 0px auto;
+ 				}
+ 				
+ 	#FReportBtn{
+ 					 font-weight: bold;
+ 					  color: #333;"
+ 					 }
+ 	.profilePhoto{
+ 						width:50px; 
+ 						height:50px; 
+ 						position: relative;
+ 	
+ 					   }
+ 	#dropboxDiv{
+ 						  display :none;
+ 						  position: absolute;
+						  width: 225px;
+						  padding: 10px 0;
+						  background-color: #fff;
+						  font-size: 16px;
+						  border: 1px solid #dbdbdb;
+						  border-radius: 5px;
+						  font-size: 14px;
+ 					  }
+ 	.deleteBtn{
+ 					background-color: #ff6961;
+					border: 0px;
+				 	font-family: 'NanumSquareRoundB';
+				 	margin-bottom: 10px;
+ 					}
 						
   </style>
   <%
@@ -315,6 +347,45 @@ $(function(){
      $("#oneComment").append(reply);
 	});//click
 	
+	//게시물 신고 버튼을 눌렀을 때 모달 띄우기
+	$("#FReportBtn").click(function(e) {
+		e.preventDefault();
+		$('#testModal8').modal("show");
+		
+		$('#sendBtn').click(function(e) {
+			$('#testModal8').modal("hide");	
+		//전송 버튼을 눌렀을 때 데이터 보내기
+		
+		})//sendBtnclick
+		
+		$("#cancelBtn").click(function(e){
+			$('#testModal8').modal("hide");	
+		})//cancelBtn
+		
+		$(".close").click(function(e) {
+			$('#testModal8').modal("hide");	
+		});//closeClick
+		
+	});//click
+	
+	//게시글 삭제버튼을 눌렀을 때 모달 띄우기
+	$(".deleteBtn").click(function(e) {
+		e.preventDefault();
+		$('#testModal7').modal("show");
+		
+		//게시글 삭제확인
+		$("#search").click(function(e) {
+			$("#testModal7").modal("hide");
+		});
+		//게시글 삭제 취소
+		$("#cancel").click(function() {
+			$("#testModal7").modal("hide");
+		});
+	})//deleteBtnClick
+	
+	$(".close").click(function(e) {
+		$('#testModal7').modal("hide");	
+	});//closeClick
 	
 	 
 });//ready 
@@ -336,6 +407,7 @@ function goEditForum(){
   
 	<div style="margin: 0px auto; width: 700px; text-align: right; ">
 	<c:if test = "${cVO.cID eq cId}"><a href="javascript:void(0);" onclick="goEditForum()"><input type="button" value="수정하기" class="editBtn"></a></c:if>
+	<a href="javascript:void(0);" onclick=""><button id="testBtn7" class="deleteBtn">삭제 하기</button></a>
 	</div>
 									<!--container1: 제목 및 작성일시 div-->
     <div class="container1"  >
@@ -382,7 +454,7 @@ function goEditForum(){
     <div class="container3" style="width: 700px;height: 40px;margin-bottom: 20px">
 	    <table  style="width: 700px; height: 100%">
 	    	<tr>
-	    		<td ><img src="" style="width:50px; height:50px" onerror="this.src='../images/user.png'"></td>
+	    		<td ><img class="profilePhoto"src="" onerror="this.src='../images/user.png'"></td>
 	    		<td style="padding-left: 10px"><span id="nickname">닉네임: ${cuVO.nickName}<br/> 거래만족도: ${cuVO.score}</span></td>
 	    		<!-- for(HashTagVO hashTagVO : hashTagList){
 	    				System.out.println(hashTagVO.getHash());
@@ -396,6 +468,31 @@ function goEditForum(){
 	    	</tr>
     </table>
     </div>
+    		
+   										<!--게시물 삭제하기 모달-->
+  
+  <div class="modal fade" id="testModal7" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">회원 탈퇴</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      확인 버튼을 누르면 게시글이 영구적으로 삭제 됩니다.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel">취소</button>
+        <button type="button" class="btn btn-primary" id="search">확인</button>
+      </div>
+    </div>
+  </div>
+</div>
+    					
+    		
+    
     
     									<!--게시글 전문~댓글포함 div-->	
     	<div id="container4">
@@ -404,6 +501,47 @@ function goEditForum(){
     	${cVO.cfMain}
     	</div>
     	
+    	<!--게시글 신고하기 버튼 -->
+    	<div id="FReportDiv"><label id="FReportBtn" >🚨 게시글 신고</label></div>
+    	
+    	<!--게시글 신고하기 modal -->
+    	<div class="modal fade" id="testModal8" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">게시글 신고</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">
+				 <span style="float: left;">게시글 신고</span>
+            </label>
+             
+             <select name="language" style=" float: right; margin-bottom: 1px;">
+				    <option value="none">사유선택</option>
+				    <option value="korean" >부적합 사진</option>
+				    <option value="english">사기 매매</option>
+				    <option value="chinese">광고</option>
+			</select>
+            <input type="text" class="form-control" id="recipient-name" placeholder="제목">
+          </div>
+          <div class="form-group">
+          <label for="recipient-name" class="col-form-label"> </label>
+            <textarea class="form-control" style="height: 300px;" id="message-text" placeholder="신고 내용을 입력해주세요"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button id="cancelBtn" type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
+        <button id="sendBtn" type="button" class="btn btn-primary">SEND</button>
+      </div>
+    </div>
+  </div>
+</div>
     	<!--댓글 div-->
     	<div id= "commentDiv">
     	<div style=" font-family: 'NanumSquareRoundB'; font-size: 20px; margin-bottom: 20px; border-bottom: 1px solid #dfdfdf;">댓글</div>
