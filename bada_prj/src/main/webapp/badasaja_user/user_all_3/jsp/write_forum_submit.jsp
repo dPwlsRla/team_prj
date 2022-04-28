@@ -1,6 +1,5 @@
 
-
-<%@page import="kr.co.sist.badasaja.user.dao.WriteForumDAO"%>
+<%@page import="kr.co.sist.badasaja.user.dao.WriteCForumDAO"%>
 <%@page import="kr.co.sist.badasaja.vo.HashTagVO"%>
 <%@page import="kr.co.sist.badasaja.vo.CImgVO"%>
 <%@page import="kr.co.sist.badasaja.vo.CForumVO"%>
@@ -12,6 +11,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
+
+
 // TODO
 File saveDirectory=new File("D:/dev/workspace_new/team_prj/team_prj/bada_prj/src/main/webapp/badasaja_user/user_all_3/images/c_img");
 int fileSize=1024*1024*10;
@@ -23,26 +24,43 @@ String fileSystemName2=mr.getFilesystemName("upImg2");
 String fileSystemName3=mr.getFilesystemName("upImg3");
 
 CForumVO cForumVO = new CForumVO();
-CImgVO[] cimgArr = new CImgVO[3]; 
 HashTagVO[] htArr = new HashTagVO[3];
 
-cimgArr[0] = new CImgVO("",mr.getFilesystemName("upImg1"));
-cimgArr[1] = new CImgVO("",mr.getFilesystemName("upImg2"));
-cimgArr[2] = new CImgVO("",mr.getFilesystemName("upImg3"));
+String[] imgArr = {fileSystemName1, fileSystemName2, fileSystemName3};
+
+int cnt = 0;
+for(int i = 0; i < imgArr.length; i++){
+	if(imgArr[i] != null){
+	imgArr[cnt] = imgArr[i];	
+	cnt++;					
+	}
+}
 
 htArr[0] = new HashTagVO("#" + mr.getParameter("upHash1"),"");
 htArr[1] = new HashTagVO("#" + mr.getParameter("upHash2"),"");
 htArr[2] = new HashTagVO("#" + mr.getParameter("upHash3"),"");
 
+CImgVO cimgVO = new CImgVO(); 
 cForumVO.setCfTopic(mr.getParameter("board_title"));
 cForumVO.setCfMain(mr.getParameter("board_content"));
 cForumVO.setCfStatus("거래중");
 cForumVO.setcID((String)session.getAttribute("cId"));
-cForumVO.setMainImg(mr.getFilesystemName("upImg1"));
 cForumVO.setpCode(mr.getParameter("category_select")); 
+cForumVO.setMainImg(imgArr[0]);
 
-// 금칙어 + 이미지 하나만 올라가도 동작하게 +
-WriteForumDAO wDAO = new WriteForumDAO();
-boolean flag = wDAO.insertForum(cForumVO,cimgArr,htArr); // 금칙어 혹시 되면 나중에 쓸라고 만듦
-	response.sendRedirect("trade.jsp");
+WriteCForumDAO wDAO = WriteCForumDAO.getInstance();
+wDAO.insertForum(cForumVO,htArr);
+String imgs = "";
+if( cnt >= 1){
+	if(cnt == 1){
+		imgs = imgArr[0];
+	}else if(cnt == 2){
+		imgs = imgArr[0] + "," + imgArr[1];		
+	} else if( cnt == 3){
+	  	imgs = imgArr[0] + "," + imgArr[1] +"," + imgArr[2];
+	}
+	wDAO.inserFImg(imgs);
+}
+	
+response.sendRedirect("trade.jsp");
 %>

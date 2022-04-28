@@ -1,5 +1,14 @@
+<%@page import="kr.co.sist.badasaja.vo.CuVO"%>
+<%@page import="kr.co.sist.badasaja.vo.HashTagVO"%>
+<%@page import="kr.co.sist.badasaja.vo.CImgVO"%>
+<%@page import="java.util.List"%>
+<%@page import="kr.co.sist.badasaja.vo.CForumVO"%>
+<%@page import="kr.co.sist.badasaja.user.dao.CForumDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+    
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -146,40 +155,30 @@
 	  			padding-top: 30px;"
 	  			}
   </style>
+  <%
+  	CForumDAO cDAO = new CForumDAO();
+  	String cfNum = request.getParameter("cfNum");
+  	CForumVO cVO = cDAO.getCForumVO(cfNum);
+  	List<CImgVO> cImgList = cDAO.getCImgVOList(cfNum);
+  	List<HashTagVO> hashTagList = cDAO.getHashTagVOList(cfNum);
+  	CuVO cuVO = cDAO.getCuVO(cfNum);
+  	
+	pageContext.setAttribute("cVO", cVO);
+	pageContext.setAttribute("cuVO", cuVO);
+
+	int i = 1;
+	for (CImgVO cIVO : cImgList){
+		pageContext.setAttribute("cImg"+ i,cIVO); // cImg1 : 첫번째 원소, cImg2 : 두번쨰 원소...
+		i++;
+	}
+	pageContext.setAttribute("hashTagList", hashTagList);
+	pageContext.setAttribute("cId",session.getAttribute("cId"));
+	pageContext.setAttribute("cfNum", cfNum);
+
+	
+
+  %>
   <script type="text/javascript">
-function readURL(input) {
-	  if (input.files && input.files[0]) {
-	    var reader = new FileReader();
-	    reader.onload = function(e) {
-	      document.getElementById('preview').src = e.target.result;
-	    };
-	    reader.readAsDataURL(input.files[0]);
-	  } else {
-	    document.getElementById('preview').src = "";
-	  }
-	}
-function readURL1(input) {
-	  if (input.files && input.files[0]) {
-	    var reader = new FileReader();
-	    reader.onload = function(e) {
-	      document.getElementById('preview1').src = e.target.result;
-	    };
-	    reader.readAsDataURL(input.files[0]);
-	  } else {
-	    document.getElementById('preview1').src = "";
-	  }
-	}
-function readURL2(input) {
-	  if (input.files && input.files[0]) {
-	    var reader = new FileReader();
-	    reader.onload = function(e) {
-	      document.getElementById('preview2').src = e.target.result;
-	    };
-	    reader.readAsDataURL(input.files[0]);
-	  } else {
-	    document.getElementById('preview2').src = "";
-	  }
-	}
 
 function name() {
 	$("[name='frm']").submit();
@@ -191,51 +190,40 @@ function name() {
   <%@include file="components/header.jsp"%>
 
  
-	<form action="edit_fourm2.jsp" method="post" name="frm">
+	<form action="edit_forum_submit.jsp" id="edit_forum_frm" method="post" accept-charset="utf-8" enctype="application/x-www-form-urlencoded">
+   	<input type="hidden" name="cfNum" value="${cfNum}">
+    
     <div class="container1" style="margin-top: 5px;">
     	<span id="title">게시글 수정</span>
     </div>
     <div class="container2">
-    	<input type="text" placeholder="제목을 입력해주세요" id="topic" name="topic"style="width: 500px; border: 1px solid #dfdfdf;">
-    	<select style="width:200px; border: 1px solid #dfdfdf; height: 30px;" id="category" name="category">
-    	<option>카테고리</option>
-    	<option>전자기기</option>
-    	<option>생활용품</option>
-    	<option>식품</option>
-    	<option>반려동물용품</option>
-    	<option>뷰티,미용</option>
-    	<option>인테리어,가구</option>
-    	<option>악기</option>
-    	<option>기타물품</option>
+    	<input type="text" id="board_title" name="board_title" value="${cVO.cfTopic}" style="width: 500px; border: 1px solid #dfdfdf;">
+    	<select style="width:200px; border: 1px solid #dfdfdf; height: 30px;" id="category_select" name="category_select" >
+    	<option value="category"<c:if test="${cVO.pCode == 'category'}">selected</c:if>>카테고리</option>
+    	<option value="el"<c:if test="${cVO.pCode == 'el'}">selected</c:if>>전자기기</option>
+    	<option value="ho"<c:if test="${cVO.pCode == 'ho'}">selected</c:if>>생활용품</option>
+    	<option value="fo"<c:if test="${cVO.pCode == 'fo'}">selected</c:if>>식품</option>
+    	<option value="pe"<c:if test="${cVO.pCode == 'pe'}">selected</c:if>>반려동물용품</option>
+    	<option value="be"<c:if test="${cVO.pCode == 'be'}">selected</c:if>>뷰티,미용</option>
+    	<option value="fu"<c:if test="${cVO.pCode == 'fu'}">selected</c:if>>인테리어,가구</option>
+    	<option value="in"<c:if test="${cVO.pCode == 'in'}">selected</c:if>>악기</option>
+    	<option value="cl"<c:if test="${cVO.pCode == 'cl'}">selected</c:if>>의류</option>
+    	<option value="wr"<c:if test="${cVO.pCode == 'wr'}">selected</c:if>>학용품</option>
     	</select>
     </div>
     <div class="container3">
-    	<textarea placeholder="내용을 입력해주세요"  id="main" name="name"style="border: 1px solid #dfdfdf; width:700px; height:500px; margin-top: 10px;"></textarea>
+    	<textarea id="board_content" name="board_content"style="border: 1px solid #dfdfdf; width:700px; height:500px; margin-top: 10px;">${cVO.cfMain}</textarea>
     </div>
-    <div class="container1" >
-    	<p><span id="span2">바다 사자 </span>물물 교환은 <span id="span3">&nbsp;사진</span>&nbsp;이 필수입니다.</p>
-    </div>
-    	<table style="margin:0px auto; text-align: center;">
-    	<tr>
-		<td><img id="preview" />
-		<br /><br/>
-    	<input type="file" onchange="readURL(this);" class="btnAttach"></td>
-    	<td><img id="preview1" />
-		<br /><br />
-    	<input type="file" onchange="readURL1(this);" class="btnAttach"></td>
-    	<td><img id="preview2" />
-		<br /><br />
-    	<input type="file" onchange="readURL2(this);" class="btnAttach"></td>
-    	</tr>
-    	</table>
+    	
     	
     <div class="container4">
     	<label id="trans_obj">교환물품</label>
-    	<input type="text" id="hash1" name="hash1" placeholder="#내용입력" style="width: 100px; height: 30px;">
-    	<input type="text" id="hash2" name="hash2" placeholder="#내용입력" style="width: 100px; height: 30px;">
-    	<input type="text" id="hash3" name="hash3" placeholder="#내용입력" style="width: 100px; height: 30px;">
+    	<input type="text" id="upHash1" name="upHash1" value="${fn:substring(hVO.hash,1,30)}" style="width: 100px; height: 30px;">
+    	<input type="text" id="upHash2" name="upHash2" value="${fn:substring(hVO.hash,1,30)}" style="width: 100px; height: 30px;">
+    	<input type="text" id="upHash3" name="upHash3" value="${fn:substring(hVO.hash,1,30)}" style="width: 100px; height: 30px;">
     	<br/>
-    	<input type="button" value="수정 완료"  style="background-color: #2a90ab; border: 0px; color:#ffffff; margin-top: 50px; margin-bottom: 50px">
+    	<input type="button" value="취소"  style="background-color: #fada95; border: 0px; color:#ffffff; margin-top: 50px; margin-bottom: 50px">
+    	<input type="button" id="btn_submit" value="수정 완료"  style="background-color: #2a90ab; border: 0px; color:#ffffff; margin-top: 50px; margin-bottom: 50px">
     </div>
     <div id="cautions">
     <br/>
@@ -265,6 +253,24 @@ function name() {
   <script src="../js/aos.js"></script>
 
   <script src="../js/main.js"></script>
+  <script type="text/javascript">
+    $(function(){
+    	$('#btn_submit').click(function(e){
+    		e.preventDefault();
+    		if($("#board_title").val()==''||$("#board_content").val()==''){
+    			alert("제목과 내용을 입력해주세요.");
+    			return;
+    		}
+    		if($("#category_select").val() =="category"){
+    			alert("카테고리를 선택해주세요."); 
+    			return;
+    		}
+    		
+    		$('#edit_forum_frm').submit();
+    	})
+    })
+    
+    </script>
     
   </body>
 </html>
