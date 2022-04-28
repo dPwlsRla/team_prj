@@ -5,8 +5,9 @@
   Time: 9:31 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@page import="kr.co.sist.badasaja.vo.CForumVO"%>
 <%@page import="kr.co.sist.badasaja.vo.MyPostBoardVO"%>
+<%@page import="kr.co.sist.badasaja.vo.CForumVO"%>
+
 <%@page import="kr.co.sist.badasaja.user.dao.MypageDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>

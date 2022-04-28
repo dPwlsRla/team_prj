@@ -49,4 +49,9 @@ public class WishListVO {
 		this.wishStatus = wishStatus;
 	}
 
+	@Override
+	public String toString() {
+		return "WishListVO [cfNum=" + cfNum + ", cID=" + cID + ", wishDate=" + wishDate + ", wishStatus=" + wishStatus
+				+ "]";
+	}
 }

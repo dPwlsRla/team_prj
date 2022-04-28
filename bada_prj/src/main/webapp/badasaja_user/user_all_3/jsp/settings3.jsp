@@ -64,8 +64,17 @@ if("ok".equals(hid)){
 	MypageDAO uDAO2 = new MypageDAO();
 	uDAO2.updateCustomer(cuVO3);  
 	
-	out.println("<script>location.href='index.jsp'</script>"); 
+	out.println("<script>location.href='settings_password.jsp'</script>"); 
 	
 }//end if
+if("del".equals(hid)){
+	String id= request.getParameter("id");
+	out.print(id);
+	MypageDAO uDAO3 = new MypageDAO();
+	uDAO3.updateCStatus(id);
+	session.removeAttribute("cId");
+	out.println("<script>alert('회원이 탈퇴되셨습니다.\n 바다사자를 이용해주셔서 감사합니다.')</script>");
+	out.println("<script>location.href='index.jsp'</script>");
+}
 %>
 

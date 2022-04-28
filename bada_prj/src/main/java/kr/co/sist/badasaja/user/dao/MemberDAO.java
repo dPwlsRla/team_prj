@@ -18,7 +18,6 @@ import kr.co.sist.util.cipher.DataEncrypt;
 
 
 
-
 /**
  * @author user
  *info="수정"
@@ -39,7 +38,7 @@ public class MemberDAO {
 
 			StringBuilder login = new StringBuilder();  
 			
-			login.append("select c_id,c_pass from customer where c_id= ? and c_pass= ?");
+			login.append("select c_id,c_pass from customer where c_id= ? and c_pass= ? and C_STATUS= 'no' ");
 			pstmt=con.prepareStatement(login.toString());
 			 
 			DataEncrypt de = new DataEncrypt("abcefghijklmn1234");//키가 안맞아서 에러 났어요

@@ -1,0 +1,11 @@
+package kr.co.sist.badasaja.user.dao;
+
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
+
+public class SMTPAuthenticatior extends Authenticator {
+	@Override
+	protected PasswordAuthentication getPasswordAuthentication() {
+		return new PasswordAuthentication("panosun@naver.com", "wife1125!@#$");
+	}
+}

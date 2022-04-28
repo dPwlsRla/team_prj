@@ -160,12 +160,12 @@
         </button>
       </div>
       <div class="modal-body">
-      <input type="checkbox" value="exit">
+      <input type="checkbox" value="exit" id="check">
       탈퇴 확인 버튼을 누르시면 회원 복구가 불가능합니다.
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close">취소</button>
-        <button type="button" class="btn btn-primary" id="search">탈퇴 확인</button>
+        <button type="button" class="btn btn-primary" id="del">탈퇴 확인</button>
       </div>
     </div>
   </div>
@@ -191,7 +191,7 @@ let password ="";
 let nick ="";
 let flag = true;
  $(function () {
-		  /* 게시글 작성 완료  */
+		  /* 회원 탈퇴  */
 		  $('#exit').click(function(e){
 				e.preventDefault();
 				$('#exit_modal').modal("show");
@@ -200,7 +200,16 @@ let flag = true;
 				e.preventDefault();
 				$('#exit_modal').modal("hide");
 			});
-		  
+		  $('#del').click(function(e){
+			  if(!$("#check").is(":checked")){
+				  alert("탈퇴하실꺼면 체크주세요")
+				  return false;
+			  }
+			  $('#exit_modal').modal("hide");
+			  $("#hid").val("del");
+			  $("#frm").submit()
+			  
+		  });
 		  $("#id").keyup(function () {
 			if($("#id").val()==""){
 				$("#red1").html("id를 입력해주세요 ")

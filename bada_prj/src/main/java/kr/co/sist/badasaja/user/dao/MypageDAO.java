@@ -13,8 +13,9 @@ import java.util.List;
 import javax.naming.NamingException;
 
 import kr.co.sist.badasaja.dbConnection.DbConnection;
-import kr.co.sist.badasaja.vo.CForumVO;
 import kr.co.sist.badasaja.vo.CuVO;
+import kr.co.sist.badasaja.vo.EntireForumVO;
+import kr.co.sist.badasaja.vo.HashTagVO;
 import kr.co.sist.badasaja.vo.MyPostBoardVO;
 import kr.co.sist.util.cipher.DataDecrypt;
 import kr.co.sist.util.cipher.DataEncrypt;
@@ -109,7 +110,6 @@ public class MypageDAO {
 	public void updateCustomer(CuVO cuVO) throws SQLException, NamingException, NoSuchAlgorithmException, UnsupportedEncodingException, GeneralSecurityException{
 		Connection con =null;
 		PreparedStatement pstmt=null;
-		ResultSet rs =null;
 		DbConnection dc= DbConnection.getInstance();
 		
 		try {
@@ -362,4 +362,155 @@ public class MypageDAO {
 		}//end finally
 		return mpbList;
 	}//updateMyTransaction
+	
+	public void updateCStatus(String id) throws SQLException, NamingException, NoSuchAlgorithmException, UnsupportedEncodingException, GeneralSecurityException{
+		Connection con =null;
+		PreparedStatement pstmt=null;
+		ResultSet rs =null;
+		DbConnection dc= DbConnection.getInstance();
+		
+		try {
+			con=dc.getConn();
+			StringBuilder updateQuery = new StringBuilder(); 
+			
+			
+			updateQuery
+			.append("	update CUSTOMER ")
+			.append(" set C_STATUS= 'se' ")
+			.append(" where c_id=?");
+			
+			pstmt=con.prepareStatement(updateQuery.toString());
+			pstmt.setString(1, id);
+		
+			pstmt.executeUpdate();
+		//5. 쿼리수행 후 결과 얻기
+		}finally {
+		//6. 연결끊기
+			dc.close(null, pstmt, con);
+		}
+		
+	}
+	
+
+	public List<EntireForumVO> selectWishList(String cId ,int count) throws SQLException, NamingException{
+		
+		List<EntireForumVO> eVOList = new ArrayList<EntireForumVO>();
+		int rowNum1=1;
+		int rowNum2=9;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
+		PreparedStatement pstmt3 = null;
+		rowNum1=rowNum1*count;
+		rowNum2=rowNum2*count;
+		ResultSet rs = null;
+		ResultSet rs2 = null;
+		ResultSet rs3 = null;
+		
+		DbConnection dc= DbConnection.getInstance();
+		
+		try{
+			con = dc.getConn();
+			
+			
+			StringBuilder entireQuery = new StringBuilder();
+			entireQuery.append(" SELECT rownum , w.CF_NUM, c.CF_TOPIC, c.MAIN_IMG,c.c_id ")
+			.append( " FROM C_FORUM c, WISH_LIST w")
+			.append(" where (c.CF_NUM = w.CF_NUM) and c.c_id=? and rownum between ? and ?");
+			//.append(" where (c.CF_NUM = w.CF_NUM) and c.c_id=? ");
+			// 1, 2, 3, 4, ... 
+			pstmt=con.prepareStatement(entireQuery.toString());
+			pstmt.setString(1, cId);
+			pstmt.setInt(2, rowNum1);
+			pstmt.setInt(3, rowNum2);
+			rs = pstmt.executeQuery();
+			
+			StringBuilder hashQuery = new StringBuilder();
+			hashQuery.append(" SELECT w.CF_NUM, H.HASH ")
+			.append(" FROM HASHTAG H,WISH_LIST w ")
+			.append("  WHERE (w.CF_NUM = h.CF_NUM) and w.CF_NUM = ? ");
+				
+
+			while(rs.next()) {
+				
+				EntireForumVO efVO = new EntireForumVO();
+				List<HashTagVO> hashList = new ArrayList<HashTagVO>();
+				
+				efVO.setTitle(rs.getString("cf_topic"));
+				efVO.setCfNum(rs.getString("cf_num"));
+				efVO.setImg(rs.getString("main_img"));
+				
+				pstmt2=con.prepareStatement(hashQuery.toString());
+				pstmt2.setString(1, efVO.getCfNum());
+				rs2 = pstmt2.executeQuery();
+				
+				while(rs2.next()) {
+					HashTagVO hsVO = new HashTagVO();
+					hsVO.setCfNum(rs2.getString("cf_num"));
+					hsVO.setHash(rs2.getString("hash"));
+					hashList.add(hsVO);
+				}
+				
+				efVO.setList(hashList);
+				
+				StringBuilder hashQuery2 = new StringBuilder();
+				hashQuery2.append("SELECT CF_NUM FROM WISH_LIST WHERE CF_NUM = ? AND C_ID = ?");
+				pstmt3 = con.prepareStatement(hashQuery2.toString());
+				pstmt3.setString(1, efVO.getCfNum());
+				pstmt3.setString(2, cId);
+				rs3 = pstmt3.executeQuery();
+				if(rs3.next()) {
+					efVO.setIsWish(true);
+				}
+				else {
+					efVO.setIsWish(false);
+				}
+				
+				eVOList.add(efVO);
+			}
+			
+		}finally {
+			dc.close(rs, pstmt, con);
+			dc.close(rs2, pstmt2, con);
+			dc.close(rs3, pstmt3, con);
+
+		}//end finally
+
+		return eVOList ;
+		
+	}//selectEntireForum
+	
+
+	public int selectRowNum(String cId) throws SQLException, NamingException, NoSuchAlgorithmException, UnsupportedEncodingException, GeneralSecurityException{
+		int rownum=0;
+		Connection con =null;
+		PreparedStatement pstmt=null;
+		ResultSet rs =null;
+		
+		DbConnection dc= DbConnection.getInstance();
+		try {
+		//1. 드라이버 로딩
+		//2. 커넥션 얻기
+			con=dc.getConn();
+
+			StringBuilder entireQuery = new StringBuilder();
+			entireQuery.append(" SELECT rownum , w.CF_NUM, c.CF_TOPIC, c.MAIN_IMG,c.c_id ")
+			.append( " FROM C_FORUM c, WISH_LIST w")
+			.append(" where (c.CF_NUM = w.CF_NUM) and c.c_id=?");
+			//.append(" where (c.CF_NUM = w.CF_NUM) and c.c_id=? ");
+			// 1, 2, 3, 4, ... 
+			pstmt=con.prepareStatement(entireQuery.toString());
+			pstmt.setString(1, cId);
+
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				rownum=rs.getInt("rownum");
+				}
+		}finally {
+		//6. 연결 끊기
+		dc.close(rs, pstmt, con);
+		}
+		return rownum;
+	}//row반환
 }
