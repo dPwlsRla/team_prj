@@ -38,7 +38,6 @@
 
 function updateStatus(cfNum){
 	alert("거래 완료로 설정하시겠습니까?");
-	console.log(cfNum);
 	$.ajax({
 		type: "POST",
 		url: "mypageProcess.jsp",
@@ -75,7 +74,7 @@ function updateStatus(cfNum){
 	mpbList2 = mpDAO.selectDoneForum((String)session.getAttribute("cId"));
 	mpbList3 = mpDAO.selectMyTransaction((String)session.getAttribute("cId"));
 	
-	//리스트에 속성부여
+	//저장
 	pageContext.setAttribute("mpbList", mpbList);
 	pageContext.setAttribute("mpbList2", mpbList2);
 	pageContext.setAttribute("mpbList3", mpbList3 );

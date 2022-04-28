@@ -183,15 +183,19 @@ public class MypageDAO {
 				myForum
 				 .append(" select c.cf_num, c.c_id, t.c_id buyer_id, c.cf_topic, to_char(c.write_date, 'yyyy-mm-dd') write_date, c.main_img,")
 				 .append(" (select nickname from customer where c_id like t.c_id) nickname ")
-				 .append(" from c_forum c , transaction t ")
-				 .append(" where c.cf_num=t.cf_num and c.c_id like ? ")
+				 .append(" from c_forum c ")
+				 .append(" left outer join transaction t ")
+				 .append(" on c.cf_num=t.cf_num ")
+				 .append(" where c.c_id = ? ")
 				 .append(" order by c.write_date desc ");
 				
 				
 				pstmt=con.prepareStatement(myForum.toString());
 				
-				pstmt.setString(1,id);
+				//技记 备泅 饶 林籍秦力
+				//pstmt.setString(1,id);
 				
+				pstmt.setString(1, "test");
 				rs=pstmt.executeQuery();
 				
 				MyPostBoardVO mpbVO = 	null;
@@ -251,10 +255,10 @@ public class MypageDAO {
 			
 			pstmt=con.prepareStatement(doneForum.toString());
 			
-			// 技记 备泅 饶 林籍 秦力
-			//pstmt.setString(1,id);
+			//技记 备泅 饶 林籍 秦力
+			pstmt.setString(1,id);
 			
-			pstmt.setString(1, "test");
+			//pstmt.setString(1, "test");
 			
 			rs=pstmt.executeQuery();
 			MyPostBoardVO mpbVO =null;
