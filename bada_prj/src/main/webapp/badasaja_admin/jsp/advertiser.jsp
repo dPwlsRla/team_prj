@@ -159,7 +159,7 @@
                        </form> 
                         <!-- /Search -->
                         <div class="table-responsive text-nowrap">
-                            <table class="table">
+                            <table class="table table-hover">
                                 <thead>
                                 <tr>
                                     <th>광고주_ID</th>

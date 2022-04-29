@@ -83,7 +83,7 @@ public class AdminReportDAO {
 				query.append("  	select cfr_num, cf_num, c_id, r_category , cfr_main, cfr_status, ").append(
 						"   to_char(cfr_date, 'yyyy-mm-dd') cfr_date, to_char(cfr_report, 'yyyy-mm-dd') cfr_report")
 						.append("           from f_report fr").append("           inner join report r")
-						.append("           on fr.r_code = r.r_code ").append("           where c_id like ?");
+						.append("           on fr.r_code = r.r_code ").append("           where c_id like ? order by cfr_num");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -95,7 +95,7 @@ public class AdminReportDAO {
 				query.append("  	select cfr_num, cf_num, c_id, r_category , cfr_main, cfr_status, ").append(
 						"   to_char(cfr_date, 'yyyy-mm-dd') cfr_date, to_char(cfr_report, 'yyyy-mm-dd') cfr_report")
 						.append("           from f_report fr").append("           inner join report r")
-						.append("           on fr.r_code = r.r_code ").append("           where r_category = ?");
+						.append("           on fr.r_code = r.r_code ").append("           where r_category = ? order by cfr_num");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -107,7 +107,7 @@ public class AdminReportDAO {
 				query.append("  	select cfr_num, cf_num, c_id, r_category , cfr_main, cfr_status, ").append(
 						"   to_char(cfr_date, 'yyyy-mm-dd') cfr_date, to_char(cfr_report, 'yyyy-mm-dd') cfr_report")
 						.append("           from f_report fr").append("           inner join report r")
-						.append("           on fr.r_code = r.r_code ").append("           where cfr_status = ?");
+						.append("           on fr.r_code = r.r_code ").append("           where cfr_status = ? order by cfr_num");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -120,7 +120,7 @@ public class AdminReportDAO {
 						"   to_char(cfr_date, 'yyyy-mm-dd') cfr_date, to_char(cfr_report, 'yyyy-mm-dd') cfr_report")
 						.append("           from f_report fr").append("           inner join report r")
 						.append("           on fr.r_code = r.r_code ")
-						.append("           where c_id like ? and r_category = ?");
+						.append("           where c_id like ? and r_category = ? order by cfr_num");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -134,7 +134,7 @@ public class AdminReportDAO {
 						"   to_char(cfr_date, 'yyyy-mm-dd') cfr_date, to_char(cfr_report, 'yyyy-mm-dd') cfr_report")
 						.append("           from f_report fr").append("           inner join report r")
 						.append("           on fr.r_code = r.r_code ")
-						.append("           where c_id like ? and cfr_status = ?");
+						.append("           where c_id like ? and cfr_status = ? order by cfr_num");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -148,7 +148,7 @@ public class AdminReportDAO {
 						"   to_char(cfr_date, 'yyyy-mm-dd') cfr_date, to_char(cfr_report, 'yyyy-mm-dd') cfr_report")
 						.append("           from f_report fr").append("           inner join report r")
 						.append("           on fr.r_code = r.r_code ")
-						.append("           where r_category = ? and cfr_status = ?");
+						.append("           where r_category = ? and cfr_status = ? order by cfr_num");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -162,7 +162,7 @@ public class AdminReportDAO {
 						.append("           cr_status, to_char(cr_date, 'yyyy-mm-dd') cr_date")
 						.append("           from c_report cr").append("           inner join report r")
 						.append("           on cr.r_code = r.r_code ")
-						.append("           where report_id like ? and r_category = ? and cr_Status = ?");
+						.append("           where report_id like ? and r_category = ? and cr_Status = ? order by cfr_num");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -175,7 +175,7 @@ public class AdminReportDAO {
 				query.append("  	select cfr_num, cf_num, c_id, r_category , cfr_main, cfr_status, ").append(
 						"   to_char(cfr_date, 'yyyy-mm-dd') cfr_date, to_char(cfr_report, 'yyyy-mm-dd') cfr_report")
 						.append("           from f_report fr").append("           inner join report r")
-						.append("           on fr.r_code = r.r_code ");
+						.append("           on fr.r_code = r.r_code order by cfr_num ");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -258,7 +258,7 @@ public class AdminReportDAO {
 				query.append("  	select reported_id, report_id, r_category , cr_main, ")
 						.append("           cr_status, to_char(cr_date, 'yyyy-mm-dd') cr_date")
 						.append("           from c_report cr").append("           inner join report r")
-						.append("           on cr.r_code = r.r_code ").append("           where reported_id like ?");
+						.append("           on cr.r_code = r.r_code ").append("           where reported_id like ? order by reported_id");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -270,7 +270,7 @@ public class AdminReportDAO {
 				query.append("  	select reported_id, report_id, r_category , cr_main, ")
 						.append("           cr_status, to_char(cr_date, 'yyyy-mm-dd') cr_date")
 						.append("           from c_report cr").append("           inner join report r")
-						.append("           on cr.r_code = r.r_code ").append("           where r_category = ?");
+						.append("           on cr.r_code = r.r_code ").append("           where r_category = ? order by reported_id");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -282,7 +282,7 @@ public class AdminReportDAO {
 				query.append("  	select reported_id, report_id, r_category , cr_main, ")
 						.append("           cr_status, to_char(cr_date, 'yyyy-mm-dd') cr_date")
 						.append("           from c_report cr").append("           inner join report r")
-						.append("           on cr.r_code = r.r_code ").append("           where cr_Status = ?");
+						.append("           on cr.r_code = r.r_code ").append("           where cr_Status = ? order by reported_id");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -295,7 +295,7 @@ public class AdminReportDAO {
 						.append("           cr_status, to_char(cr_date, 'yyyy-mm-dd') cr_date")
 						.append("           from c_report cr").append("           inner join report r")
 						.append("           on cr.r_code = r.r_code ")
-						.append("           where reported_id like ? and r_category = ?");
+						.append("           where reported_id like ? and r_category = ? order by reported_id");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -309,7 +309,7 @@ public class AdminReportDAO {
 						.append("           cr_status, to_char(cr_date, 'yyyy-mm-dd') cr_date")
 						.append("           from c_report cr").append("           inner join report r")
 						.append("           on cr.r_code = r.r_code ")
-						.append("           where reported_id like ? and cr_Status = ?");
+						.append("           where reported_id like ? and cr_Status = ? order by reported_id");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -323,7 +323,7 @@ public class AdminReportDAO {
 						.append("           cr_status, to_char(cr_date, 'yyyy-mm-dd') cr_date")
 						.append("           from c_report cr").append("           inner join report r")
 						.append("           on cr.r_code = r.r_code ")
-						.append("           where r_category = ? and cr_Status = ?");
+						.append("           where r_category = ? and cr_Status = ? order by reported_id");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -337,7 +337,7 @@ public class AdminReportDAO {
 						.append("           cr_status, to_char(cr_date, 'yyyy-mm-dd') cr_date")
 						.append("           from c_report cr").append("           inner join report r")
 						.append("           on cr.r_code = r.r_code ")
-						.append("           where reported_id like ? and r_category = ? and cr_Status = ?");
+						.append("           where reported_id like ? and r_category = ? and cr_Status = ? order by reported_id");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -350,7 +350,7 @@ public class AdminReportDAO {
 				query.append("  	select reported_id, report_id, r_category , cr_main, ")
 						.append("           cr_status, to_char(cr_date, 'yyyy-mm-dd') cr_date")
 						.append("           from c_report cr").append("           inner join report r")
-						.append("           on cr.r_code = r.r_code ");
+						.append("           on cr.r_code = r.r_code order by reported_id ");
 
 				pstmt = con.prepareStatement(query.toString());
 

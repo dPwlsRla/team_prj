@@ -14,8 +14,7 @@ AdminDAO aDAO = AdminDAO.getInstance();
 boolean flag = aDAO.selectAdminLogin(oVO);
 
 if(flag) {
-	session.setAttribute("aId", oVO.getoID());
-	session.setAttribute("aPass", oVO.getoPass());
+	session.setAttribute("oId", oVO.getoID());
 	response.sendRedirect("index.jsp");
 	%>
 <%		

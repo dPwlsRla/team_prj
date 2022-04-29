@@ -1,6 +1,6 @@
 package kr.co.sist.badasaja.admin.dao;
 
-import java.sql.Connection; 
+import java.sql.Connection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +14,7 @@ import kr.co.sist.badasaja.vo.AdForumVO;
 import kr.co.sist.badasaja.vo.AdImgVO;
 import kr.co.sist.badasaja.vo.AdvertiserVO;
 import kr.co.sist.badasaja.vo.BannerVO;
- 
+
 public class AdminAdDAO {
 
 	private static AdminAdDAO adDAO;
@@ -54,17 +54,17 @@ public class AdminAdDAO {
 					&& (st == null || st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
-						.append("      from admin_banner").append("    where a_id like ?");
+						.append("      from admin_banner").append("    where a_id like ? order by b_num");
 
 				pstmt = con.prepareStatement(query.toString());
 
 				pstmt.setString(1, "%" + aID + "%");
-				
+
 			} else if ((aID == null || aID.equals("")) && (gu != null && !gu.equals(""))
 					&& (pr == null || pr.equals("")) && (st == null || st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
-						.append("      from admin_banner").append("    where gu_name like ?");
+						.append("      from admin_banner").append("    where gu_name = ? order by b_num");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -74,7 +74,7 @@ public class AdminAdDAO {
 					&& (pr != null && !pr.equals("")) && (st == null || st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
-						.append("      from admin_banner").append("    where product like ?");
+						.append("      from admin_banner").append("    where product = ? order by b_num");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -84,7 +84,7 @@ public class AdminAdDAO {
 					&& (st != null && !st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
-						.append("      from admin_banner").append("    where b_status like ?");
+						.append("      from admin_banner").append("    where b_status = ? order by b_num ");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -94,7 +94,8 @@ public class AdminAdDAO {
 					&& (pr == null || pr.equals("")) && (st == null || st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
-						.append("      from admin_banner").append("    where a_id like ? and gu_name like  ?");
+						.append("      from admin_banner")
+						.append("    where a_id like ? and gu_name =  ? order by b_num");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -105,7 +106,8 @@ public class AdminAdDAO {
 					&& (pr != null && !pr.equals("")) && (st == null || st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
-						.append("      from admin_banner").append("    where a_id like ? and product like ?");
+						.append("      from admin_banner")
+						.append("    where a_id like ? and product = ? order by b_num");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -116,7 +118,8 @@ public class AdminAdDAO {
 					&& (pr == null || pr.equals("")) && (st != null && !st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
-						.append("      from admin_banner").append("    where a_id like ? and b_status like ?");
+						.append("      from admin_banner")
+						.append("    where a_id like ? and b_status = ? order by b_num");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -127,7 +130,8 @@ public class AdminAdDAO {
 					&& (pr != null && !pr.equals("")) && (st == null || st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
-						.append("      from admin_banner").append("    where gu_name like  ? and product like ?");
+						.append("      from admin_banner")
+						.append("    where gu_name =  ? and product = ? order by b_num");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -138,7 +142,8 @@ public class AdminAdDAO {
 					&& (pr == null || pr.equals("")) && (st != null && !st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
-						.append("      from admin_banner").append("    where gu_name like ? and product like ?");
+						.append("      from admin_banner")
+						.append("    where gu_name = ? and b_status = ? order by b_num");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -149,7 +154,8 @@ public class AdminAdDAO {
 					&& (pr != null && !pr.equals("")) && (st != null && !st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
-						.append("      from admin_banner").append("    where gu_name like ? and product like ?");
+						.append("      from admin_banner")
+						.append("    where product = ? and b_status = ? order by b_num");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -161,7 +167,7 @@ public class AdminAdDAO {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
 						.append("      from admin_banner")
-						.append("    where a_id like ? and gu_name like ? and  product like ?");
+						.append("    where a_id like ? and gu_name = ? and  product = ? order by b_num");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -174,7 +180,20 @@ public class AdminAdDAO {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
 						.append("      from admin_banner")
-						.append("    where ai_id like ? and gu_name like ? b_status like ?");
+						.append("    where a_id like ? and product = ? and b_status = ? order by b_num");
+
+				pstmt = con.prepareStatement(query.toString());
+
+				pstmt.setString(1, "%" + aID + "%");
+				pstmt.setString(2, pr);
+				pstmt.setString(3, st);
+
+			} else if ((aID != null && !aID.equals("")) && (gu == null || gu.equals(""))
+					&& (pr != null && !pr.equals("")) && (st != null && !st.equals(""))) {
+
+				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
+						.append("      from admin_banner")
+						.append("    where a_id like ? and gu_name = ? and b_status = ? order by b_num");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -187,7 +206,7 @@ public class AdminAdDAO {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
 						.append("      from admin_banner")
-						.append("    where and  gu_name like ? and product like ?  and b_status like ?");
+						.append("    where gu_name = ? and product = ?  and b_status = ? order by b_num");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -200,7 +219,7 @@ public class AdminAdDAO {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
 						.append("      from admin_banner")
-						.append("    where a_id like ? and  gu_name like ? and product like ? and b_status like ?");
+						.append("    where a_id like ? and  gu_name = ? and product = ? and b_status = ? order by b_num");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -212,7 +231,7 @@ public class AdminAdDAO {
 			} else {
 
 				query.append("  select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
-						.append("from admin_banner");
+						.append("from admin_banner order by b_num");
 
 				pstmt = con.prepareStatement(query.toString());
 			}
@@ -264,7 +283,7 @@ public class AdminAdDAO {
 				query.append(" 	select a_id, a_name, gu_name,").append(
 						" 	to_char(CONTRACT_DATE,'yyyy-mm-dd') contract_date, to_char(EXPIRY_DATE,'yyyy-mm-dd') expiry_date")
 						.append(" 	from advertiser av").append(" 	inner join local l")
-						.append(" 	on av.gu_code = l.gu_code").append("   where av.a_id like ?");
+						.append(" 	on av.gu_code = l.gu_code").append("   where av.a_id like ? order by a_id");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -274,7 +293,7 @@ public class AdminAdDAO {
 				query.append(" 	select a_id, a_name, gu_name,").append(
 						" 	to_char(CONTRACT_DATE,'yyyy-mm-dd') contract_date, to_char(EXPIRY_DATE,'yyyy-mm-dd') expiry_date")
 						.append(" 	from advertiser av").append(" 	inner join local l")
-						.append(" 	on av.gu_code = l.gu_code").append("   where l.gu_name like ?");
+						.append(" 	on av.gu_code = l.gu_code").append("   where l.gu_name = ? order by a_id");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -283,7 +302,8 @@ public class AdminAdDAO {
 				query.append(" 	select a_id, a_name, gu_name,").append(
 						" 	to_char(CONTRACT_DATE,'yyyy-mm-dd') contract_date, to_char(EXPIRY_DATE,'yyyy-mm-dd') expiry_date")
 						.append(" 	from advertiser av").append(" 	inner join local l")
-						.append(" 	on av.gu_code = l.gu_code").append("   where av.a_id like ? and l.gu_name like ?");
+						.append(" 	on av.gu_code = l.gu_code")
+						.append("   where av.a_id like ? and l.gu_name = ? order by a_id");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -294,7 +314,7 @@ public class AdminAdDAO {
 				query.append(" 	select a_id, a_name, gu_name,").append(
 						" 	to_char(CONTRACT_DATE,'yyyy-mm-dd') contract_date, to_char(EXPIRY_DATE,'yyyy-mm-dd') expiry_date")
 						.append(" 	from advertiser av").append(" 	inner join local l")
-						.append(" 	on av.gu_code = l.gu_code");
+						.append(" 	on av.gu_code = l.gu_code order by a_id");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -390,13 +410,29 @@ public class AdminAdDAO {
 
 			con = dc.getConn();
 
-			StringBuilder query = new StringBuilder();
+			StringBuilder query = null;
 
-			query.append("insert into ad_img(af_num, img)").append(" values('ad'||PRO1.AD_FORUM_SEQ.CURRVAL, ?)");
+			if (imgs.contains(",")) {
+				String[] imgArr = imgs.split(",");
+				for (int i = 0; i < imgArr.length; i++) {
+					query = new StringBuilder();
+					query.append("insert into ad_img(af_num, img)")
+							.append(" values('ad'||PRO1.AD_FORUM_SEQ.CURRVAL, ?)");
 
-			pstmt = con.prepareStatement(query.toString());
+					pstmt = con.prepareStatement(query.toString());
 
-			pstmt.setString(1, imgs);
+					pstmt.setString(1, imgArr[i]);
+
+					pstmt.executeUpdate();
+				}
+			} else {
+				query = new StringBuilder();
+				query.append("insert into ad_img(af_num, img)").append(" values('ad'||PRO1.AD_FORUM_SEQ.CURRVAL, ?)");
+
+				pstmt = con.prepareStatement(query.toString());
+
+				pstmt.setString(1, imgs);
+			}
 
 			pstmt.executeUpdate();
 
@@ -404,7 +440,7 @@ public class AdminAdDAO {
 			dc.close(null, pstmt, con);
 		}
 	}
-	
+
 	public void insertBanner(BannerVO bVO) throws SQLException, NamingException {
 
 		Connection con = null;
@@ -418,7 +454,8 @@ public class AdminAdDAO {
 
 			StringBuilder query = new StringBuilder();
 
-			query.append("insert into banner(b_num, a_id, a_url, p_code, img)").append(" values('b'||PRO1.BANNER_SEQ.NEXTVAL, ?, ?, ?, ?)");
+			query.append("insert into banner(b_num, a_id, a_url, p_code, img)")
+					.append(" values('b'||PRO1.BANNER_SEQ.NEXTVAL, ?, ?, ?, ?)");
 
 			pstmt = con.prepareStatement(query.toString());
 
@@ -433,6 +470,59 @@ public class AdminAdDAO {
 			dc.close(null, pstmt, con);
 		}
 	} // insertBanner
-	
+
+	public void updateAdForum(AdForumVO afVO) throws SQLException, NamingException {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		DbConnection dc = DbConnection.getInstance();
+
+		try {
+			con = dc.getConn();
+
+			StringBuilder query = new StringBuilder();
+
+			query.append(" update ad_forum ").append("  set af_topic = ?, af_main = ?, p_code = ?, af_status = ?  ")
+					.append("  where af_num = ? ");
+
+			pstmt = con.prepareStatement(query.toString());
+
+			pstmt.setString(1, afVO.getAfTopic());
+			pstmt.setString(2, afVO.getAfMain());
+			pstmt.setString(3, afVO.getpCode());
+			pstmt.setString(4, afVO.getAfStatus());
+			pstmt.setString(5, afVO.getAfNum());
+
+			pstmt.executeUpdate();
+
+		} finally {
+			dc.close(null, pstmt, con);
+
+		}
+
+	} // updateAdForum
+
+	public void updateAfStatus(String afNum) throws SQLException, NamingException {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		DbConnection dc = DbConnection.getInstance();
+		try {
+			con = dc.getConn();
+
+			pstmt = con.prepareStatement(" update ad_forum set af_status = '»èÁ¦' where af_num = ? ");
+
+			pstmt.setString(1, afNum);
+
+			pstmt.executeUpdate();
+
+		} finally {
+			dc.close(null, pstmt, con);
+
+		}
+
+	}
 
 }

@@ -8,14 +8,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-session.setAttribute("insertAdForumFlag", false);
-request.setCharacterEncoding("utf-8");
-int filecounter = 0;
-if (request.getParameter("addcnt") != null) { 
-	filecounter = Integer.parseInt(request.getParameter("addcnt"));
-}
-%>
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr"
 	data-theme="theme-default" data-assets-path="../assets/"
 	data-template="vertical-menu-template-free">
@@ -98,9 +90,16 @@ img {
 <%
 	BaseDAO bDAO = BaseDAO.getInstance();
 	List<ProductVO> pList = bDAO.selectProductList();
+	pageContext.setAttribute("pList", pList);
 	
 	String afNum = request.getParameter("afNum");
 	
+	pageContext.setAttribute("afNum", afNum);
+ 	if(afNum == null){
+		response.sendRedirect("login.jsp");
+		return;
+	}
+	 
 	AdminForumDAO afDAO = AdminForumDAO.getInstance();
 	
 	AdForumVO afVO = afDAO.selectAdForum(afNum);
@@ -109,11 +108,7 @@ img {
 	
 	String imgs = afDAO.selectAdImg(afNum);
 	
-	if(imgs != ""){
-	String[] imgArr = imgs.split(",");
-	}
 	
-
 	%>
 
 <!-- Helpers -->
@@ -129,23 +124,83 @@ img {
 <script type="text/javascript">
 	$(function(){
 		
-		<%-- var arr = [<%= imgArr %>];
+		var afNum = '<%= afNum %>';
 		
-		alert( arr.length );
-		
-		//alert(img1)
-		$("#preview1").attr("src","http://localhost/bada_prj/badasaja_admin/upload/" +  )
-		$("#preview2").attr("src","http://localhost/bada_prj/badasaja_admin/upload/" +  )
-		 --%>
 		$("#aID").val("<%= afVO.getaID() %>");
 		$("#topic").val("<%= afVO.getAfTopic() %>");
 		$("#forumMain").val("<%= afVO.getAfMain() %>")
 		$("#category").val("<%= afVO.getpCode() %>")
 		$("#status").val("<%= afVO.getAfStatus() %>")
-		
 		$("#preview").attr("src","http://localhost/bada_prj/badasaja_admin/upload/" + "<%= afVO.getMainImg() %>" )
 		
+		var str = '<%= imgs %>'
+		if( str == ""){
+			return;
+		}
+		var imgs = str.split(",");
+		if(imgs.length == 1){
+		$("#preview1").attr("src","http://localhost/bada_prj/badasaja_admin/upload/" + imgs[0] )
+		} else if( imgs.length == 2){
+		$("#preview1").attr("src","http://localhost/bada_prj/badasaja_admin/upload/" + imgs[0] )
+		$("#preview2").attr("src","http://localhost/bada_prj/badasaja_admin/upload/" + imgs[1] )
+		}
 		
+	 	$("#modify").click(function(){
+	 		
+	 		if ($("#topic").val().trim() == "") {
+				alert("제목을 입력해주세요");
+				$("#topic").focus();
+				return;
+			}
+	 		
+	 		if ($("#forumMain").val() == "") {
+				alert("내용을 입력해주세요")
+				$("#forumMain").focus();
+				return;
+			}
+			
+ 			$.ajax({
+				url : "http://localhost/bada_prj/badasaja_admin/jsp/ad_forum_modify_process.jsp",
+				data : { 
+					afNum : afNum,
+					topic : $("#topic").val(),
+					main : $("#forumMain").val(),
+					pr : $("#category option:selected").val(),
+					st : $("#status option:selected").val(),
+					},
+				type:"post",
+				error:function( xhr ){
+					alert( xhr.text + "/" + xhr.status);
+				},
+				success:function(){
+					alert("변경 되었습니다.")
+					location.replace("http://localhost/bada_prj/badasaja_admin/jsp/ad_forum_list.jsp")
+				},
+				
+			})  
+			
+		}) // click 
+		
+		$("#del").click(function() {
+			
+			$.ajax({
+				url : "http://localhost/bada_prj/badasaja_admin/jsp/ad_forum_delete_process.jsp",
+				data : { 
+					afNum : afNum,
+					},
+				type:"get",
+				error:function( xhr ){
+					alert( xhr.text + "/" + xhr.status);
+				},
+				success:function(){
+					alert("삭제 되었습니다.")
+					location.replace("http://localhost/bada_prj/badasaja_admin/jsp/ad_forum_list.jsp")
+				},
+				
+			})  
+			
+			
+		}) // click
 		
 	})
 	
@@ -169,7 +224,7 @@ img {
 
 					<div class="container-xxl flex-grow-1 container-p-y">
 						<h4 class="fw-bold py-3 mb-4">
-							<span class="text-muted fw-light">Advertiserment/</span> Ad Forum Info
+							<span class="text-muted fw-light">Advertiserment/</span>Ad Forum Info
 						</h4>
 
 						<!-- Basic Layout -->
@@ -183,10 +238,9 @@ img {
 											<div class="mb-3">
 												<label class="form-label" for="basic-default-fullname">Board
 													Topic</label> <input type="text" id="topic" name="topic"
-													class="form-control" id="basic-default-fullname" readonly="readonly"
+													class="form-control" id="basic-default-fullname"
 													placeholder="Banner Topic" />
 											</div>
-
 											<div class="mb-3">
 												<label class="form-label" for="basic-default-company"
 													style="margin-top: 10px;">Img</label>
@@ -195,11 +249,11 @@ img {
                         <label class="input-group-text" for="inputGroupFile02">Upload</label> -->
 													<table style="margin: 0px auto;">
 														<tr>
-															<td><img id="preview" /> <br />
+															<td style="padding: 30px;"><img id="preview" /> <br />
 															<br/></td>
-															<td><img id="preview1" /> <br />
+															<td style="padding: 30px;"><img id="preview1" /> <br />
 															<br /> </td>
-															<td><img id="preview2" /> <br />
+															<td style="padding: 30px;"><img id="preview2" /> <br />
 															<br /></td>
 														</tr>
 													</table>
@@ -222,11 +276,18 @@ img {
 													</div>
 													<div class="mb-3" style="margin-right: 5%;">
 														<label for="defaultSelect" class="form-label">카테고리</label>
-														<input type="text" class="form-control" readonly="readonly" id="category" name="category" class="form-select"/>
+														<select id="category" name="category" class="form-select">
+															<c:forEach items="${ pList }" var="data">
+																<option value="${ data.pCode }">${ data.product }</option>
+															</c:forEach>
+														</select>
 													</div>
 													<div class="mb-3">
 														<label for="defaultSelect" class="form-label">상태</label>
-														<input type="text" class="form-control" readonly="readonly" id="status" name="status" />
+														<select id="status" name="status" class="form-select">
+															<option value="게시중">게시중</option>
+															<option value="삭제">삭제</option>
+														</select>
 													</div>
 												</div>
 											</div>
@@ -237,13 +298,14 @@ img {
 												<div class="input-group input-group-merge">
 													<textarea class="form-control" id="forumMain"
 														name="forumMain" aria-label="With textarea"
-														readonly="readonly"
 														style="height: 400px;"></textarea>
 												</div>
 											</div>
 
-											<button type="button" id="send" name="send"
-												class="btn btn-primary">작성</button>
+											<button type="button" id="modify" name="modify"
+												class="btn btn-primary" style="margin-right: 20px;">수정</button>
+											<button type="button" id="del" name="del"
+												class="btn btn-primary">삭제</button>
 									</div>
 								</div>
 							</div>

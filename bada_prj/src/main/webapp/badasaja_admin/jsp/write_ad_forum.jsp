@@ -318,11 +318,9 @@ img {
 														</select>
 													</div>
 													<div class="mb-3">
-														<label for="defaultSelect" class="form-label">상태</label> <select
-															id="status" name="status" class="form-select">
-															<option value="none">상태</option>
+														<label for="defaultSelect" class="form-label">상태</label>
+														 <select id="status" name="status" class="form-select">
 															<option value="게시중">게시중</option>
-															<option value="게시완료">게시완료</option>
 														</select>
 													</div>
 												</div>

@@ -231,7 +231,7 @@
                       <!--  </form>  -->
                         <!-- /Search -->
                         <div class="table-responsive text-nowrap">
-                            <table id="tab" class="table">
+                            <table id="tab" class="table table-hover">
                                 <thead>
                                 <tr>
                                     <th>번호</th>
