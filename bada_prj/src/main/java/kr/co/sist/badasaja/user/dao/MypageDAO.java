@@ -405,8 +405,12 @@ public class MypageDAO {
 		PreparedStatement pstmt = null;
 		PreparedStatement pstmt2 = null;
 		PreparedStatement pstmt3 = null;
-		rowNum1=rowNum1*count;
-		rowNum2=rowNum2*count;
+		if(count!=1) {
+			
+			rowNum2=rowNum2*count;
+			rowNum1=rowNum2-8;
+		}
+
 		ResultSet rs = null;
 		ResultSet rs2 = null;
 		ResultSet rs3 = null;
@@ -418,9 +422,12 @@ public class MypageDAO {
 			
 			
 			StringBuilder entireQuery = new StringBuilder();
-			entireQuery.append(" SELECT rownum , w.CF_NUM, c.CF_TOPIC, c.MAIN_IMG,c.c_id ")
-			.append( " FROM C_FORUM c, WISH_LIST w")
-			.append(" where (c.CF_NUM = w.CF_NUM) and c.c_id=? and rownum between ? and ?");
+//			entireQuery.append(" SELECT rownum , c.CF_NUM, c.CF_TOPIC, c.MAIN_IMG,c.c_id ")
+//			.append( " FROM C_FORUM c, WISH_LIST w")
+//			.append(" where (c.CF_NUM = w.CF_NUM) and w.c_id=? and rownum between ? and ?");
+			entireQuery.append("  select * from (SELECT rownum as ro ,c.CF_NUM, c.CF_TOPIC, c.MAIN_IMG,c.c_id ")
+			.append( " FROM  WISH_LIST w ,C_FORUM c ")
+			.append(" where (c.CF_NUM = w.CF_NUM ) and w.c_id= ? ) where ro between ? and ?");
 			//.append(" where (c.CF_NUM = w.CF_NUM) and c.c_id=? ");
 			// 1, 2, 3, 4, ... 
 			pstmt=con.prepareStatement(entireQuery.toString());
@@ -428,7 +435,7 @@ public class MypageDAO {
 			pstmt.setInt(2, rowNum1);
 			pstmt.setInt(3, rowNum2);
 			rs = pstmt.executeQuery();
-			
+
 			StringBuilder hashQuery = new StringBuilder();
 			hashQuery.append(" SELECT w.CF_NUM, H.HASH ")
 			.append(" FROM HASHTAG H,WISH_LIST w ")
@@ -439,7 +446,7 @@ public class MypageDAO {
 				
 				EntireForumVO efVO = new EntireForumVO();
 				List<HashTagVO> hashList = new ArrayList<HashTagVO>();
-				
+
 				efVO.setTitle(rs.getString("cf_topic"));
 				efVO.setCfNum(rs.getString("cf_num"));
 				efVO.setImg(rs.getString("main_img"));
@@ -517,4 +524,7 @@ public class MypageDAO {
 		}
 		return rownum;
 	}//row¹ÝÈ¯
+	
+
+	
 }

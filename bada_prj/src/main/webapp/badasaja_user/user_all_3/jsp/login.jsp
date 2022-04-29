@@ -111,7 +111,6 @@
     </div>
 
 <!-- 기능부분 -->
-<% %>
 
   <!--모달  -->
   
@@ -131,17 +130,17 @@
         <form>
           <div class="form-group">
             <label for="recipient-name" class="col-form-label">E-Mail입력</label>
-            <input type="text" class="form-control" id="recipient-name" placeholder="가입시 입력하신 이메일을 적어주세요.">
-            <span style="font-size: 5px; color: #ff0000;">일치하는 이메일이 없습니다.</span>
+            <input type="text" class="form-control" id="find_id" name="find_id" placeholder="가입시 입력하신 이메일을 적어주세요.">
+            <!-- <span style="font-size: 5px; color: #ff0000;">일치하는 이메일이 없습니다.</span> -->
           </div>
-			 <div class="modal-body">
+<!-- 			 <div class="modal-body">
         		입력하신 메일로 전송되었습니다.
-      		</div>
+      		</div> -->
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close1">CLOSE</button>
-        <button type="button" class="btn btn-primary">SEND</button>
+        <button type="button" class="btn btn-primary" id="find_id_send">SEND</button>
       </div>
     </div>
   </div>
@@ -188,20 +187,20 @@
         <form>
           <div class="form-group">
             <label for="recipient-name" class="col-form-label">아이디 입력</label>
-            <input type="text" class="form-control" id="recipient-name" placeholder="아이디를 입력해주세요">
-            <span style="font-size: 5px; color: #ff0000;">일치하는 회원이 없습니다.</span>
+            <input type="text" class="form-control" id="find_pass_id" placeholder="아이디를 입력해주세요">
+<!--  <span style="font-size: 5px; color: #ff0000;">일치하는 회원이 없습니다.</span> -->
           </div>
           <div class="form-group">
             <label for="recipient-name" class="col-form-label">가입시 입력하신 이메일을 적어주세요.</label>
-            <input type="text" class="form-control" id="recipient-name" placeholder="가입시 입력하신 이메일을 적어주세요.">
-            <span style="font-size: 5px; color: #ff0000;">일치하는 이메일이 없습니다.</span>
+            <input type="text" class="form-control" id="find_pass_email" placeholder="가입시 입력하신 이메일을 적어주세요.">
+           <!--  <span style="font-size: 5px; color: #ff0000;">일치하는 이메일이 없습니다.</span> -->
           </div>          
 
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close3">CANCEL</button>
-        <button type="button" class="btn btn-primary" id="search_pass2">SEARCH</button>
+        <button type="button" class="btn btn-primary" id="find_pass_send">SEARCH</button>
       </div>
     </div>
   </div>
@@ -244,8 +243,52 @@
   <script type="text/javascript">
   
   $(function () {
-		$('#login_btn').click(function () {
-			if($("#id").val()=='' || $("#passWd").val()==''){
+	  $("#find_id_send").click(function () {
+		  $.ajax({
+				url:"login2.jsp",
+				type:"get",
+				data:{"mail":$("#find_id").val() } ,
+				dataType : "json",
+				error:function(xhr){
+					alert(xhr.status+"/"+xhr.status.text)
+				},
+				success:function(email){
+					if(email.flag){
+						alert("입력하신 메일로 전송되었습니다.")
+						$('#search_id_modal').modal("hide");
+						
+					}else{
+						alert("일치하는 이메일이 없습니다.")
+					}
+					
+				}
+			})//ajax
+	})
+	
+	$("#find_pass_send").click(function () {
+		  $.ajax({
+				url:"login3.jsp",
+				type:"get",
+				data:{"mail":$("#find_pass_email").val() , "id":$("#find_pass_id").val()} ,
+				dataType : "json",
+				error:function(xhr){
+					alert(xhr.status+"/"+xhr.status.text)
+				},
+				success:function(pass){
+					 if(pass.flag){
+					 	$('#search_pass_modal2').modal("show");
+						
+					}else{
+						alert("일치하는 이메일이 없습니다.")
+					} 
+					
+				}
+			})//ajax
+	})
+
+	  
+	  $('#login_btn').click(function () {
+		if($("#id").val()=='' || $("#passWd").val()==''){
 				$('#fail').modal("show");
 				return;
 			}
@@ -274,11 +317,7 @@
 				$('#search_pass_modal').modal("hide");
 		});
 		
-		/* 비밀번호 찾기2  */
-		$('#search_pass2').click(function(e){
-				e.preventDefault();
-				$('#search_pass_modal2').modal("show");
-			});
+
 		  
 		$('#close4').click(function(e){
 				e.preventDefault();

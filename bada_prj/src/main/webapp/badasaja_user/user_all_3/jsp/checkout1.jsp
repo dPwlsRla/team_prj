@@ -112,10 +112,15 @@
 $(function () {
 	
 	$("#fpmgBt2").click(function() {
-		if(!$("[name='chk']").prop("checked")){
-			alert("체크해주세용");
+		var cnt=0;	
+		$("[name='chk']:checked").each(function (idx,ele) {
+			cnt++;
+		})
+		if(cnt!=3){
+			alert("필수항목을 체크해주세요")
 			return false;
 		}
+		
 		location.href="checkout2.jsp";
 		//$("#joinForm").submit();	
 	})

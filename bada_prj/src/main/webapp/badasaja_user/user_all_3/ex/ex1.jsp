@@ -61,7 +61,7 @@
             //첫번째 인자느 연결할 호스트이다.
             //두번째 인자는 아이디, 세번째 인자는 비밀번호를 의미
             Transport transport = s.getTransport("smtp");
-            transport.connect(server, "panosun96@gamil.com", "pano0930!@");// 진짜 아이디 비번 넣음 됨
+            transport.connect(server, "panosun96@gamil.com", "arjmklqstvygtcgg");// 진짜 아이디 비번 넣음 됨
             transport.sendMessage(message, message.getAllRecipients());
             transport.close(); //연결종료
             
