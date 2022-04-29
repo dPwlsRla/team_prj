@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="../fonts/icomoon/style.css">
 	<link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css" rel="stylesheet">
 	
+	  
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/magnific-popup.css">
@@ -34,6 +35,7 @@
 
     <link rel="stylesheet" href="../css/style.css">
     
+ 
   </head>
   <style type="text/css">
   #searchArea{
@@ -215,7 +217,7 @@
 									width: 600px;
    									margin: 0px auto;
 									}
-	.commentProfile{
+	#commentProfile{
 							width: 30px;
     						height: 30px; 
     						border-radius: 70%;
@@ -279,7 +281,7 @@
  					 font-weight: bold;
  					  color: #333;"
  					 }
- 	.profilePhoto{
+ 	#profilePhoto{
  						width:50px; 
  						height:50px; 
  						position: relative;
@@ -302,6 +304,83 @@
 				 	font-family: 'NanumSquareRoundB';
 				 	margin-bottom: 10px;
  					}
+ 					
+ .dropbtn {
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #ffffff;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {background-color: #f1f1f1}
+ 
+ .show {display:block;}
+ 
+ #myform fieldset{
+    display: inline-block; /* 하위 별점 이미지들이 있는 영역만 자리를 차지함.*/
+    border: 0; /* 필드셋 테두리 제거 */
+}
+#myform input[type=radio]{
+    display: none; /* 라디오박스 감춤 */
+}
+#myform label{
+    font-size: 3em; /* 이모지 크기 */
+    color: transparent; /* 기존 이모지 컬러 제거 */
+    text-shadow: 0 0 0 #f0f0f0; /* 새 이모지 색상 부여 */
+}
+
+#myform label:hover{
+    text-shadow: 0 0 0 #FFD400; /* 마우스 호버 */
+}
+#myform label:hover ~ label{
+    text-shadow: 0 0 0 #FFD400; /* 마우스 호버 뒤에오는 이모지들 */
+}
+
+#myform fieldset{
+    display: inline-block; /* 하위 별점 이미지들이 있는 영역만 자리를 차지함.*/
+    direction: rtl; /* 이모지 순서 반전 */
+    border: 0; /* 필드셋 테두리 제거 */
+}
+
+#myform fieldset legend{
+    text-align: left;
+}
+
+#myform input[type=radio]:checked ~ label{
+    text-shadow: 0 0 0 #FFD400; /* 마우스 클릭 체크 */
+}
+
+#profilePhoto2{
+					width:50px; 
+ 					height:50px;
+ 					float : left;
+ 					margin-right: 10px;
+ 					margin-left: 100px;
+ 					margin-top: 20px;
+				   }
 						
   </style>
   <%
@@ -366,7 +445,7 @@ $(function(){
 			$('#testModal8').modal("hide");	
 		});//closeClick
 		
-	});//click
+	});//Freportclick
 	
 	//게시글 삭제버튼을 눌렀을 때 모달 띄우기
 	$(".deleteBtn").click(function(e) {
@@ -381,11 +460,103 @@ $(function(){
 		$("#cancel").click(function() {
 			$("#testModal7").modal("hide");
 		});
+		
+		$(".close").click(function(e) {
+			$('#testModal7').modal("hide");	
+		});//closeClick
 	})//deleteBtnClick
 	
+	
+	
+	$("#Creport").click(function(e) {
+		e.preventDefault();
+		$('#testModal9').modal("show");
+		
+		//계정 신고 제출
+		$("#sendBtn2").click(function(e) {
+			$("#testModal9").modal("hide");
+		});
+		//계정 삭제 취소
+		$("#cancelBtn2").click(function(e) {
+			$("#testModal9").modal("hide");
+		});
+		//닫기 누르기
+		$(".close").click(function(e) {
+			e.preventDefault();
+			$('#testModal9').modal("hide");	
+		});//closeClick
+		
+	});//CreportClick
+	
+	$("#score").click(function(e){
+		$("#testModal10").modal("show");
+		//별점 제출
+		$("#sendBtn3").click(function(e) {
+			$("#testModal10").modal("hide");
+		});
+		//별점 취소
+		$("#cancelBtn3").click(function(e) {
+			$("#testModal10").modal("hide");
+		});
+		//닫기 누르기
+		$(".close").click(function(e) {
+			e.preventDefault();
+			$('#testModal10').modal("hide");	
+		});//closeClick
+	});//scoreClick
+	
+	$("#CReport2").click(function(e) {
+		e.preventDefault();
+		$('#testModal9').modal("show");
+		
+		//계정 신고 제출
+		$("#sendBtn2").click(function(e) {
+			$("#testModal9").modal("hide");
+		});
+		//계정 삭제 취소
+		$("#cancelBtn2").click(function(e) {
+			$("#testModal9").modal("hide");
+		});
+		//닫기 누르기
+		$(".close").click(function(e) {
+			e.preventDefault();
+			$('#testModal9').modal("hide");	
+		});//closeClick
+		
+	});//CreportClick2
+	
+	$("#score2").click(function(e){
+		e.preventDefault();
+		$("#testModal10").modal("show");
+		//별점 제출
+		$("#sendBtn3").click(function(e) {
+			$("#testModal10").modal("hide");
+		});
+		//별점 취소
+		$("#cancelBtn3").click(function(e) {
+			$("#testModal10").modal("hide");
+		});
+		//닫기 누르기
+		$(".close").click(function(e) {
+			e.preventDefault();
+			$('#testModal10').modal("hide");	
+		});//closeClick
+	});//scoreClick2
+	
+	$("#Trans").click(function(e) {
+		e.preventDefault();
+		$("#testModal5").modal("show");
+		
+		$("#okBtn").click(function(e) {
+			$("#testModal5").modal("hide");
+		});
+	
 	$(".close").click(function(e) {
-		$('#testModal7').modal("hide");	
-	});//closeClick
+		e.preventDefault();
+		$("#testModal5").modal("hide");	
+	});
+	});//transClick
+
 	
 	 
 });//ready 
@@ -393,6 +564,26 @@ $(function(){
 function goEditForum(){
 	$("#fFrm").submit();
 }
+
+//드롭다운 
+function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}//myFunction()
+
+
 
   </script>
   
@@ -454,7 +645,15 @@ function goEditForum(){
     <div class="container3" style="width: 700px;height: 40px;margin-bottom: 20px">
 	    <table  style="width: 700px; height: 100%">
 	    	<tr>
-	    		<td ><img class="profilePhoto"src="" onerror="this.src='../images/user.png'"></td>
+	    		<td >
+	    		<div class="dropdown">
+	    		<img id="profilePhoto" src="" onerror="this.src='../images/user.png'" class="dropbtn" onclick="myFunction()">
+				  <div id="myDropdown" class="dropdown-content">
+				    <a href="#score" id="score">친절 점수 주기</a>
+				    <a href="#Creport" id="Creport">계정 신고</a>
+				  </div>
+				</div>
+	    		</td>
 	    		<td style="padding-left: 10px"><span id="nickname">닉네임: ${cuVO.nickName}<br/> 거래만족도: ${cuVO.score}</span></td>
 	    		<!-- for(HashTagVO hashTagVO : hashTagList){
 	    				System.out.println(hashTagVO.getHash());
@@ -468,6 +667,105 @@ function goEditForum(){
 	    	</tr>
     </table>
     </div>
+    
+    									<!--거래약속 모달  -->
+    									
+ <div class="modal fade" id="testModal5" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">거래 약속</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       거래를 확정하시겠습니까?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="okBtn">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+										<!--계정 신고 모달-->
+<div class="modal fade" id="testModal9" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">계정 신고</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">
+				 <span style="float: left;">계정 신고</span>
+            </label>
+             
+             <select name="language" style=" float: right; margin-bottom: 1px;">
+				    <option value="none">사유선택</option>
+				    <option value="korean" >욕설</option>
+				    <option value="english">비방</option>
+				    <option value="chinese">사기</option>
+			</select>
+            <input type="text" class="form-control" id="recipient-name" placeholder="제목">
+          </div>
+          <div class="form-group">
+          <label for="recipient-name" class="col-form-label"> </label>
+            <textarea class="form-control" style="height: 300px;" id="message-text" placeholder="신고 내용을 입력해주세요"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelBtn2">CANCEL</button>
+        <button type="button" class="btn btn-primary" id="sendBtn2">SEND</button>
+      </div>
+    </div>
+  </div>
+</div>
+ 									  <!--친절도 점수 주기 모달  -->
+<div class="modal fade" id="testModal10" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">친절도</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="form-group" style="text-align: center">
+				 <span style="font-weight: bold; font-size: 25px; font-family: ">친절도 점수</span><br/>
+				 <img src="" onerror="this.src='../images/user.png'" id="profilePhoto2"/>
+				 <div style="float: left; margin-top: 20px;">
+				 <label>닉네임 : </label><br/>
+				 <label>거래만족도 :</label><br/>
+				 </div>
+				 <form name="myform" id="myform" method="post" action="./save">
+				    <fieldset>
+				        <input type="radio" name="rating" value="5" id="rate1"><label for="rate1">⭐</label>
+				        <input type="radio" name="rating" value="4" id="rate2"><label for="rate2">⭐</label>
+				        <input type="radio" name="rating" value="3" id="rate3"><label for="rate3">⭐</label>
+				        <input type="radio" name="rating" value="2" id="rate4"><label for="rate4">⭐</label>
+				        <input type="radio" name="rating" value="1" id="rate5"><label for="rate5">⭐</label>
+				    </fieldset>
+				</form>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelBtn3">CANCEL</button>
+        <button type="button" class="btn btn-primary" id="sendBtn3">SEND</button>
+      </div>
+    </div>
+  </div>
+</div>
+   
+
+
+    		
     		
    										<!--게시물 삭제하기 모달-->
   
@@ -475,7 +773,7 @@ function goEditForum(){
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">회원 탈퇴</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">게시글 삭제</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -549,7 +847,19 @@ function goEditForum(){
     	
     	<!--부모 댓글  -->
     	<div class="parent">
-    	<div style=" font-weight: bold; "><img class="commentProfile"src="../images/person_1.jpg" alt=""/>닉네임
+    	<div style=" font-weight: bold; ">
+    	<div class="dropdown">
+	    <img id="commentProfile" src="../images/person_1.jpg" alt=""  id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"/>닉네임
+	  <!--드롭다운 메뉴 -->
+  	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    	<li><a class="dropdown-item" href="#score" id="score2">친절 점수 주기</a></li>
+    	<li><a class="dropdown-item" href="#CReport" id="CReport2">계정 신고</a></li>
+    	<li><a class="dropdown-item" href="#goTransaction" id="Trans">거래 약속 신청</a></li>
+  	</ul>
+	</div>
+    	
+    	
+    	
     	<div class="addr" >안산시 단원구 초지동</div>
     	</div>
     	<div class="commentContent">
@@ -562,28 +872,14 @@ function goEditForum(){
     	</div>
     	</div>
     	</div>
-    
-    	<!--자식 댓글-->
-    	<!-- <div>
-    	
-    	<div style=" font-weight: bold; "><div class="replyMark"></div><img class="commentProfile"src="http://localhost/html_prj/badasaja/images/person_1.jpg" alt=""/>바나나가좋아
-    	<div class="addr">안산시 상록구 사동</div>
-    	<label class="writerLabel">작성자</label>
-    	</div>
-    	<div class="commentContent" >
-    	<p>가능합니다</p>
-    	<div>
-    	<div class="date">2022-04-17</div>
-    	<a href="#" class="replyDiv">답글 쓰기</a>
-    	</div>
-    	</div>
-    	</div> -->
-    	
     	</div>
     	</div>
     	</div>	
-    	<div id="commentArea">
+    	
+    	
+    	
     	<!-- 댓글 달기 input & button -->
+    	<div id="commentArea">
     	<input type="text" placeholder="댓글을 입력해주세요." class="commentText">
     	🔒<input type="checkbox" class="checkbox">
     	<input type="button" value="댓글 달기" class="commentBtn">
