@@ -73,6 +73,21 @@
     <script type="text/javascript">
     
     		$(function() {
+    			
+    		 	window.history.forward();
+
+    			function noBack() {
+
+    				window.history.forward();
+
+    			} 
+    			
+    			history.pushState(null, null, location.href);
+    		    window.onpopstate = function () {
+    		        history.go(1);
+    			};
+
+    			
     			$("#adminLogin").click(function() {
     				
     				if($("#admin_id").val() == ""){
@@ -92,7 +107,8 @@
     </script>
   </head>
 
-  <body>
+  <body onload="noBack();" onpageshow="if(event.persisted) noBack();" onunload="">
+  
     <!-- Content -->
     <div class="container-xxl">
       <div class="authentication-wrapper authentication-basic container-p-y">

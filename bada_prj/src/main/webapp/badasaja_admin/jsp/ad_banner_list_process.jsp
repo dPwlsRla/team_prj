@@ -34,7 +34,6 @@ if(st == null || st.equals("상태")){
 String st = ""; */
 
 pr = pr.trim();
-gu = gu.trim();
 
 AdminAdDAO adDAO = AdminAdDAO.getInstance();
 List<BannerVO> bannerList = adDAO.selectAllBanner(aID, gu, pr, st);

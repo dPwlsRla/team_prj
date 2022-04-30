@@ -57,11 +57,12 @@
 	<script type="text/javascript">
 	$(function() {
 		
-		getSearchData()
+		getSearchProhibit();
+		getSearchNotice();
 		
 		$("#keySearch").click(function(){
 			
-			getSearchData();
+			getSearchProhibit();
 			
 		}) // click 
 		
@@ -70,7 +71,7 @@
 			var iKey = $("#iKey").val();
 			
 			$.ajax({
-				url:"http://localhost/bada_prj/badasaja_admin/jsp/prohibit_process.jsp",
+				url:"http://localhost/bada_prj/badasaja_admin/jsp/prohibit_in_process.jsp",
 				data : { ikey : iKey},
 				type:"get",
 				error:function( xhr ){
@@ -78,21 +79,47 @@
 				},
 				success:function(){
 					alert("추가 되었습니다.")
-					getSearchData()
+					$("#ikey").val("");
+					getSearchProhibit()
 				},
 				
 			})
 			
-		})
+		}) // click
 		
+		$("#writeNotice").click(function(){
+			
+			var iNotice = $("#iNotice").val();
+			var oID = $("#operID").text();
+			
+		 	$.ajax({
+				url:"http://localhost/bada_prj/badasaja_admin/jsp/notice_in_process.jsp",
+				data : { oID : oID, iNo : iNotice },
+				type:"get",
+				error:function( xhr ){
+					alert( xhr.text + "/" + xhr.status);
+				},
+				success:function(){
+					alert("추가 되었습니다.")
+					$("#iNotice").val("");
+					getSearchNotice();
+				},
+				
+			}) 
+			
+		}) // click
+		
+		$("#test").click(function(){
+			$("#ptab > tbody").append("<tr><td>왜안댐</td></tr>")
+		})
 		
 	}) // ready
 	
-	function getSearchData(){
+	function getSearchProhibit() {
 		
 		$.ajax({
 			
-			url:"http://localhost/bada_prj/badasaja_admin/jsp/operation_process.jsp",
+			url:"http://localhost/bada_prj/badasaja_admin/jsp/prohibit_process.jsp",
 			data : {
 				key : $("#key").val(),
 			},
@@ -102,18 +129,46 @@
 				alert( xhr.text + "/" + xhr.status);
 			},
 			success:function(jsonObj){
-			 	 $("#tab > tbody").empty();
+			 	 $("#ptab > tbody").empty();
 				if(jsonObj.resultData.length == 0){
-					$("#tab > tbody").append("<tr><td colspan='2'><strong>조회결과 없음</strong></td></tr>"  )					
+					$("#ptab > tbody").append("<tr><td colspan='2'><strong>조회결과 없음</strong></td></tr>"  )					
 				}
 				$.each(jsonObj.resultData, function(i, jsonObj){
-					$("#tab > tbody").append("<tr><td>"+jsonObj.keyNum+"</td><td>"+jsonObj.keyword + "</td></tr>") 
+					$("#ptab > tbody").append("<tr><td>"+ jsonObj.keyNum +"</td><td>"+jsonObj.keyword + "</td></tr>") 
 				})	
 			},
 			
 		})
 		
-	} //getSearchData
+	} //getSearchProhibit
+	
+function getSearchNotice(){
+		
+		$.ajax({
+			
+			url:"http://localhost/bada_prj/badasaja_admin/jsp/notice_process.jsp",
+			data : {
+				key : $("#key").val(),
+			},
+			type:"get",
+			dataType:"json",
+			error:function( xhr ){
+				alert( xhr.text + "/" + xhr.status);
+			},
+			success:function(jsonObj){
+			 	 $("#ntab > tbody").empty();
+				if(jsonObj.resultData.length == 0){
+					$("#ntab > tbody").append("<tr><td colspan='4'><strong>조회결과 없음</strong></td></tr>"  )					
+				}
+				$.each(jsonObj.resultData, function(i, jsonObj){
+					$("#ntab > tbody").append("<tr><td>"+jsonObj.nNum+"</td><td>"+jsonObj.oMain
+							                 +"</td><td>"+jsonObj.oID+"</td><td>"+jsonObj.postedDate+"</td><td>" + "</td></tr>") 
+				})	
+			},
+			
+		})
+		
+	} //getSearchNotice
 	
 	
 	
@@ -124,11 +179,11 @@
 
 <body>
 <%
-	KyhNoticeDAO knDAO = KyhNoticeDAO.getInstance();
+/* 	KyhNoticeDAO knDAO = KyhNoticeDAO.getInstance();
 
 	List<NoticeVO> nList = knDAO.selectAllNotice();
 	
-	pageContext.setAttribute("nList", nList);
+	pageContext.setAttribute("nList", nList); */
 %>
 <%@ include file="nav.jsp"%>
 
@@ -141,7 +196,6 @@
       <!-- Content wrapper -->
       <div class="content-wrapper">
         <!-- Content -->
-
         <div class="container-xxl flex-grow-1 container-p-y">
 		 <div class="container-xxl flex-grow-1 container-p-y">
             <!-- Basic Bootstrap Table -->
@@ -154,7 +208,7 @@
                    </div>
                    <!-- /Search -->
                    <div class="table-responsive text-nowrap">
-                      <table class="table">
+                      <table id="ntab" class="table">
                           <thead>
                           <tr>
                              <th>번호</th>
@@ -164,18 +218,14 @@
                            </tr>
                            </thead>
                            <tbody class="table-border-bottom-0">
-                           <c:forEach var="data"  items="${nList }">
-                           <tr>
-                           	<td><c:out value="${data.nNum }"/></td>
-                           	<td><c:out value="${data.oMain }"/></td>
-                           	<td><c:out value="${data.oID }"/></td>
-                           	<td><c:out value="${data.postedDate }"/></td>
-                           </tr>
-                           </c:forEach>
                            </tbody>
                       </table>
                   </div>
              </div>            
+            <div class="input-group mb-3">
+  				<input type="text" id="iNotice" name="iNotice" class="form-control" placeholder="게시글 작성 금지 키워드를 입력해주세요">
+  				<button class="btn btn-outline-secondary" type="button" id="writeNotice">입력</button>
+			</div>
 	  	 </div>	
 	  	 </div>
 	  				
@@ -199,7 +249,7 @@
                    </div>
                    <!-- /Search -->
                    <div class="table-responsive text-nowrap">
-                      <table id="tab" class="table">
+                      <table id="ptab" class="table">
                           <thead>
                           <tr>
                              <th>번호</th>

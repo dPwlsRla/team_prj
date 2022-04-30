@@ -209,7 +209,7 @@ function getSearchData(){
 										<ul class="dropdown-menu">
 											<li class="status"><a class="dropdown-item" href="javascript:void(0);">상태</a></li>
 											<li class="status"><a class="dropdown-item" href="javascript:void(0);">게시중</a></li>
-											<li class="status"><a class="dropdown-item" href="javascript:void(0);">게시종료</a></li>
+											<li class="status"><a class="dropdown-item" href="javascript:void(0);">게시삭제</a></li>
 										</ul>
 										 <input type="hidden" name="gu" id="gu"/>
 										<button type="button"
@@ -256,7 +256,7 @@ function getSearchData(){
 								</div>
 							<!-- /Search -->
 							<div class="table-responsive text-nowrap">
-								<table id="tab" class="table">
+								<table id="tab" class="table table-hover">
 									<thead>
 										<tr>
 											<th>번호</th>

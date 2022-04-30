@@ -60,7 +60,7 @@
 
 
 
-<body onload="ageOfCustomer(), guCnt()">
+<body onload="ageOfCustomer(), guCnt(), transactionByProduct()">
 <%
 BaseDAO bDAO = BaseDAO.getInstance();
 List<LocalVO> lList = bDAO.selectLocalList();
@@ -394,7 +394,6 @@ pageContext.setAttribute("lList", lList);
 	<script type="text/javascript">
 
 	function transactionByProduct(){
-		alert($("#tTerm").val());
 		$.ajax({
 			url:"http://localhost/bada_prj/badasaja_admin/jsp/transaction_chart_ajax.jsp",
 			 data: {

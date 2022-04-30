@@ -6,7 +6,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     info="수정"%>
-    
+  <%request.setCharacterEncoding("UTF-8"); %>  
  <%
  String hid = request.getParameter("hid");
  if("id".equals(hid)){

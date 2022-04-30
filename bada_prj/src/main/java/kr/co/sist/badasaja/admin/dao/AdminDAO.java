@@ -75,7 +75,7 @@ public class AdminDAO {
 
 			con = dc.getConn();
 
-			pstmt = con.prepareStatement("select c_id, nickname, c_status, sign_date, access_date from customer");
+			pstmt = con.prepareStatement("select c_id, nickname, c_status, sign_date, access_date from customer order by c_id");
 
 			rs = pstmt.executeQuery();
 
@@ -143,7 +143,7 @@ public class AdminDAO {
 				query.append("   select c_id, gu_name,  nickname, birth, gender, tel, profile, email, c_status,")
 						.append("        to_char(sign_date,'yyyy-mm-dd') sign_date,  to_char(access_date,'yyyy-mm-dd') access_date, ipaddress   ")
 						.append("        from customer c ").append("        inner join local l ")
-						.append("        on c.gu_code = l.gu_code").append("        where c_id like ?");
+						.append("        on c.gu_code = l.gu_code").append("        where c_id like ? order by c_id");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -154,7 +154,7 @@ public class AdminDAO {
 				query.append("   select c_id, gu_name,  nickname, birth, gender, tel, profile, email, c_status,")
 						.append("        to_char(sign_date,'yyyy-mm-dd') sign_date,  to_char(access_date,'yyyy-mm-dd') access_date, ipaddress   ")
 						.append("        from customer c ").append("        inner join local l ")
-						.append("        on c.gu_code = l.gu_code").append("        where gu_name like ?");
+						.append("        on c.gu_code = l.gu_code").append("        where gu_name = ? order by c_id");
 
 				pstmt = con.prepareStatement(query.toString());
 				pstmt.setString(1, gu);
@@ -164,7 +164,7 @@ public class AdminDAO {
 				query.append("   select c_id, gu_name,  nickname, birth, gender, tel, profile, email, c_status,")
 						.append("        to_char(sign_date,'yyyy-mm-dd') sign_date,  to_char(access_date,'yyyy-mm-dd') access_date, ipaddress   ")
 						.append("        from customer c ").append("        inner join local l ")
-						.append("        on c.gu_code = l.gu_code").append("        where c_status like ?");
+						.append("        on c.gu_code = l.gu_code").append("        where c_status = ? order by c_id");
 
 				pstmt = con.prepareStatement(query.toString());
 				pstmt.setString(1, st);
@@ -173,7 +173,7 @@ public class AdminDAO {
 				query.append("   select c_id, gu_name,  nickname, birth, gender, tel, profile, email, c_status,")
 						.append("        to_char(sign_date,'yyyy-mm-dd') sign_date,  to_char(access_date,'yyyy-mm-dd') access_date, ipaddress   ")
 						.append("        from customer c ").append("        inner join local l ")
-						.append("        on c.gu_code = l.gu_code").append("        where c_id like ? and gu_name like ?");
+						.append("        on c.gu_code = l.gu_code").append("        where c_id like ? and gu_name = ? order by c_id");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -185,7 +185,7 @@ public class AdminDAO {
 				query.append("   select c_id, gu_name,  nickname, birth, gender, tel, profile, email, c_status,")
 						.append("        to_char(sign_date,'yyyy-mm-dd') sign_date,  to_char(access_date,'yyyy-mm-dd') access_date, ipaddress   ")
 						.append("        from customer c ").append("        inner join local l ")
-						.append("        on c.gu_code = l.gu_code").append("        where c_id like ? and c_status like ?");
+						.append("        on c.gu_code = l.gu_code").append("        where c_id like ? and c_status = ? order by c_id");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -198,7 +198,7 @@ public class AdminDAO {
 						.append("        to_char(sign_date,'yyyy-mm-dd') sign_date,  to_char(access_date,'yyyy-mm-dd') access_date, ipaddress   ")
 						.append("        from customer c ").append("        inner join local l ")
 						.append("        on c.gu_code = l.gu_code")
-						.append("        where gu_name like ? and c_status like ?");
+						.append("        where gu_name = ? and c_status = ? order by c_id");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -211,7 +211,7 @@ public class AdminDAO {
 						.append("        to_char(sign_date,'yyyy-mm-dd') sign_date,  to_char(access_date,'yyyy-mm-dd') access_date, ipaddress   ")
 						.append("        from customer c ").append("        inner join local l ")
 						.append("        on c.gu_code = l.gu_code")
-						.append("        where c_id like ? and gu_name like ? and c_status like ?");
+						.append("        where c_id like ? and gu_name = ? and c_status = ? order by c_id");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -224,7 +224,7 @@ public class AdminDAO {
 				query.append("   select c_id, gu_name,  nickname, birth, gender, tel, profile, email, c_status,")
 						.append("        to_char(sign_date,'yyyy-mm-dd') sign_date,  to_char(access_date,'yyyy-mm-dd') access_date, ipaddress   ")
 						.append("        from customer c ").append("        inner join local l ")
-						.append("        on c.gu_code = l.gu_code");
+						.append("        on c.gu_code = l.gu_code order by c_id");
 
 				pstmt = con.prepareStatement(query.toString());
 

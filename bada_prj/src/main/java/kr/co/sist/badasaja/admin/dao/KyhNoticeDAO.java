@@ -43,15 +43,15 @@ public class KyhNoticeDAO {
 					" select n_num, o_id, o_main, to_char(posted_date,'yyyy-mm-dd') posted_date from notice order by n_num ");
 
 			rs = pstmt.executeQuery();
-			
+
 			NoticeVO nVO = null;
-			while( rs.next() ) {
+			while (rs.next()) {
 				nVO = new NoticeVO();
 				nVO.setnNum(rs.getString("n_num"));
 				nVO.setoID(rs.getString("o_id"));
 				nVO.setoMain(rs.getString("o_main"));
 				nVO.setPostedDate(rs.getString("posted_date"));
-				
+
 				list.add(nVO);
 			}
 
@@ -59,6 +59,26 @@ public class KyhNoticeDAO {
 			dc.close(rs, pstmt, con);
 		}
 		return list;
+	}
+
+	public void insertNotice(String oID, String iNotice) throws SQLException, NamingException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		DbConnection dc = DbConnection.getInstance();
+		try {
+			con = dc.getConn();
+
+			pstmt = con.prepareStatement("insert into notice(n_num, o_id, o_main) values('n'||PRO1.NOTICE_SEQ.NEXTVAL, ?, ?)");
+			
+			pstmt.setString(1, oID);
+			pstmt.setString(2, iNotice);
+			
+			pstmt.executeUpdate();
+
+		} finally {
+			dc.close(null, pstmt, con);
+
+		}
 	}
 
 }

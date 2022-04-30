@@ -34,12 +34,14 @@
     <link rel="stylesheet" href="../css/aos.css">
 
     <link rel="stylesheet" href="../css/style.css">
-    
-<%
- 	if(session.getAttribute("count")==null){
-		session.setAttribute("count", 1);
+
+ 
+<%	
+	if(session.getAttribute("count")==null){
+	session.setAttribute("count", 1);
 	}
-	int count = (int)session.getAttribute("count"); 
+	int count = (int)session.getAttribute("count");
+ 
 	//VO객체화 
 	List<EntireForumVO> efList = new ArrayList<EntireForumVO>();
 	
@@ -48,16 +50,21 @@
 	efList = MpDAO.selectWishList((String)session.getAttribute("cId"),count);
 	//efList = MpDAO.selectWishList("test",count);
 	int rownum = MpDAO.selectRowNum("test");
+%>
+<%
  	if(rownum/9<1){
 		rownum=1;
 	}else{
-		rownum=rownum/9;
+		rownum=(rownum/9)+1;
 	}
-
 	pageContext.setAttribute("efList", efList);
 
 %>
+
 <script type="text/javascript">
+$(window).on("beforeunload",function(){
+	<%session.removeAttribute("count");%>
+})
 function goForum(cfNum){
 	document.fFrm.cfNum.value = cfNum;
 	$("#MFrm").submit();
@@ -118,7 +125,6 @@ function test(text) {
 </script>
 </head>
 <body onload="load()">
-<%=count %>
 <form action="forum.jsp" id="MFrm" name="MFrm" method="post">
 	<input type="hidden" name="cfNum" value="">
 </form>

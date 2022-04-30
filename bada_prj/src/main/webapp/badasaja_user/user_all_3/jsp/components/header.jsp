@@ -92,10 +92,17 @@
                    id="searchArea" style="width:300px"/>
             <input type="button" value="검색" id="btnSearch" style="background-color: #e0e0e0; border: 0px; border-radius:5px; width:60px; font-weight: bold;
              font-family: 'NanumSquareRound';">
-            <a href="write_forum.jsp" class="main_banner">글쓰기</a>
+        
+            <%if(session.getAttribute("cId")==null ){%>	
+			<a href="login.jsp" style="margin-left: 50px;">로그인</a>
+			<%}else{	 %>
+		    <a href="write_forum.jsp" class="main_banner">글쓰기</a>
             <a href="favorites.jsp"><span style="margin-left: 20px; margin-top:10px; font-size: 25px ">♡</span></a>
-            <a href="settings_password.jsp"><span class="icon icon-person" style="margin-left: 10px;"></span></a>
-            <a href="login.jsp" style="margin-left: 10px;">로그인</a>
+			
+			<a href="settings_password.jsp"><span class="icon icon-person" style="margin-left: 10px;"></span></a>
+			<a href="logout.jsp" style="margin-left: 10px;">로그아웃</a>
+			<%} %>
+            
         </div>
     </nav>
 </header>
