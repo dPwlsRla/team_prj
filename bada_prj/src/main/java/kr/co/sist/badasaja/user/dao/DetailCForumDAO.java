@@ -12,6 +12,7 @@ import javax.naming.NamingException;
 import kr.co.sist.badasaja.dbConnection.DbConnection;
 import kr.co.sist.badasaja.vo.CForumVO;
 import kr.co.sist.badasaja.vo.CImgVO;
+import kr.co.sist.badasaja.vo.CReportVO;
 import kr.co.sist.badasaja.vo.ComVO;
 import kr.co.sist.badasaja.vo.CuVO;
 import kr.co.sist.badasaja.vo.FReportVO;
@@ -242,7 +243,7 @@ public class DetailCForumDAO {
 	/**
 	 * 계정 신고
 	 */
-	public void insertCReport(List<ReportVO>rplist) throws SQLException, NamingException{
+	public void insertCReport(CReportVO crVO) throws SQLException, NamingException{
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -256,15 +257,15 @@ public class DetailCForumDAO {
 			
 		StringBuilder creportQuery = new StringBuilder();
 		creportQuery
-		.append("insert into c_report(r_code, cr_main, cr_date) ")
-		.append(" values(?,?,sysdate);");
+		.append("	insert into c_report(reported_id, report_id, r_code, cr_main, cr_status, cr_date) ")
+		.append(" values( ?, ? , ?, ? , 'n', sysdate)");
 		pstmt=con.prepareStatement(creportQuery.toString());
 		
-		
-		ReportVO rpVO = new ReportVO();
-		pstmt.setInt(1,rpVO.getrCode());
-		pstmt.setString(2,rpVO.getrCategory());
-		
+		pstmt.setString(1,crVO.getReportedID());
+		pstmt.setString(2,crVO.getReportID());
+		pstmt.setInt(3,crVO.getrCode());
+		pstmt.setString(4,crVO.getCrMain());
+			
 		rs=pstmt.executeQuery();
 		}finally {
 			dc.close(rs, pstmt, con);
@@ -278,7 +279,7 @@ public class DetailCForumDAO {
 	 * @throws SQLException 
 	 * @throws NamingException 
 	 */
-	public void insertFreport(FReportVO frVO) throws SQLException, NamingException {
+public void insertFreport(FReportVO frVO) throws SQLException, NamingException {
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -292,13 +293,15 @@ public class DetailCForumDAO {
 			
 		StringBuilder creportQuery = new StringBuilder();
 		creportQuery
-		.append("insert into c_report(reported_id, report_id, r_code, cr_main, cr_status, cr_date) ")
-		.append(" values(?,?,?,?,?,sysdate);");
+		.append("insert into f_report( cfr_num, cf_num, c_id, r_code, cfr_main, cfr_status, cfr_date)")
+		.append(" values('f'||PRO2.F_REPORT_SEQ.NEXTVAL, ?, ?, ?, ?, 'n', sysdate)");
 		pstmt=con.prepareStatement(creportQuery.toString());
 		
 		
-		pstmt.setInt(1,frVO.getrCode());
-		pstmt.setString(2,frVO.getCfNum());
+		pstmt.setString(1,frVO.getCfNum());
+		pstmt.setString(2,frVO.getcID());
+		pstmt.setInt(3,frVO.getrCode());
+		pstmt.setString(4,frVO.getCfrMain());
 		
 		rs=pstmt.executeQuery();
 		}finally {

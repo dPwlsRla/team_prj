@@ -119,7 +119,7 @@ public class CForumDAO {
 		try{
 			con = dc.getConn();
 			StringBuilder entireQuery = new StringBuilder();
-			entireQuery.append("select c.nickname, s.one, s.two, s.three, s.four, s.five "
+			entireQuery.append("select c.c_id,c.nickname, s.one, s.two, s.three, s.four, s.five "
 					+ "from customer c, c_score s "
 					+ "where c.c_id = (select c_id from c_forum where cf_num = ?) "
 					+ "and s.c_id = (select c_id from c_forum where cf_num = ?)");
@@ -146,6 +146,7 @@ public class CForumDAO {
 					cuVO.setScore(String.format("%.1f", score));
 				}
 				cuVO.setNickName(rs.getString("nickname"));
+				cuVO.setcID(rs.getString("c_id"));
 
 			}
 			

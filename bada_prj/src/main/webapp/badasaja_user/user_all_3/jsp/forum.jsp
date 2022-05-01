@@ -437,21 +437,35 @@ $(function(){
 		e.preventDefault();
 		$('#testModal8').modal("show");
 		
-		$('#sendBtn').click(function(e) {
-			$('#testModal8').modal("hide");	
-		//전송 버튼을 눌렀을 때 데이터 보내기
 		
-		})//sendBtnclick
-		
-		$("#cancelBtn").click(function(e){
-			$('#testModal8').modal("hide");	
-		})//cancelBtn
-		
-		$(".close").click(function(e) {
-			$('#testModal8').modal("hide");	
-		});//closeClick
+
 		
 	});//Freportclick
+	$('#sendBtn').click(function() {
+		
+		$.ajax({
+			url:"f_report.jsp",
+			type:"get",
+			data:{"cfNum":$("input[name=cfNum]").val(),"cfr_main":$("#cfr_main").val(),"r_code":$("#r_code").val() } ,
+			dataType : "text",
+			error:function(xhr){
+				alert(xhr.status+"/"+xhr.status.text)
+			},
+			success:function(result){
+				alert(result)
+				$('#testModal8').modal("hide");	
+			}
+		})//ajax
+		
+	})//sendBtnclick
+	$("#cancelBtn").click(function(e){
+		$('#testModal8').modal("hide");	
+	})//cancelBtn
+	
+	$(".close").click(function(e) {
+		$('#testModal8').modal("hide");	
+	});//closeClick
+	
 	
 	//게시글 삭제버튼을 눌렀을 때 모달 띄우기
 	$(".deleteBtn").click(function(e) {
@@ -474,25 +488,40 @@ $(function(){
 	
 	
 	
+	
+	
 	$("#Creport").click(function(e) {
 		e.preventDefault();
 		$('#testModal9').modal("show");
-		
-		//계정 신고 제출
-		$("#sendBtn2").click(function(e) {
-			$("#testModal9").modal("hide");
-		});
-		//계정 삭제 취소
-		$("#cancelBtn2").click(function(e) {
-			$("#testModal9").modal("hide");
-		});
-		//닫기 누르기
-		$(".close").click(function(e) {
-			e.preventDefault();
-			$('#testModal9').modal("hide");	
-		});//closeClick
+
 		
 	});//CreportClick
+	//계정 신고 제출
+	$("#sendBtn2").click(function(e) {
+		$.ajax({
+			url:"c_report.jsp",
+			type:"get",
+			data:{"cr_main":$("#cr_main").val(),"r_code":$("#r_code2").val(),"reportedID":$("#writerID").val()} ,
+			dataType : "text",
+			error:function(xhr){
+				alert(xhr.status+"/"+xhr.status.text)
+			},
+			success:function(result){
+				alert(result)
+				$('#testModal9').modal("hide");	
+			}
+		})//ajax
+	});
+	
+	//계정 삭제 취소
+	$("#cancelBtn2").click(function(e) {
+		$("#testModal9").modal("hide");
+	});
+	//닫기 누르기
+	$(".close").click(function(e) {
+		e.preventDefault();
+		$('#testModal9').modal("hide");	
+	});//closeClick
 	
 	$("#score").click(function(e){
 		$("#testModal10").modal("show");
@@ -673,7 +702,7 @@ function okBtn(){
   </button>
 </div>
      
-    
+ <input type="hidden" id="writerID" value="${cuVO.cID}">   
      
    									  <!--프로필 거래상태 div  -->
     <div class="container3" style="width: 700px;height: 40px;margin-bottom: 20px">
@@ -735,21 +764,23 @@ function okBtn(){
       <div class="modal-body">
         <form>
           <div class="form-group">
-            <label for="recipient-name" class="col-form-label">
+            <!-- <label for="recipient-name" class="col-form-label">
 				 <span style="float: left;">계정 신고</span>
-            </label>
+            </label> -->
              
-             <select name="language" style=" float: right; margin-bottom: 1px;">
-				    <option value="none">사유선택</option>
-				    <option value="korean" >욕설</option>
-				    <option value="english">비방</option>
-				    <option value="chinese">사기</option>
+            <select name="r_code" id="r_code2" style=" float: right; margin-bottom: 1px;">
+				    <option value="0">사유선택</option>
+				    <option value="1" >욕설</option>
+				    <option value="2">비방</option>
+				    <option value="3">사기</option>
+				    <option value="4">허위사실유포</option>
+				    <option value="5">성희롱</option>
 			</select>
-            <input type="text" class="form-control" id="recipient-name" placeholder="제목">
+            <!-- <input type="text" class="form-control" id="recipient-name" placeholder="제목"> -->
           </div>
           <div class="form-group">
           <label for="recipient-name" class="col-form-label"> </label>
-            <textarea class="form-control" style="height: 300px;" id="message-text" placeholder="신고 내용을 입력해주세요"></textarea>
+            <textarea class="form-control" style="height: 300px;" id="cr_main" name="cr_main" placeholder="신고 내용을 입력해주세요"></textarea>
           </div>
         </form>
       </div>
@@ -836,7 +867,7 @@ function okBtn(){
     	<!--게시글 신고하기 버튼 -->
     	<div id="FReportDiv"><label id="FReportBtn" >🚨 게시글 신고</label></div>
     	
-    	<!--게시글 신고하기 modal -->
+<!--게시글 신고하기 modal -->
     	<div class="modal fade" id="testModal8" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -849,21 +880,23 @@ function okBtn(){
       <div class="modal-body">
         <form>
           <div class="form-group">
-            <label for="recipient-name" class="col-form-label">
+			<!--<label for="recipient-name" class="col-form-label">
 				 <span style="float: left;">게시글 신고</span>
-            </label>
+            </label> -->
              
-             <select name="language" style=" float: right; margin-bottom: 1px;">
-				    <option value="none">사유선택</option>
-				    <option value="korean" >부적합 사진</option>
-				    <option value="english">사기 매매</option>
-				    <option value="chinese">광고</option>
+             <select name="r_code" id="r_code" style=" float: right; margin-bottom: 1px;">
+				    <option value="0">사유선택</option>
+				    <option value="1" >욕설</option>
+				    <option value="2">비방</option>
+				    <option value="3">사기</option>
+				    <option value="4">허위사실유포</option>
+				    <option value="5">성희롱</option>
 			</select>
-            <input type="text" class="form-control" id="recipient-name" placeholder="제목">
+          <!--   <input type="text" class="form-control" id="recipient-name" placeholder="제목"> -->
           </div>
           <div class="form-group">
           <label for="recipient-name" class="col-form-label"> </label>
-            <textarea class="form-control" style="height: 300px;" id="message-text" placeholder="신고 내용을 입력해주세요"></textarea>
+            <textarea class="form-control" id="cfr_main" name="cfr_main" style="height: 300px;" placeholder="신고 내용을 입력해주세요"></textarea>
           </div>
         </form>
       </div>
@@ -874,6 +907,8 @@ function okBtn(){
     </div>
   </div>
 </div>
+
+
     	<!--댓글 div-->
     	<div id= "commentDiv">
     	<div style=" font-family: 'NanumSquareRoundB'; font-size: 20px; margin-bottom: 20px; border-bottom: 1px solid #dfdfdf;">댓글</div>
