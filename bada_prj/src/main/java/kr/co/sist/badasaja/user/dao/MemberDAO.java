@@ -46,7 +46,7 @@ public class MemberDAO {
 	
 			
 			pstmt.setString(1, cuVO.getcID());
-			pstmt.setString(2, de.encryption(cuVO.getcPass()));
+			pstmt.setString(2,de.encryption(cuVO.getcPass()));
 			
 			rs=pstmt.executeQuery(); 
 			

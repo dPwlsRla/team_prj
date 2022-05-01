@@ -12,6 +12,7 @@ import javax.naming.NamingException;
 import kr.co.sist.badasaja.dbConnection.DbConnection;
 import kr.co.sist.badasaja.vo.CForumVO;
 import kr.co.sist.badasaja.vo.CImgVO;
+import kr.co.sist.badasaja.vo.ComVO;
 import kr.co.sist.badasaja.vo.CuVO;
 import kr.co.sist.badasaja.vo.FReportVO;
 import kr.co.sist.badasaja.vo.HashTagVO;
@@ -306,4 +307,45 @@ public class DetailCForumDAO {
 		}
 		
 	}//insertFreport
+	
+	/**
+	 * 프로필 눌렀을 때 거래 약속 상태로 바꾸기 
+	 * @throws SQLException
+	 * @param id
+	 * @throws NamingException
+	 */
+	public boolean insertTstatus(TransactionVO trVO) throws SQLException, NamingException {
+		boolean flag = false;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs= null;
+		
+		
+			
+		DbConnection dc= DbConnection.getInstance();
+		
+		try {
+			con =dc.getConn();
+			
+		StringBuilder tstatusQuery = new StringBuilder();
+		tstatusQuery
+		.append("insert into transaction(c_id, cf_num, t_status) ")
+		.append(" values(?,?,'y')");
+		pstmt=con.prepareStatement(tstatusQuery.toString());
+		
+		//댓글 구현 이후 주석 해제
+		//pstmt.setString(1, trVO.getcID());
+		pstmt.setString(1,"user");
+		pstmt.setString(2,trVO.getCfNum());
+		rs=pstmt.executeQuery();
+		}finally {
+			dc.close(rs, pstmt, con);
+			
+		}
+		
+		return flag;
+	}//insertTstatus
+	
+	
+	
 }//class
