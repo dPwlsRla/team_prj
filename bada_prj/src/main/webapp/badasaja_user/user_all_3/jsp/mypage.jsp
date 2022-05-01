@@ -53,6 +53,13 @@ function updateStatus(cfNum){
 					
 	})
 } 
+
+//내가 쓴 글 상세 조회
+function goForum(cfNum){
+	document.fFrm.cfNum.value = cfNum;
+	$("#Frm").submit();
+}
+
 </script>
 
 </head>
@@ -74,14 +81,22 @@ function updateStatus(cfNum){
 	mpbList2 = mpDAO.selectDoneForum((String)session.getAttribute("cId"));
 	mpbList3 = mpDAO.selectMyTransaction((String)session.getAttribute("cId"));
 	
+	//cfNum 받기
+	String cfNum = request.getParameter("cfNum");
+	
 	//저장
 	pageContext.setAttribute("mpbList", mpbList);
 	pageContext.setAttribute("mpbList2", mpbList2);
 	pageContext.setAttribute("mpbList3", mpbList3 );
 %>
 
+
+
 <body >
 
+<form action="forum.jsp" id="Frm" name="Frm" method="post">
+	<input type="hidden" name="cfNum" value="<%= cfNum%>">
+</form>
 
 
 <div class="site-wrap">
@@ -108,12 +123,13 @@ function updateStatus(cfNum){
 	                                </div>
 	                                <div class="row align-items-center">
 	                                    <div class="image">
-	                                        <a href="#"><img src="${mpbVO.mainImg}" alt="Image placeholder" class="img"></a>
+	                                        <a href="javascript:void(0);"  onclick="goForum('${mpbVO.cfNum}')" ><img src="${mpbVO.mainImg}" alt="Image placeholder" class="img"></a>
 	                                    </div>
 	                                    <div class="text">
-	                                        <h6>${mpbVO.cfTopic}</h6>
+	                                        <a href="javascript:void(0);"  onclick="goForum('${mpbVO.cfNum}')" ><h6>${mpbVO.cfTopic}</h6></a>
 	                                        <h6>거래한 분 : ${mpbVO.nickname}</h6>
 	                                    </div>
+	                                    
 	                                </div>
 	                            </div>
                         </c:forEach >

@@ -1,3 +1,5 @@
+<%@page import="kr.co.sist.badasaja.user.dao.DetailCForumDAO"%>
+<%@page import="kr.co.sist.badasaja.vo.TransactionVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -402,7 +404,11 @@
 	pageContext.setAttribute("hashTagList", hashTagList);
 	pageContext.setAttribute("cId",session.getAttribute("cId"));
 
+	//거래상태 바꾸기
+	TransactionVO trVO = new TransactionVO();
+	DetailCForumDAO dcfDAO = new DetailCForumDAO();
 	
+	//dcfDAO.insertTstatus("cd");
 	
 
   %>
@@ -559,6 +565,7 @@ $(function(){
 
 	
 	 
+	 
 });//ready 
 
 function goEditForum(){
@@ -583,6 +590,33 @@ window.onclick = function(event) {
   }
 }//myFunction()
 
+
+function okBtn(){
+	console.log($("input[name=cfNum]").val());
+	 $.ajax({
+			url:"transactionProcess.jsp",
+			type:"get",
+			//댓글 구현 이후 주석 풀기 
+			//근데 값이 안받아지긴 함.. -> 오류 해결 필요
+			//data:{"cID" : "${cVO.cID}","cfNum" : $("input[name=cfNum]").val()} ,
+			data:{"cID" : "user", "cfNum" : "cf5"},
+			error:function(xhr){
+				alert(xhr.status+"/"+xhr.status.text)
+			},
+			success:function(result){
+				if(result){
+					alert("거래가 확정되었습니다.");
+				}else{
+					alert("거래 권한이 없습니다.");
+				}
+				
+			}
+		});//ajax 
+			 
+	
+}//okBtn
+	
+	
 
 
   </script>
@@ -680,10 +714,10 @@ window.onclick = function(event) {
         </button>
       </div>
       <div class="modal-body">
-       거래를 확정하시겠습니까?
+       거래를 신청하시겠습니까?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="okBtn">OK</button>
+        <button type="button" class="btn btn-primary" onclick="okBtn()">OK</button>
       </div>
     </div>
   </div>
