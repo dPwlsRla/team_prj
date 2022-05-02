@@ -1,3 +1,6 @@
+<%@page import="kr.co.sist.badasaja.vo.ReplyViewVO"%>
+<%@page import="kr.co.sist.badasaja.vo.ComViewVO"%>
+<%@page import="kr.co.sist.badasaja.user.dao.CommentDAO"%>
 <%@page import="kr.co.sist.badasaja.user.dao.DetailCForumDAO"%>
 <%@page import="kr.co.sist.badasaja.vo.TransactionVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -158,7 +161,6 @@
 	#commentDiv{
 						border-bottom: 1px solid #dfdfdf;
 						width:700px;
-						height:300px;
 						margin: 0px auto;
 						margin-bottom: 20px;
 						color: #333;
@@ -180,7 +182,7 @@
 						margin-right: 0px;
 						}
 	#commentArea{
-						width: 700px;
+						width: 800px;
 						margin: 0px auto;
 						font-family: 'NanumSquareRound'';
 						}
@@ -199,6 +201,16 @@
 					padding-left: 30px;
 					font-family: 'NanumSquareRound'';
 					}
+	.child{
+	
+			padding-left: 20px;
+	
+	
+	}
+	.parent{
+		widows: 900px
+	
+	}
 					
 	.checkbox{	
 					width:15px;
@@ -263,8 +275,9 @@
  	.commentContent{
  							border-bottom:  1px solid #dfdfdf;
  							margin-bottom: 10px;
+ 							padding-bottom: 30px;
  							}
- 	.replyDiv{
+ 	#replyDiv{
  				border: 1px solid #adb5bd;
  				border-radius:3px;
  				font-size: 13px;
@@ -387,11 +400,20 @@
   </style>
   <%
   	CForumDAO cDAO = new CForumDAO();
+  	CommentDAO comDAO = new CommentDAO();	
+  
   	String cfNum = request.getParameter("cfNum");
   	CForumVO cVO = cDAO.getCForumVO(cfNum);
+  	
+  	List<ComViewVO> comVOList = comDAO.getComments(cfNum);
+  	// List<ReplyViewVO> reVOList = comVOList.
+  			
+  	
+  	
   	List<CImgVO> cImgList = cDAO.getCImgVOList(cfNum);
   	List<HashTagVO> hashTagList = cDAO.getHashTagVOList(cfNum);
   	CuVO cuVO = cDAO.getCuVO(cfNum);
+  	
   	
 	pageContext.setAttribute("cVO", cVO);
 	pageContext.setAttribute("cuVO", cuVO);
@@ -403,6 +425,10 @@
 	}
 	pageContext.setAttribute("hashTagList", hashTagList);
 	pageContext.setAttribute("cId",session.getAttribute("cId"));
+	pageContext.setAttribute("cfNum", cfNum);
+	pageContext.setAttribute("comVOList", comVOList);
+	
+	
 
 	//거래상태 바꾸기
 	TransactionVO trVO = new TransactionVO();
@@ -414,24 +440,51 @@
   %>
   
   <script type="text/javascript">
-  console.log();
-$(function(){
-	$(".replyDiv").click(function() {
-		alert("댓글을 입력하시겠습니까");
-		var reply =   "<div style='font-weight: bold;'><div class='replyMark'></div>"+
-		 						"<img class='commentProfile' src='http://localhost/html_prj/badasaja/images/person_1.jpg'/>바나나가좋아"+
-    							"<div class='addr'>안산시 상록구 사동</div>"+
-    							"<label class='writerLabel'>작성자</label>"+
-    							"</div>"+
-    							"<div class='commentContent' >"+
-    							"<input type='text' style='width:620px'/><input type='button' value='댓글 달기' class='commentBtn'>"+
-    							"<div>" +
-    							"<div class='date'>2022-04-17</div>"+
-    							
-    							"</div></div></div>"
-     $("#oneComment").append(reply);
-	});//click
-	
+  window.onbeforeunload = function () {
+      var scrollPos;
+      if (typeof window.pageYOffset != 'undefined') {
+          scrollPos = window.pageYOffset;
+      }
+      else if (typeof document.compatMode != 'undefined' && document.compatMode != 'BackCompat') {
+          scrollPos = document.documentElement.scrollTop;
+      }
+      else if (typeof document.body != 'undefined') {
+          scrollPos = document.body.scrollTop;
+      }
+      document.cookie = "scrollTop=" + scrollPos;
+  }
+  
+  window.onload = function () {
+      if (document.cookie.match(/scrollTop=([^;]+)(;|$)/) != null) {
+          var arr = document.cookie.match(/scrollTop=([^;]+)(;|$)/);
+          document.documentElement.scrollTop = parseInt(arr[1]);
+          document.body.scrollTop = parseInt(arr[1]);
+      }
+  }
+  
+  function commentProcess(){
+	  var cfNum = '<%=cfNum%>';
+	  var cId = '<%=(String)session.getAttribute("cId")%>';
+	  $.ajax({
+		  type : "POST",
+		  url : "insert_comment.jsp",
+		  data :
+			  {
+			  	"cfNum" : cfNum,
+			  	"cId" : cId,
+			  	"com_main" : document.getElementById("input_com").value
+			  },
+		success : function(resp){
+			document.location.reload();
+			
+		}
+	  })
+  }
+  
+  
+  
+  
+  
 	//게시물 신고 버튼을 눌렀을 때 모달 띄우기
 	$("#FReportBtn").click(function(e) {
 		e.preventDefault();
@@ -475,6 +528,7 @@ $(function(){
 		//게시글 삭제확인
 		$("#search").click(function(e) {
 			$("#testModal7").modal("hide");
+			$("#dFrm").submit();
 		});
 		//게시글 삭제 취소
 		$("#cancel").click(function() {
@@ -592,14 +646,28 @@ $(function(){
 	});
 	});//transClick
 
-	
-	 
-	 
-});//ready 
 
 function goEditForum(){
 	$("#fFrm").submit();
 }
+	
+function addReply(comNum){
+		  var cId = '<%=(String)session.getAttribute("cId")%>';
+		  $.ajax({
+			  type : "POST",
+			  url : "insert_reply.jsp",
+			  data :
+				  {
+				  	"comNum" : comNum,
+				  	"cId" : cId,
+				  	"reply_main" : document.getElementById("input_reply_"+comNum).value
+				  },
+			success : function(resp){
+				document.location.reload();
+				
+			}
+		  })
+	}
 
 //드롭다운 
 function myFunction() {
@@ -655,13 +723,17 @@ function okBtn(){
  
   <%@include file="components/header.jsp"%>
   
+  <form action="delete_forum_submit.jsp" id="dFrm" name="dFrm" method="post">
+	<input type="hidden" name="cfNum" value="<%=cfNum%>">
+</form>
+
   <form action="edit_forum.jsp" id="fFrm" name="fFrm" method="post">
 	<input type="hidden" name="cfNum" value="<%=cfNum%>">
 </form>
   
 	<div style="margin: 0px auto; width: 700px; text-align: right; ">
 	<c:if test = "${cVO.cID eq cId}"><a href="javascript:void(0);" onclick="goEditForum()"><input type="button" value="수정하기" class="editBtn"></a></c:if>
-	<a href="javascript:void(0);" onclick=""><button id="testBtn7" class="deleteBtn">삭제 하기</button></a>
+	<c:if test = "${cVO.cID eq cId}"><a href="javascript:void(0);" ><input type="button" id="tesetBtn7" value="삭제하기" class="deleteBtn"></a></c:if>
 	</div>
 									<!--container1: 제목 및 작성일시 div-->
     <div class="container1"  >
@@ -915,10 +987,11 @@ function okBtn(){
     	<div id="oneComment">
     	
     	<!--부모 댓글  -->
+    	<c:forEach var="comVO" items="${comVOList}">
     	<div class="parent">
     	<div style=" font-weight: bold; ">
     	<div class="dropdown">
-	    <img id="commentProfile" src="../images/person_1.jpg" alt=""  id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"/>닉네임
+	    <img id="commentProfile" src="${comVO.profile }" alt=""  id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"/>${comVO.nickname }
 	  <!--드롭다운 메뉴 -->
   	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
     	<li><a class="dropdown-item" href="#score" id="score2">친절 점수 주기</a></li>
@@ -926,32 +999,76 @@ function okBtn(){
     	<li><a class="dropdown-item" href="#goTransaction" id="Trans">거래 약속 신청</a></li>
   	</ul>
 	</div>
-    	
-    	
-    	
-    	<div class="addr" >안산시 단원구 초지동</div>
+    	<div class="addr" >${comVO.comDate }</div>
     	</div>
     	<div class="commentContent">
-    	<p>지금 교환 가능한가요?</p>
+    	<div>
+    	<c:choose>
+	    	<c:when test="${comVO.cId eq cId || cVO.cID eq cId}">
+	    		<div style="width: 700px">${comVO.comMain }</div>
+	    	</c:when>
+	    	<c:otherwise>
+	    		<p style="font-weight: bold;color: darkgray;">비밀 댓글입니다</p>
+	    	</c:otherwise>
+    	</c:choose>
+    	</div>
+    	</div>
+    	</div>
+    	
+    	
+    	<!-- 자식댓글 -->
+    	<c:forEach var="rVO" items="${comVO.replyList}" varStatus="idx">
+    	<div class="child">
+    	<div style=" font-weight: bold; ">
+    	<div class="dropdown">
+	    <img id="commentProfile" src="${rVO.profile }" alt=""  id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"/>${rVO.nickname }
+	  <!--드롭다운 메뉴 -->
+  	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    	<li><a class="dropdown-item" href="#score" id="score2">친절 점수 주기</a></li>
+    	<li><a class="dropdown-item" href="#CReport" id="CReport2">계정 신고</a></li>
+    	<li><a class="dropdown-item" href="#goTransaction" id="Trans">거래 약속 신청</a></li>
+  	</ul>
+	</div>
+    	<div class="addr" >${rVO.replyDate }</div>
+    	</div>
+    	<div class="commentContent">
+    	<c:choose>
+	    	<c:when test="${rVO.cId eq cId || cVO.cID eq cId}">
+	    		<p>${rVO.replyMain }</p>
+	    	</c:when>
+	    	<c:otherwise>
+	    		<p style="font-weight: bold;color: darkgray;">비밀 댓글입니다</p>
+	    	</c:otherwise>
+    	</c:choose>
+    	
     	<div>
     	<div>
-    	<div class="date">2022-04-17</div>
-    	<a href="#" class="replyDiv">답글 쓰기</a>
     	</div>
     	</div>
     	</div>
     	</div>
+    	</c:forEach>
+    	
+    	
+    	<!-- 대댓글 달기 -->
+    	<div style='font-weight: bold;'></div>
+    	<div class='commentContent' >
+    	<div class='replyMark'></div>
+    	<input type='text' id="input_reply_${comVO.comNum}" name="input_reply" style='width:600px'class="commentText"/>
+    	<input type='button' onclick="addReply('${comVO.comNum}')" name="reply_process_'${comVO.comNum}'" id="reply_process_'${comVO.comNum}'" value='댓글 달기' class='commentBtn' style="float: right; background-color: #fada95">
+    	<div>
+    	</div></div>
+	    		</c:forEach>
     	</div>
     	</div>
-    	</div>	
+    	</div>	 
     	
     	
     	
     	<!-- 댓글 달기 input & button -->
-    	<div id="commentArea">
-    	<input type="text" placeholder="댓글을 입력해주세요." class="commentText">
-    	🔒<input type="checkbox" class="checkbox">
-    	<input type="button" value="댓글 달기" class="commentBtn">
+    	<div id="commentArea" style="padding: 30px">
+    	<input type="text" id="input_com" name="input_com" style="width: 650px" placeholder="댓글을 입력해주세요.">
+    	<input type="button" onclick="commentProcess()" value="댓글 달기" class="commentBtn" style="background-color: #2a90ab">
     	</div>											
     	
     	
