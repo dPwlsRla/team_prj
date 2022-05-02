@@ -14,7 +14,7 @@
 
 
 // TODO
-File saveDirectory=new File("D:/dev/workspace_new/team_prj/team_prj/bada_prj/src/main/webapp/badasaja_user/user_all_3/images/c_img");
+File saveDirectory=new File("C:/Users/user/git/team_prj/bada_prj/src/main/webapp/badasaja_user/user_all_3/forum_img");
 int fileSize=1024*1024*10;
 
 MultipartRequest mr=new MultipartRequest(request, saveDirectory.getPath() , fileSize,"UTF-8",

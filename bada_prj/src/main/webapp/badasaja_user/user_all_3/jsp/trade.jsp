@@ -1,3 +1,4 @@
+<%@page import="kr.co.sist.badasaja.vo.ProductVO"%>
 <%@page import="kr.co.sist.badasaja.vo.HashTagVO"%>
 <%@page import="kr.co.sist.badasaja.vo.CForumVO"%>
 <%@page import="kr.co.sist.badasaja.vo.WishListVO"%>
@@ -24,69 +25,82 @@ info ="물물교환 게시판 메인"%>
     <link rel="stylesheet" href="../css/owl.theme.default.min.css">
     <link rel="stylesheet" href="../css/aos.css">
     <link rel="stylesheet" href="../css/style.css">
-</head>
-
-
-
-
 <%
-	//VO객체화 
-	List<EntireForumVO> efList = new ArrayList<EntireForumVO>();
+
 	
 	//DAO 불러오기
 	EntireForumDAO efDAO = new EntireForumDAO();
-	efList = efDAO.selectEntireForum((String)session.getAttribute("cId"));
+	List<ProductVO> pList = efDAO.selectProductList();
 	
 	// TODO
-	pageContext.setAttribute("efList", efList);
+	pageContext.setAttribute("pList", pList);
+	
 
 %>
 
 <script type="text/javascript">
-
-	// 위시 리스트 추가
-	function wishProcess(cfNum){
-		var cId = '<%=(String)session.getAttribute("cId")%>';
-		console.log(cId);
-		if (cId == null) {
-			alert("login plz");
-			return;
-		}
-		if($("#like_"+cfNum)[0].src.includes('unlike')){
-			$("#like_"+cfNum)[0].src = "../images/like.png";
-			$.ajax({
-				type: "POST",
-				url: "wishProcess.jsp",
-				data:
-					{
-						"process":"insert",
-						"cfNum":cfNum,
-						"cId":cId,
-					},
-				success: function(resp){alert("찜목록에 추가되었습니다");},
-			})
-		}
-		else{
-			$("#like_"+cfNum)[0].src = "../images/unlike.png";
-			$.ajax({
-				type: "POST",
-				url: "wishProcess.jsp",
-				data:
-					{
-						"process":"delete",
-						"cfNum":cfNum,
-						"cId":cId,
-					},
-				success: function(resp){alert("찜목록에서 삭제되었습니다");},
-			})
-		}
-	}
 	
 	// 게시물 상세 조회
 	function goForum(cfNum){
 		document.fFrm.cfNum.value = cfNum;
 		$("#fFrm").submit();
+	} 
+	
+	function activeA(){
+		$(".nav-link").css("background-color","white");
+		$(".nav-link").css("color","gray");
+		let dv = event.currentTarget;
+		dv.style.backgroundColor="#2A90AB";
+		dv.style.color="white";
+		
+		pName = dv.innerText;
+		id = '<%=(String)session.getAttribute("cId")%>';
+		
+		$.ajax({
+			url:"http://localhost/bada_prj/badasaja_user/user_all_3/jsp/entire_forum_table.jsp",
+			 data: {
+				   cId : id,
+				   product : pName,
+			},
+			type:"get",
+			dataType:"html",
+			error:function( xhr ){
+				alert( xhr.text + "/" + xhr.status);
+			},
+			success:function(data){
+				$("#includeAjax").html(data);
+			}
+		}) //ajax
+		
+		$.ajax({
+			url:"http://localhost/bada_prj/badasaja_user/user_all_3/jsp/banner_info.jsp",
+			 data: {
+				   cId : id,
+				   product : pName,
+			},
+			type:"get",
+			dataType:"json",
+			error:function( xhr ){
+				alert( xhr.text + "/" + xhr.status);
+			},
+			success:function(json){
+				
+				if(!json.bFlag){
+
+					$("#banner").html("<div style='background-color:lightgray; color:black; height:200px;margin-bottom: 20px; text-align:center; padding:75px;'>"
+			          +"<h5>앗! 현재 카테고리에 배너 광고가 없습니다.</h5>"+"<h5>광고 문의 : 02-XXXX-XXXX</h5></div>");
+					
+				}else{
+					$("#banner").html("<div style='height:200px;margin-bottom: 20px;'>"+
+			          "<a href='http://"+json.url+"'><img src='../../../badasaja_admin/banner_upload/"+json.img+"'"
+			          +"style='width:100%; height:100%;'></a></div>");
+				}//end else
+			}
+		}) //ajax
 	}
+	
+	
+	
 
 </script>
 <style type="text/css">
@@ -94,51 +108,58 @@ info ="물물교환 게시판 메인"%>
 			  width : 250px;
 			  height: 250px; 
 				}
+.nav-link{
+	color:gray;
+	cursor:pointer
+}
 
+.nav-link:hover{
+	color:black;
+}
+
+.nav-item{
+	width:20%;
+}
 
 </style>
 
+</head>
+
 <body>
-
-<form action="forum.jsp" id="fFrm" name="fFrm" method="post">
-	<input type="hidden" name="cfNum" value="">
-</form>
-
 <div class="site-wrap">
     <%@include file="components/header.jsp"%>
+
+
     <div class="site-section">
         <div class="container">
-            <div class="row mb-5">
-                <div class="col-md-9 order-2">
-                    <div style="border: 1px solid #333;height: 200px;margin-bottom: 20px">
-                        광고
-                    </div>
-                    <div class="row mb-5">
-						<c:forEach var="efVO"  items="${efList}" > <!-- pageContext.setattribute한 efList 에서 for문 돔. 원소 하나하나를 efVO로 보겠다. -->
-							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-	                            <div class="block-4 text-center">
-	                                <div class="block-4-text p-4">
-	                                    <a href="javascript:void(0);"  onclick="goForum('${efVO.cfNum}')" ><h3>${efVO.title}</h3></a>
-	                                    <c:choose>
-	                                    	<c:when test="${efVO.isWish}"><img src = "../images/like.png" id="like_${efVO.cfNum}" onclick="wishProcess('${efVO.cfNum}')"></c:when>
-      										<c:when test="${!efVO.isWish}"><img src = "../images/unlike.png" id="like_${efVO.cfNum}" onclick="wishProcess('${efVO.cfNum}')"></c:when>	
-	                                    </c:choose>
-	                                </div>
-	                                <figure class="block-4-image">
-	                                    <a href="javascript:void(0);"  onclick="goForum('${efVO.cfNum}')"><img src="../images/c_img/${efVO.img}" alt="Image placeholder" class="img-fluid"></a>
-	                                </figure>
-	                                <div class="block-4-text">
-	                                    <ul>
-	                                    	<c:forEach var="htVO"  items="${efVO.list}" >
-	                                    		<li>${htVO.hash}</li>
-	                                    	</c:forEach>
-	                                    </ul>
-	                                </div>
-	                            </div>
-	                        </div>
-							
-						</c:forEach>	
-
+        	<div>
+				<ul class="nav nav-pills nav-fill">
+				<c:forEach var="data" items="${ pList }" varStatus="vs" end="4">
+				 <li class="nav-item">
+				 	<div class="nav-link" onclick="activeA()">
+				 		<c:out value="${ data.product }" /> 
+				 	</div>
+				 </li>
+				 </c:forEach>
+				</ul>
+			</div>
+        	<div>
+				<ul class="nav nav-pills nav-fill">
+				<c:forEach var="data" items="${ pList }" varStatus="vs" begin="5" end="9">
+				 <li class="nav-item">
+				 	<div class="nav-link" onclick="activeA()">
+				 		<c:out value="${ data.product }" /> 
+				 	</div>
+				 </li>
+				 </c:forEach>
+				</ul>
+			</div>
+            <div class="row mt-4 mb-4">
+                <div class="col">
+                	<div id="banner">
+          <!--  전체 forum이 표시되는 div -->
+          			</div>
+                    <div id="includeAjax" class="row mb-5">
                     </div>
                     <div class="row" data-aos="fade-up">
                         <div class="col-md-12 text-center">
@@ -155,22 +176,6 @@ info ="물물교환 게시판 메인"%>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-md-3 order-1 mb-5 mb-md-0" style="border: 1px solid #333;height: 800px;display: inline;text-align: left;background-color: #2a90ab
-                    ;color: white;font-weight: bold;font-size: 20px;max-width: 180px">
-                    <ul style="margin-top: 50px;display: inline-block; ">
-                    <li>전자기기</li><br/>
-                    <li>생활용품</li><br/>
-                    <li>식품</li><br/>
-                    <li>반려 동물 용품</li><br/>
-                    <li>의류</li><br/>
-                    <li>뷰티, 미용</li><br/>
-                    <li>인테리어, 가구</li><br/>
-                    <li>필기구</li><br/>
-                    <li>악기</li><br/>
-                    <li>기타 용품</li><br/>
-                    </ul>
                 </div>
             </div>
         </div>

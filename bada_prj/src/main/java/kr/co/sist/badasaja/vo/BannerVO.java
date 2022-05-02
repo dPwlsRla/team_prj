@@ -5,13 +5,14 @@ public class BannerVO {
 	private String bNum, aID, pCode, aURL, local, postedDate, expiryDate, img;
 	private char bStatus;
 	private int bCost;
+	boolean bFlag;
 
 	public BannerVO() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public BannerVO(String bNum, String aID, String pCode, String aURL, String local, String postedDate,
-			String expiryDate, String img, char bStatus, int bCost) {
+			String expiryDate, String img, char bStatus, int bCost, boolean bFlag) {
 		this.bNum = bNum;
 		this.aID = aID;
 		this.pCode = pCode;
@@ -22,6 +23,7 @@ public class BannerVO {
 		this.img = img;
 		this.bStatus = bStatus;
 		this.bCost = bCost;
+		this.bFlag = bFlag;
 	}
 
 	public String getLocal() {
@@ -58,6 +60,14 @@ public class BannerVO {
 
 	public String getaURL() {
 		return aURL;
+	}
+	
+	public void setBFlag(boolean bFlag) {
+		this.bFlag=bFlag;
+	}
+	
+	public boolean getBFlag() {
+		return bFlag;
 	}
 
 	public void setaURL(String aURL) {
