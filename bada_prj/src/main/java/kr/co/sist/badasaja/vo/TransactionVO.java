@@ -5,7 +5,6 @@ public class TransactionVO {
 	private String cID, cfNum, tStatus;
 	
 	public TransactionVO() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public TransactionVO(String cID, String cfNum, String tStatus) {

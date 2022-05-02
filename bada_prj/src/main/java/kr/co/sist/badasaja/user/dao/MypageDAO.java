@@ -193,9 +193,9 @@ public class MypageDAO {
 				pstmt=con.prepareStatement(myForum.toString());
 				
 				//세션 구현 후 주석해제
-				//pstmt.setString(1,id);
+				pstmt.setString(1,id);
 				
-				pstmt.setString(1, "test");
+				//pstmt.setString(1, "test");
 				rs=pstmt.executeQuery();
 				
 				MyPostBoardVO mpbVO = 	null;
@@ -303,13 +303,14 @@ public class MypageDAO {
 			selectTrans
 			.append(" select cf_num, cf_topic, main_img, TO_CHAR(WRITE_DATE, 'YYYY-MM-DD') write_date ")
 			.append(" from c_forum ")
-			.append(" where c_id=? and cf_status='거래중'  ");
+			.append(" where c_id=? and cf_status='거래약속'  ");
 			
 			pstmt=con.prepareStatement(selectTrans.toString());
 			
 			MyPostBoardVO mpbVO = 	null;
 			
 			pstmt.setString(1,id);
+			//pstmt.setString(1,"test");
 			
 			rs=pstmt.executeQuery();
 			
@@ -332,6 +333,13 @@ public class MypageDAO {
 		return mpbList;
 	}//selectMyTransaction
 	
+	/**
+	 * 거래약속 : 거래약속인 상태의 게시글을 거래완료로 바꾸는 메뉴
+	 * @param cfNum
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
 	public List<MyPostBoardVO> updateMyTransaction(String cfNum) throws SQLException, NamingException{
 		List<MyPostBoardVO> mpbList = new ArrayList<MyPostBoardVO>();
 		MyPostBoardVO mpbVO = new MyPostBoardVO();
