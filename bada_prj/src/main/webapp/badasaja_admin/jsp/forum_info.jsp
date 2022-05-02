@@ -1,3 +1,7 @@
+<%@page import="kr.co.sist.badasaja.vo.ComViewVO"%>
+<%@page import="kr.co.sist.badasaja.user.dao.CommentDAO"%>
+<%@page import="kr.co.sist.badasaja.vo.ComVO"%>
+<%@page import="kr.co.sist.badasaja.vo.CForumVO"%>
 <%@page import="kr.co.sist.badasaja.vo.AdForumVO"%>
 <%@page import="kr.co.sist.badasaja.admin.dao.AdminForumDAO"%>
 <%@page import="kr.co.sist.badasaja.admin.dao.AdminAdDAO"%>
@@ -6,7 +10,8 @@
 <%@page import="java.util.List"%>
 <%@page import="kr.co.sist.badasaja.admin.dao.BaseDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" info="유저 게시글 상세조회 페이지"%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr"
 	data-theme="theme-default" data-assets-path="../assets/"
@@ -59,60 +64,98 @@ img {
 	}
 }
 
-#commentProfile{
-							width: 30px;
-    						height: 30px; 
-    						border-radius: 70%;
-    						overflow: hidden;
-    						border: 1px solid #dfdfdf;
-    						margin-right: 5px;
-    						display: inline-block;
-							}
-	
-	.nicknameCom{
-			font-weight: bold;
-			font-size: 20px;
-		   }
- 	.addr{
- 			font-size: 12px;
- 			display: inline-block;
- 			margin-left: 5px;
- 		   }
- 	.writerLabel{
-					border: 1px solid #868e96;
-					border-radius:5px;
-					color: #868e96;
-					font-size: 10px;
-					display: inline-block;
- 					}
- 	.replyMark{
- 					width: 9px;
-   				    height: 9px;
-    				border-bottom: 1px solid #adb5bd;
-    				border-left: 1px solid #adb5bd;
-    				display: inline-block;
-    				margin-right: 16px;
-    				vertical-align: top;
- 				  }
- 	.date{
- 			font-size: 12px;
- 			color:#868e96;
- 			display: inline-block;
- 			width:630px;
- 		   }
- 	.commentContent{
- 							border-bottom:  1px solid #dfdfdf;
- 							margin-bottom: 10px;
- 							}
- 	.replyDiv{
- 				border: 1px solid #adb5bd;
- 				border-radius:3px;
- 				font-size: 13px;
- 				display: inline-block;
- 				text-decoration: none;
- 				color: #333;
- 				width: 60px;
- 				}
+#commentProfile {
+	width: 30px;
+	height: 30px;
+	border-radius: 70%;
+	overflow: hidden;
+	border: 1px solid #dfdfdf;
+	margin-right: 5px;
+	display: inline-block;
+}
+
+.nicknameCom {
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.addr {
+	font-size: 12px;
+	display: inline-block;
+	margin-left: 5px;
+}
+
+.writerLabel {
+	border: 1px solid #868e96;
+	border-radius: 5px;
+	color: #868e96;
+	font-size: 10px;
+	display: inline-block;
+}
+
+.replyMark {
+	width: 9px;
+	height: 9px;
+	border-bottom: 1px solid #adb5bd;
+	border-left: 1px solid #adb5bd;
+	display: inline-block;
+	margin-right: 16px;
+	vertical-align: top;
+}
+
+.date {
+	font-size: 12px;
+	color: #868e96;
+	display: inline-block;
+	width: 630px;
+}
+
+.commentContent {
+	border-bottom: 1px solid #dfdfdf;
+	margin-bottom: 10px;
+}
+
+.replyDiv {
+	border: 1px solid #adb5bd;
+	border-radius: 3px;
+	font-size: 13px;
+	display: inline-block;
+	text-decoration: none;
+	color: #333;
+	width: 60px;
+}
+
+#commentArea {
+	width: 800px;
+	margin: 0px auto;
+	font-family: 'NanumSquareRound' ';
+}
+
+.oneComment {
+	width: 700px;
+	margin: 0px auto;
+	font-family: 'NanumSquareRound' ';
+}
+
+#parentCom {
+	width: 700px;
+	border-bottom: 1px solid #dfdfdf;
+	font-family: 'NanumSquareRound' ';
+}
+
+#childCom {
+	width: 700px;
+	padding-left: 30px;
+	font-family: 'NanumSquareRound' ';
+}
+
+.child {
+	padding-left: 20px;
+}
+
+.parent {
+	widows: 900px
+}
 </style>
 <!-- Favicon -->
 <link rel="icon" type="image/x-icon"
@@ -143,28 +186,31 @@ img {
 
 <!-- Page CSS -->
 <%
-	BaseDAO bDAO = BaseDAO.getInstance();
-	List<ProductVO> pList = bDAO.selectProductList();
-	pageContext.setAttribute("pList", pList);
-/*	
-	String cfNum = request.getParameter("cfNum");
-	
-	if(cfNum == null){
-		out.println("비정상적인 접근입니다. 다시 시도해주세요.");
-		response.sendRedirect("login.jsp");
-		return;
-	}
-	
-	AdminForumDAO afDAO = AdminForumDAO.getInstance();
-	
-	AdForumVO afVO = afDAO.selectAdForum(cfNum);
-	
-	pageContext.setAttribute("afVO", afVO);
-	
-	String imgs = afDAO.selectAdImg(cfNum);
-	 */
-	
-	%>
+BaseDAO bDAO = BaseDAO.getInstance();
+List<ProductVO> pList = bDAO.selectProductList();
+pageContext.setAttribute("pList", pList);
+
+String cfNum = request.getParameter("cfNum");
+
+if (cfNum == null) {
+	out.println("비정상적인 접근입니다. 다시 시도해주세요.");
+	response.sendRedirect("login.jsp");
+	return;
+}
+
+AdminForumDAO afDAO = AdminForumDAO.getInstance();
+
+CForumVO cfVO = afDAO.selectCForum(cfNum);
+
+String imgs = afDAO.selectCImg(cfNum);
+
+String hashes = afDAO.selectHash(cfNum);
+
+CommentDAO comDAO = new CommentDAO();
+List<ComViewVO> comVOList = comDAO.getComments(cfNum);
+
+pageContext.setAttribute("comVOList", comVOList);
+%>
 
 <!-- Helpers -->
 <script src="../assets/vendor/js/helpers.js"></script>
@@ -177,36 +223,54 @@ img {
 <script type="text/javascript"
 	src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
-<%-- 	$(function(){
+ 	$(function(){
 		
-		var afNum = '<%= afNum %>';
+		var cfNum = '<%=cfNum%>';
 		
-		$("#aID").val("<%= afVO.getaID() %>");
-		$("#topic").val("<%= afVO.getAfTopic() %>");
-		$("#forumMain").val("<%= afVO.getAfMain() %>")
-		$("#category").val("<%= afVO.getpCode() %>")
-		$("#status").val("<%= afVO.getAfStatus() %>")
-		$("#preview").attr("src","http://localhost/bada_prj/badasaja_admin/upload/" + "<%= afVO.getMainImg() %>" )
 		
-		var str = '<%= imgs %>'
-		if( str == ""){
-			return;
-		}
-		var imgs = str.split(",");
-		if(imgs.length == 1){
-		$("#preview1").attr("src","http://localhost/bada_prj/badasaja_admin/upload/" + imgs[0] )
-		} else if( imgs.length == 2){
-		$("#preview1").attr("src","http://localhost/bada_prj/badasaja_admin/upload/" + imgs[0] )
-		$("#preview2").attr("src","http://localhost/bada_prj/badasaja_admin/upload/" + imgs[1] )
-		}
+		$("#aID").val("<%=cfVO.getcID()%>");
+		$("#topic").val("<%=cfVO.getCfTopic()%>");
+		$("#forumMain").val("<%=cfVO.getCfMain()%>")
+		$("#category").val("<%=cfVO.getpCode()%>")
+		$("#cstatus").val("<%=cfVO.getCfStatus()%>")
+ 		$("#preview").attr("src"," ../forum_img/" + "<%=cfVO.getMainImg()%>" )
+		
+	 <	var str = '<%= imgs %>'
+		if( str != ""){
+			var imgs = str.split(",");
+			if(imgs.length == 1){
+			$("#preview1").attr("src"," ../forum_img/" + imgs[0] )
+			} else if( imgs.length == 2){
+			$("#preview1").attr("src"," ../forum_img/" + imgs[0] )
+			$("#preview2").attr("src"," ../forum_img/" + imgs[1] )
+			}
+		} 
+	 	
+	 	var hashes = '<%=hashes%>';
+	 	 if( hashes != "" ){
+	 		var hashArr = hashes.split(",");
+			if(hashArr.length == 1){
+			$("#hash1").val(hashArr[0] )
+			} else if( hashArr.length == 2){
+			$("#hash1").val(hashArr[0] )
+			$("#hash2").val(hashArr[1] )
+			} else if( hashArr.length == 3){
+			$("#hash1").val(hashArr[0] )
+			$("#hash2").val(hashArr[1] )
+			$("#hash3").val(hashArr[2] )
+			} else{
+				$("#hash1").val(hashes)
+			}
+	 	} 
+		
 		
 	})
-	 --%>
+	
 </script>
 </head>
 
 <body>
-	
+
 	<%@ include file="nav.jsp"%>
 	<!-- Layout wrapper -->
 	<div class="layout-wrapper layout-content-navbar">
@@ -222,7 +286,8 @@ img {
 
 					<div class="container-xxl flex-grow-1 container-p-y">
 						<h4 class="fw-bold py-3 mb-4">
-							<span class="text-muted fw-light">Advertiserment/</span>Ad Forum Info
+							<span class="text-muted fw-light">Advertiserment/</span>Ad Forum
+							Info
 						</h4>
 
 						<!-- Basic Layout -->
@@ -233,150 +298,186 @@ img {
 										class="card-header d-flex justify-content-between align-items-center">
 									</div>
 									<div class="card-body">
-											<div class="mb-3">
-												<label class="form-label" for="basic-default-fullname">Board
-													Topic</label> <input type="text" id="topic" name="topic"
-													class="form-control" id="basic-default-fullname"
-													placeholder="Banner Topic" />
-											</div>
-											<div class="mb-3">
-												<label class="form-label" for="basic-default-company"
-													style="margin-top: 10px;">Img</label>
-												<div class="input-group">
-													<!-- <input type="file" class="form-control" id="input_imgs" name="input_imgs" multiple="multiple"/>
+										<div class="mb-3">
+											<label class="form-label" for="basic-default-fullname">Board
+												Topic</label> <input type="text" id="topic" name="topic"
+												class="form-control" id="basic-default-fullname"
+												readonly="readonly" placeholder="Banner Topic"
+												style="background-color: #ffffff" />
+										</div>
+										<div class="mb-3">
+											<label class="form-label" for="basic-default-company"
+												style="margin-top: 10px;">Img</label>
+											<div class="input-group">
+												<!-- <input type="file" class="form-control" id="input_imgs" name="input_imgs" multiple="multiple"/>
                         <label class="input-group-text" for="inputGroupFile02">Upload</label> -->
-													<table style="margin: 0px auto;">
-														<tr>
-															<td style="padding: 30px;"><img id="preview" /> <br />
-															<br/></td>
-															<td style="padding: 30px;"><img id="preview1" /> <br />
-															<br /> </td>
-															<td style="padding: 30px;"><img id="preview2" /> <br />
+												<table style="margin: 0px auto;">
+													<tr>
+														<td style="padding: 30px;"><img id="preview" /> <br />
 															<br /></td>
-														</tr>
-													</table>
+														<td style="padding: 30px;"><img id="preview1" /> <br />
+															<br /></td>
+														<td style="padding: 30px;"><img id="preview2" /> <br />
+															<br /></td>
+													</tr>
+												</table>
+											</div>
+										</div>
+										<div class="mb-3">
+											<div class="input-group input-group-merge">
+												<div class="mb-3" style="margin-right: 4%;">
+													<label for="defaultSelect" class="form-label">Customer
+														ID</label>
+													<div class="input-group input-group-merge">
+														<span id="basic-icon-default-fullname2"
+															class="input-group-text"><i class="bx bx-user"></i></span>
+														<input type="text" class="form-control" id="aID"
+															name="aID" readonly="readonly"
+															aria-describedby="basic-icon-default-fullname2"
+															style="background-color: #ffffff" />
+													</div>
+													<div id="idCheck">&nbsp;&nbsp;&nbsp;&nbsp;</div>
+												</div>
+												<div class="mb-3" style="margin-right: 5%;">
+													<label for="defaultSelect" class="form-label">카테고리</label>
+													<input type="text" id="category" name="category"
+														class="form-control">
+												</div>
+												<div class="mb-3">
+													<label for="defaultSelect" class="form-label">상태</label> <input
+														type="text" id="cstatus" name="cstats"
+														class="form-control" readonly="readonly"
+														style="background-color: #ffffff">
 												</div>
 											</div>
-											<div class="mb-3">
-												<div class="input-group input-group-merge">
-													<div class="mb-3" style="margin-right: 4%;">
-														<label for="defaultSelect" class="form-label">Advertiser
-															ID</label>
-														<div class="input-group input-group-merge">
-															<span id="basic-icon-default-fullname2"
-																class="input-group-text"><i
-																class="bx bx-user"></i></span> <input type="text"
-																class="form-control" id="aID" name="aID"
-																readonly="readonly"
-																aria-describedby="basic-icon-default-fullname2" />
+										</div>
+
+										<div class="mb-3">
+											<label class="form-label" for="basic-default-fullname">Board
+												Main</label>
+											<div class="input-group input-group-merge">
+												<textarea class="form-control" id="forumMain"
+													name="forumMain" aria-label="With textarea"
+													readonly="readonly"
+													style="height: 400px; background-color: #ffffff;"></textarea>
+											</div>
+										</div>
+
+										<!--댓글 div-->
+										<div id="commentDiv">
+											<div
+												style="font-family: 'NanumSquareRoundB'; font-size: 20px; margin-bottom: 20px; border-bottom: 1px solid #dfdfdf;">댓글</div>
+											<div id="oneComment">
+
+												<!--부모 댓글  -->
+												<c:forEach var="comVO" items="${comVOList}">
+													<div class="parent">
+														<div style="font-weight: bold;">
+															<img id="commentProfile" src="${comVO.profile }" alt=""
+																id="dropdownMenuButton1" data-bs-toggle="dropdown"
+																aria-expanded="false" />${comVO.nickname }
+															<!--드롭다운 메뉴 -->
+															<div class="addr">${comVO.comDate }</div>
 														</div>
-														<div id="idCheck">&nbsp;&nbsp;&nbsp;&nbsp;</div>
-													</div>
-													<div class="mb-3" style="margin-right: 5%;">
-														<label for="defaultSelect" class="form-label">카테고리</label>
-														<select id="category" name="category" class="form-select">
-															<c:forEach items="${ pList }" var="data">
-																<option value="${ data.pCode }">${ data.product }</option>
-															</c:forEach>
-														</select>
-													</div>
-													<div class="mb-3">
-														<label for="defaultSelect" class="form-label">상태</label>
-														<select id="status" name="status" class="form-select">
-															<option value="게시중">게시중</option>
-															<option value="삭제">삭제</option>
-														</select>
-													</div>
-												</div>
-											</div>
-
-											<div class="mb-3">
-												<label class="form-label" for="basic-default-fullname">Board
-													Main</label>
-												<div class="input-group input-group-merge">
-													<textarea class="form-control" id="forumMain"
-														name="forumMain" aria-label="With textarea"
-														style="height: 400px;"></textarea>
-												</div>
-											</div>
-											
-											<div class="mb-3">
-												<div class="input-group input-group-merge">
-													<div class="mb-3" style="margin-right: 4%;">
-														<label for="defaultSelect" class="form-label">Hasg Tag</label>
-														<div class="input-group input-group-merge">
-															 <input type="text"	class="form-control" id="aID" name="aID"
-																readonly="readonly" />
+														<div class="commentContent">
+															<div>
+																<div style="width: 700px">${comVO.comMain }</div>
+															</div>
 														</div>
 													</div>
-													<div class="mb-3" style="margin-right: 4%; margin-top: 25px; ">
-														<input type="text"	class="form-control" id="aID" name="aID"
-																readonly="readonly" />
-													</div>
-													<div class="mb-3" style="margin-top: 25px; ">
-													<input type="text"	class="form-control" id="aID" name="aID"
-																readonly="readonly" />
-													</div>
+
+
+													<!-- 자식댓글 -->
+													<c:forEach var="rVO" items="${comVO.replyList}"
+														varStatus="idx">
+														<div class="child">
+															<div style="font-weight: bold;">
+																<img id="commentProfile" src="${rVO.profile }" alt=""
+																	id="dropdownMenuButton1" data-bs-toggle="dropdown"
+																	aria-expanded="false" />${rVO.nickname }
+																<div class="addr">${rVO.replyDate }</div>
+															</div>
+															<div class="commentContent">
+																<p>${rVO.replyMain }</p>
+																<div>
+																	<div></div>
+																</div>
+															</div>
+														</div>
+													</c:forEach>
+
+
+												</c:forEach>
+											</div>
+										</div>
+									</div>
+
+
+
+									<div class="mb-3">
+										<div class="input-group input-group-merge">
+											<div class="mb-3" style="margin-left: 15px; margin-right: 4%;">
+												<label for="defaultSelect" class="form-label">Hasg
+													Tag</label>
+												<div class="input-group input-group-merge">
+													<input type="text" class="form-control" id="hash1"
+														name="hash1" readonly="readonly"
+														style="background-color: #ffffff" />
 												</div>
 											</div>
-		<!--댓글 div-->
-    	<div id= "commentDiv">
-    	<div style=" font-family: 'NanumSquareRoundB'; font-size: 20px; margin-bottom: 20px; border-bottom: 1px solid #dfdfdf;">댓글</div>
-    	<div id="oneComment">
-    	
-    	<!--부모 댓글  -->
-    	<div class="parent">
-    	<div style=" font-weight: bold; ">
-    	
-	    <img id="commentProfile" src="../images/person_1.jpg" alt=""  id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"/>닉네임
-	
-    	
-    	<div class="addr" >안산시 단원구 초지동</div>
-    	</div>
-    	<div class="commentContent">
-    	<p>댓글 1</p>
-    	</div>
-    	</div>
-    	</div>
-    	</div>
+											<div class="mb-3" style="margin-right: 4%; margin-top: 25px;">
+												<input type="text" class="form-control" id="hash2"
+													name="hash2" readonly="readonly"
+													style="background-color: #ffffff" />
+											</div>
+											<div class="mb-3" style="margin-top: 25px;">
+												<input type="text" class="form-control" id="hash3"
+													name="hash3" readonly="readonly"
+													style="background-color: #ffffff" />
+											</div>
+										</div>
+									</div>
 
-					
-					<!-- Footer -->
-					<footer class="content-footer footer bg-footer-theme">
-						<div
-							class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-							<div class="mb-2 mb-md-0">
-								©
-								<script>
-									document.write(new Date().getFullYear());
-								</script>
-								, made with ❤️ by <a href="https://themeselection.com"
-									target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
-							</div>
-							<div>
-								<a href="https://themeselection.com/license/"
-									class="footer-link me-4" target="_blank">License</a> <a
-									href="https://themeselection.com/" target="_blank"
-									class="footer-link me-4">More Themes</a> <a
-									href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
-									target="_blank" class="footer-link me-4">Documentation</a>
 
-								<a
-									href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
-									target="_blank" class="footer-link me-4">Support</a>
+								</div>
 							</div>
 						</div>
-					</footer>
-					<!-- / Footer -->
-
+					</div>
 				</div>
-				<!-- Content wrapper -->
-			</div>
-			<!-- / Layout page -->
-		</div>
+				<!-- Footer -->
+				<footer class="content-footer footer bg-footer-theme">
+					<div
+						class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+						<div class="mb-2 mb-md-0">
+							©
+							<script>
+									document.write(new Date().getFullYear());
+								</script>
+							, made with ❤️ by <a href="https://themeselection.com"
+								target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
+						</div>
+						<div>
+							<a href="https://themeselection.com/license/"
+								class="footer-link me-4" target="_blank">License</a> <a
+								href="https://themeselection.com/" target="_blank"
+								class="footer-link me-4">More Themes</a> <a
+								href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
+								target="_blank" class="footer-link me-4">Documentation</a> <a
+								href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
+								target="_blank" class="footer-link me-4">Support</a>
+						</div>
+					</div>
+				</footer>
+				<!-- / Footer -->
 
-		<!-- Overlay -->
-		<div class="layout-overlay layout-menu-toggle"></div>
+			</div>
+			<!-- Content wrapper -->
+		</div>
+		<!-- / Layout page -->
+	</div>
+
+	<!-- Overlay -->
+	<div class="layout-overlay layout-menu-toggle"></div>
 	</div>
 	<!-- / Layout wrapper -->
 

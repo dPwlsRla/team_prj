@@ -2,7 +2,9 @@
 <%@page import="java.util.List"%>
 <%@page import="kr.co.sist.badasaja.admin.dao.AdminReportDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8"
+         info="게시글 신고 전체조회 페이지"
+         %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
   <html
         lang="en"
@@ -59,12 +61,14 @@
 		
 		getSearchData()
 		
+		// ID검색 event
 		$("#idSearch").click(function(){
 			
 			getSearchData();
 			
 		}) // click 
 		
+		// 신고유형 필터 검색 event
 		$(".ty").click(function() {
 			
 			var ty = $(this).text();
@@ -76,6 +80,7 @@
 			getSearchData();
 		})
 		
+		// 상태 필터 검색 event
 		$(".status").click(function(){
 		var st = $(this).text();
 		
@@ -93,6 +98,7 @@
 		
 	}) // ready
 	
+	// 게시글 신고 전체 조회 검색 ajax
 	function getSearchData(){
 		
 		$.ajax({
@@ -149,6 +155,7 @@
 		
 	} //getSearchData
 	
+	// 게시글 신고 상제글 조회 ajax
 	function printFrMain(param){
 		
 		$.ajax({

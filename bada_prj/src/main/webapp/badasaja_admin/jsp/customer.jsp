@@ -61,10 +61,12 @@
 		
 		getSearchData();
 		
+		// ID로 검색했을 때
 		$("#idSearch").click(function(){
 			getSearchData()
 		}) // click
 		
+		// 지역으로 검색했을 때
 		$(".local").click(function() {
 			
 			var gu = $(this).text();
@@ -74,9 +76,9 @@
 			
 			getSearchData()
 			
-			
 		}) // click
 		
+		// 상태로 검색했을 때
 		$(".status").click(function(){
 			var st = $(this).text();
 			
@@ -91,6 +93,7 @@
 			getSearchData()
 		}) // click
 		
+		// 유저 정보 변경했을 때
 		$(".ustatus").click(function(){
 			var ust = $(this).text();
 			var cID = $("#customer-id").html().substr(5);
@@ -111,6 +114,7 @@
 		
 	}) //ready 
 	
+	// 유저 조회 ajax
 	function getSearchData(){
 		
 		$.ajax({
@@ -147,6 +151,7 @@
 						
 						 getInfoData(param)
 					
+						// 테이블 클릭시 상세조회 
 				 		$("tbody tr").click(function(evt) {
 						
 						 tr = $(this);
@@ -162,6 +167,7 @@
 		
 	}
 	
+	// 유저 상제 조회 ajax
 	function getInfoData(param){
 		$.ajax({
 			url:"http://localhost/bada_prj/badasaja_admin/jsp/customer_info_process.jsp",
@@ -179,6 +185,7 @@
 		}) // ajax
 	}
 	
+	// 유저 상태 ajax
 	function modifyStatus(param){
 		$.ajax({
 			url:"http://localhost/bada_prj/badasaja_admin/jsp/customer_status_process.jsp",
@@ -196,6 +203,7 @@
 		}) // ajax
 	}
 	
+	// 상세조회 출력 function
 	function printCustomerInfo(jsonObj){
 		
 		$("#customer_nickcname").html(jsonObj.nickname);
@@ -204,7 +212,7 @@
 		$("#customer-writes").html('게시글 수 : ' + jsonObj.forumCount);
 		$("#customer-register").html('가입일 : ' + jsonObj.signDate);
 		$("#customer-email").html('email : ' + jsonObj.email);
-		$("#customer-score").html('거래만족도 : 확인필요');
+		$("#customer-score").html('거래만족도 : ' + jsonObj.score);
 		$("#customer-login").html('접속일 : ' + jsonObj.accessDate);
 		$("#phone").html('phone number : ' + jsonObj.tel);
 		$("#reports").html('신고 받은 건수 : ' + jsonObj.reportCount);
@@ -235,9 +243,10 @@
             <!-- Content wrapper -->
             <div class="content-wrapper">
                 <!-- Content -->
-                <div class="container-xxl flex-grow-1 container-p-y">
+            <div class="container-xxl flex-grow-1 container-p-y">
                     <!-- Basic Bootstrap Table -->
-                    <div class="card" style="margin-bottom:100px">
+                    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">C_Forum /</span>유저 전체 보기</h4>
+                    <div class="card" style="margin-bottom:100px; height: 600px; overflow-y:scroll;">
                         <!-- Search -->
                         <div class="navbar-nav mb-3">
                             <div class="nav-item d-inline">

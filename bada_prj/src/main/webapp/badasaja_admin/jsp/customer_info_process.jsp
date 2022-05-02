@@ -2,16 +2,15 @@
 <%@page import="kr.co.sist.badasaja.vo.CuVO"%>
 <%@page import="kr.co.sist.badasaja.admin.dao.AdminDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+    info="유저 상세조회 process 페이지"
+    %>
 <%
 	String cID = request.getParameter("cID");
 	
-	
 	AdminDAO aDAO = AdminDAO.getInstance();
 	
-	
 	CuVO cVO = aDAO.selectCostomerInfo(cID);
-	
  	String status = cVO.getcStatus();
 	
 	if(status.equals("no")){
@@ -30,13 +29,14 @@
  	jsonObj.put("forumCount", String.valueOf(cVO.getForumCount()) );
  	jsonObj.put("reportCount", String.valueOf(cVO.getReportCount()));
 	jsonObj.put("local", cVO.getGuName());
+	jsonObj.put("score", cVO.getScore());
 	jsonObj.put("nickname", cVO.getNickName());
 	jsonObj.put("birth", cVO.getBirth());
 	jsonObj.put("gender", cVO.getGender());
 	jsonObj.put("tel", cVO.getTel());
 	jsonObj.put("profile", cVO.getProfile());
 	jsonObj.put("email", cVO.getEmail());
-	jsonObj.put("status", status);
+	jsonObj.put("status", cVO.getScore());
 	jsonObj.put("signDate", cVO.getSignDate());
 	jsonObj.put("accessDate", cVO.getAccessDate());
 	jsonObj.put("ipaddress", cVO.getIpAddress());

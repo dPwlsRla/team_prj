@@ -27,6 +27,12 @@ public class KyhNoticeDAO {
 		return knDAO;
 	}
 
+	/**
+	 * 관리자 한줄 공지 전체 조회 method
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
 	public List<NoticeVO> selectAllNotice() throws SQLException, NamingException {
 		List<NoticeVO> list = new ArrayList<NoticeVO>();
 
@@ -61,6 +67,13 @@ public class KyhNoticeDAO {
 		return list;
 	}
 
+	/**
+	 * 관리자 한줄 공지 등록 method
+	 * @param oID 관리자 ID
+	 * @param iNotice 한줄 공지
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
 	public void insertNotice(String oID, String iNotice) throws SQLException, NamingException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -68,7 +81,7 @@ public class KyhNoticeDAO {
 		try {
 			con = dc.getConn();
 
-			pstmt = con.prepareStatement("insert into notice(n_num, o_id, o_main) values('n'||PRO1.NOTICE_SEQ.NEXTVAL, ?, ?)");
+			pstmt = con.prepareStatement("insert into notice(n_num, o_id, o_main) values('n'||NOTICE_SEQ.NEXTVAL, ?, ?)");
 			
 			pstmt.setString(1, oID);
 			pstmt.setString(2, iNotice);

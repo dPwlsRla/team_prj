@@ -4,7 +4,9 @@
 <%@page import="java.util.List"%>
 <%@page import="kr.co.sist.badasaja.admin.dao.BaseDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"
+	info="광고 게시글 등록 페이지"
+	%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 session.setAttribute("insertAdForumFlag", false);
@@ -107,6 +109,7 @@ img {
 <script type="text/javascript">
 	$(function() {
 		
+			// ID 입력 검증 event
 			$("#aID").focusout(function() {
 			
 			var aID = $("#aID").val();
@@ -116,6 +119,7 @@ img {
 				return;
 			}
 			
+			// 광고주 ID 확인 ajax
 			$.ajax({
 				url:"id_check.jsp",
 				data: { "aID" : aID},
@@ -141,8 +145,10 @@ img {
 			
 		})
 
+		// 등록 event
 		$("#send").click(function() {
 
+			// 유효성 검증
 			if ($("#topic").val().trim() == "") {
 				alert("제목을 입력해주세요");
 				$("#topic").focus();
@@ -184,6 +190,7 @@ img {
 				return;
 			}
 
+			// 검증 확인후 등록 process 이동
 			$("#writeAdForum").submit();
 
 		}) // click
@@ -193,6 +200,7 @@ img {
 		})
 	});
 
+	// Tnumbnail function
 	function readURL(input) {
 		if (input.files && input.files[0]) {
 			var reader = new FileReader();

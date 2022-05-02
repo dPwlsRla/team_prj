@@ -4,7 +4,9 @@
 <%@page import="java.util.List"%>
 <%@page import="kr.co.sist.badasaja.admin.dao.AdminAdDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+    info="광고 게시글 전체 조회, 검색 process 페이지"
+    %>
 <%
 
 String aID = request.getParameter("aID");

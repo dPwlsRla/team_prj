@@ -61,14 +61,17 @@
     <script type="text/javascript">
     $(function(){
     	
-    	getSelectData()
-		
+    	// 페이지 처음 접속시 보여줄 data 조회 function
+    	getSelectData();
+    	
+		// ID로 검색했을 때
 		$("#idSearch").click(function(){
 			
 			getSelectData();
 			
 		}) // click
 		
+		// 지역필터로 검색했을 때
 		$(".local").click(function() {
 			
 			var gu = $(this).text();
@@ -80,6 +83,7 @@
 			getSelectData();
 		})
 		
+		// 카테고리 필터로 검색했을 때
 		$(".category").click(function(){
 			var pr = $(this).text();
 			
@@ -91,6 +95,7 @@
 			
 		})
 		
+		// 상태 필터로 검색했을 때
 		$(".status").click(function(){
 			var st = $(this).text();
 			
@@ -109,6 +114,7 @@
     	
     }) //ready
     
+    // 배너조회 ajax
     function getSelectData(){
     	$.ajax({
 			url:"http://localhost/bada_prj/badasaja_admin/jsp/ad_banner_list_process.jsp",
@@ -146,6 +152,7 @@
 <body>
 <%
 	
+	// 카테고리, 지역 조회 method
 	BaseDAO bDAO = BaseDAO.getInstance();
 	List<ProductVO> pList = bDAO.selectProductList();
 	List<LocalVO> lList = bDAO.selectLocalList();
@@ -245,27 +252,6 @@
                                 </tr>
                                 </thead>
                                 <tbody class="table-border-bottom-0">
-                             <%--   	<c:choose>
-										<c:when test="${ empty adList }">
-											<tr>
-												<td colspan="5"><strong>조회결과 없음</strong></td>
-											</tr>
-										</c:when>
-									</c:choose>
-										<c:forEach items="${ adList }" var="data">
-											<tr>
-												<td><i class="fab fa-angular fa-lg text-danger me-3"></i>
-												<strong><c:out value="${ data.bNum }" /></strong></td>
-												<td><c:out value="${ data.aID }" /></td>
-												<td><c:out value="${ data.aURL }" /></td>
-												<td>지역..?</td>
-												<td><c:out value="${ data.bStatus }" /></td>
-												<td><c:out value="${ data.pCode }" /></td>
-												<td><c:out value="${ data.postedDate }" /></td>
-												<td><c:out value="${ data.expiryDate }" /></td>
-											</tr>
-										</c:forEach>
-                                 --%>
                                 </tbody>
                             </table>
                         </div>

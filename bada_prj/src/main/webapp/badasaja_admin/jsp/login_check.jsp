@@ -1,14 +1,15 @@
 <%@page import="kr.co.sist.badasaja.vo.OperatorVO"%>
 <%@page import="kr.co.sist.badasaja.admin.dao.AdminDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+    info="관리자 로그인 확인 prcess 페이지"
+    %>
 
 <%
 OperatorVO oVO = new OperatorVO();
 
  oVO.setoID(request.getParameter("admin_id"));
  oVO.setoPass(request.getParameter("admin_pass"));
-
 
 AdminDAO aDAO = AdminDAO.getInstance();
 boolean flag = aDAO.selectAdminLogin(oVO);

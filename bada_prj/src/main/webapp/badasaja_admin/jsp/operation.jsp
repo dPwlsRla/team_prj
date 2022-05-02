@@ -2,7 +2,9 @@
 <%@page import="java.util.List"%>
 <%@page import="kr.co.sist.badasaja.admin.dao.KyhNoticeDAO"%> 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8"
+         info="관리자 전용 페이지"
+         %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
   <html
         lang="en"
@@ -59,13 +61,15 @@
 		
 		getSearchProhibit();
 		getSearchNotice();
-		
+		 
+		// 작성 금지 목록 검색 event 
 		$("#keySearch").click(function(){
 			
 			getSearchProhibit();
 			
 		}) // click 
 		
+		// 금지 목록 등록 ajax
 		$("#writeKey").click(function(){
 			
 			var iKey = $("#iKey").val();
@@ -87,6 +91,7 @@
 			
 		}) // click
 		
+		// 관리자 한줄 공지 등록 ajax
 		$("#writeNotice").click(function(){
 			
 			var iNotice = $("#iNotice").val();
@@ -109,12 +114,9 @@
 			
 		}) // click
 		
-		$("#test").click(function(){
-			$("#ptab > tbody").append("<tr><td>왜안댐</td></tr>")
-		})
-		
 	}) // ready
 	
+	// 금지 목록 조회 ajax
 	function getSearchProhibit() {
 		
 		$.ajax({
@@ -142,6 +144,7 @@
 		
 	} //getSearchProhibit
 	
+// 관리자 한줄 공지 전체 조회 ajax
 function getSearchNotice(){
 		
 		$.ajax({
@@ -170,21 +173,11 @@ function getSearchNotice(){
 		
 	} //getSearchNotice
 	
-	
-	
 	</script>
  </head>
 
 
-
 <body>
-<%
-/* 	KyhNoticeDAO knDAO = KyhNoticeDAO.getInstance();
-
-	List<NoticeVO> nList = knDAO.selectAllNotice();
-	
-	pageContext.setAttribute("nList", nList); */
-%>
 <%@ include file="nav.jsp"%>
 
 <div class="layout-wrapper layout-content-navbar">

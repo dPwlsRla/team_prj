@@ -6,7 +6,9 @@
 <%@page import="java.util.List"%>
 <%@page import="kr.co.sist.badasaja.admin.dao.BaseDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"
+	info="광고 게시글 상세조회 페이지"
+	%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr"
 	data-theme="theme-default" data-assets-path="../assets/"
@@ -131,7 +133,7 @@ img {
 		$("#forumMain").val("<%= afVO.getAfMain() %>")
 		$("#category").val("<%= afVO.getpCode() %>")
 		$("#status").val("<%= afVO.getAfStatus() %>")
-		$("#preview").attr("src","http://localhost/bada_prj/badasaja_admin/upload/" + "<%= afVO.getMainImg() %>" )
+		$("#preview").attr("src","../upload/" + "<%= afVO.getMainImg() %>" )
 		
 		var str = '<%= imgs %>'
 		if( str == ""){
@@ -139,10 +141,10 @@ img {
 		}
 		var imgs = str.split(",");
 		if(imgs.length == 1){
-		$("#preview1").attr("src","http://localhost/bada_prj/badasaja_admin/upload/" + imgs[0] )
+		$("#preview1").attr("src","../upload/" + imgs[0] )
 		} else if( imgs.length == 2){
-		$("#preview1").attr("src","http://localhost/bada_prj/badasaja_admin/upload/" + imgs[0] )
-		$("#preview2").attr("src","http://localhost/bada_prj/badasaja_admin/upload/" + imgs[1] )
+		$("#preview1").attr("src","../upload/" + imgs[0] )
+		$("#preview2").attr("src","../upload/" + imgs[1] )
 		}
 		
 	 	$("#modify").click(function(){

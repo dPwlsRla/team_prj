@@ -3,7 +3,9 @@
 <%@page import="java.util.List"%>
 <%@page import="kr.co.sist.badasaja.admin.dao.BaseDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+    info="광고주등록페이지"
+    %>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
  <%
  	session.setAttribute("insertAdvertiserFlag", false);
@@ -61,15 +63,27 @@
 	<script type="text/javascript">
 	$(function() {
 		
+		// ID작성 안했을 시 확인 event
 		$("#aID").focusout(function() {
 			
 			var aID = $("#aID").val();
 			
 			if(aID == ""){
 				$("#idCheck").html("아이디는 필수 입력 입니다.");
+				$("#aID").focus();
 				return;
 			}
 			
+		 	// 특수문자 검증
+			const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
+			if(regExp.test($("#aID").val())){
+				$("#idCheck").css({"color" : "red"});
+				$("#idCheck").html("특수문자는 사용 불가능 합니다.");
+				$("#aID").focus();
+				return;
+			}
+			 
+			// ID작성 했을 때 ID 존재여부 확인 ajax
 			$.ajax({
 				url:"id_check.jsp",
 				data: { "aID" : aID},
@@ -95,32 +109,40 @@
 			
 		})
 		
+		// 등록 event
 		$("#send").click(function(){
 			
+			// ID 입력 확인 검증
 			if($("#aID").val().trim() == ""){
 				alert("ID는 필수 입력 입니다.");
 				$("#aID").focus();
 				return;
 			}
 			
-			if($("#idCheck").html() == "중복된 아이디 입니다."){
+		
+			// 중복, 특수문자  확인 검증
+			if( $("#idCheck").html() == "중복된 아이디 입니다." || $("#idCheck").html() == "특수문자는 사용 불가능 합니다." ){
 				alert("사용 불가능한 아이디 입니다. 다시 입력 해주세요.")
 				$("#aID").focus();
 				return;
 				
 			}
 			
+			// 이름 미입력 검증
 			if($("#aName").val().trim() == ""){
 				alert("이름은 필수 입력 값 입니다.");
 				$("#aName").focus();
 				return;
 			}
+			
+			// 지역 미입력 검증
 			if($("#local option:selected").val() == "none"){
 				alert("지역을 선택해주세요.");
 				$("#local").focus();
 				return;
 			}
 			
+			// 검증 통과 후 등록
 			$("#advertiserRegister").submit();
 			
 		}) // click

@@ -1,23 +1,13 @@
 <%@page import="javax.print.attribute.standard.PrinterMakeAndModel"%>
 <%@page import="kr.co.sist.badasaja.admin.dao.AdminDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+    info="로그인 페이지"
+    %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     
 <!DOCTYPE html>
 
-<!-- =========================================================
-* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
-==============================================================
-
-* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
-* Created by: ThemeSelection
-* License: You must have a valid license purchased in order to legally use the theme for your project.
-* Copyright ThemeSelection (https://themeselection.com)
-
-=========================================================
- -->
-<!-- beautify ignore:start -->
 <html
   lang="en"
   class="light-style customizer-hide"
@@ -73,7 +63,7 @@
     <script type="text/javascript">
     
     		$(function() {
-    			
+    			// 뒤로 가기 방지
     		 	window.history.forward();
 
     			function noBack() {
@@ -82,23 +72,28 @@
 
     			} 
     			
+    			// 뒤로가기 방지
     			history.pushState(null, null, location.href);
     		    window.onpopstate = function () {
     		        history.go(1);
     			};
 
     			
+    			// 로그인 클릭 event
     			$("#adminLogin").click(function() {
     				
+    				// ID 미입력 검증
     				if($("#admin_id").val() == ""){
     					alert("id를 입력해주세요");
     					return;
     				}
     				
+    				// password 미입력 검증
     				if($("#admin_pass").val() == ""){
     					alert("password를 입력해주세요.");
     					return;
     				}
+    					// 검증 통과 후 입력 정보 전송
     					$("#formAuthentication").submit();
     		
     			})
@@ -138,9 +133,6 @@
                 <div class="mb-3 form-password-toggle">
                   <div class="d-flex justify-content-between">
                     <label class="form-label" for="password">Password</label>
-                    <a href="auth-forgot-password-basic.html">
-                      <small>Forgot Password?</small>
-                    </a>
                   </div>
                   <div class="input-group input-group-merge">
                     <input

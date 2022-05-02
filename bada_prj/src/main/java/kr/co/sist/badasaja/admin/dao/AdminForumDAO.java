@@ -13,6 +13,7 @@ import kr.co.sist.badasaja.vo.AdForumVO;
 import kr.co.sist.badasaja.vo.AdImgVO;
 import kr.co.sist.badasaja.vo.BannerVO;
 import kr.co.sist.badasaja.vo.CForumVO;
+import kr.co.sist.badasaja.vo.ComVO;
 import oracle.net.aso.af;
 
 public class AdminForumDAO {
@@ -33,6 +34,17 @@ public class AdminForumDAO {
 
 	} // getInstance
 
+	/**
+	 * 전체 광고게시글 조회 method
+	 * 
+	 * @param aID 게시자 아이디
+	 * @param gu  지역
+	 * @param pr  카테고리
+	 * @param st  상태
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
 	public List<AdForumVO> selectAllFforum(String aID, String gu, String pr, String st)
 			throws SQLException, NamingException {
 
@@ -49,6 +61,7 @@ public class AdminForumDAO {
 			con = dc.getConn();
 
 			StringBuilder query = new StringBuilder();
+			// 아이디로 검색했을 때
 			if ((aID != null && !aID.equals("")) && (gu == null || gu.equals("")) && (pr == null || pr.equals(""))
 					&& (st == null || st.equals(""))) {
 
@@ -59,8 +72,10 @@ public class AdminForumDAO {
 
 				pstmt.setString(1, "%" + aID + "%");
 
-			} else if ((aID == null || aID.equals("")) && (gu != null && !gu.equals(""))
-					&& (pr == null || pr.equals("")) && (st == null || st.equals(""))) {
+			}
+			// 지역으로 검색했을 때
+			else if ((aID == null || aID.equals("")) && (gu != null && !gu.equals("")) && (pr == null || pr.equals(""))
+					&& (st == null || st.equals(""))) {
 
 				query.append(" select af_num, a_id, gu_name, product, af_topic, posted_date, expiry_date, af_status ")
 						.append("      from admin_ad_forum").append("    where gu_name = ? order by af_num ");
@@ -69,8 +84,10 @@ public class AdminForumDAO {
 
 				pstmt.setString(1, gu);
 
-			} else if ((aID == null || aID.equals("")) && (gu == null || gu.equals(""))
-					&& (pr != null && !pr.equals("")) && (st == null || st.equals(""))) {
+			}
+			// 카테고리로 검색했을 때
+			else if ((aID == null || aID.equals("")) && (gu == null || gu.equals("")) && (pr != null && !pr.equals(""))
+					&& (st == null || st.equals(""))) {
 
 				query.append(" select af_num, a_id, gu_name, product, af_topic, posted_date, expiry_date, af_status ")
 						.append("      from admin_ad_forum").append("    where product = ? order by af_num ");
@@ -79,7 +96,9 @@ public class AdminForumDAO {
 
 				pstmt.setString(1, pr);
 
-			} else if ((aID == null || aID.equals("")) && (gu == null || gu.equals("")) && (pr == null || pr.equals(""))
+			}
+			// 상태로 검색했을 때
+			else if ((aID == null || aID.equals("")) && (gu == null || gu.equals("")) && (pr == null || pr.equals(""))
 					&& (st != null && !st.equals(""))) {
 
 				query.append(" select af_num, a_id, gu_name, product, af_topic, posted_date, expiry_date, af_status ")
@@ -89,8 +108,10 @@ public class AdminForumDAO {
 
 				pstmt.setString(1, st);
 
-			} else if ((aID != null && !aID.equals("")) && (gu != null && !gu.equals(""))
-					&& (pr == null || pr.equals("")) && (st == null || st.equals(""))) {
+			}
+			// ID, 지역으로 검색했을 때
+			else if ((aID != null && !aID.equals("")) && (gu != null && !gu.equals("")) && (pr == null || pr.equals(""))
+					&& (st == null || st.equals(""))) {
 
 				query.append(" select af_num, a_id, gu_name, product, af_topic, posted_date, expiry_date, af_status ")
 						.append("      from admin_ad_forum")
@@ -101,8 +122,10 @@ public class AdminForumDAO {
 				pstmt.setString(1, "%" + aID + "%");
 				pstmt.setString(2, gu);
 
-			} else if ((aID != null && !aID.equals("")) && (gu == null || gu.equals(""))
-					&& (pr != null && !pr.equals("")) && (st == null || st.equals(""))) {
+			}
+			// ID, 카테고리로 검색했을 때
+			else if ((aID != null && !aID.equals("")) && (gu == null || gu.equals("")) && (pr != null && !pr.equals(""))
+					&& (st == null || st.equals(""))) {
 
 				query.append(" select af_num, a_id, gu_name, product, af_topic, posted_date, expiry_date, af_status ")
 						.append("      from admin_ad_forum")
@@ -113,8 +136,9 @@ public class AdminForumDAO {
 				pstmt.setString(1, "%" + aID + "%");
 				pstmt.setString(2, pr);
 
-			} else if ((aID != null && !aID.equals("")) && (gu == null || gu.equals(""))
-					&& (pr == null || pr.equals("")) && (st != null && !st.equals(""))) {
+			} // ID, 상태로 검색했을 때
+			else if ((aID != null && !aID.equals("")) && (gu == null || gu.equals("")) && (pr == null || pr.equals(""))
+					&& (st != null && !st.equals(""))) {
 
 				query.append(" select af_num, a_id, gu_name, product, af_topic, posted_date, expiry_date, af_status ")
 						.append("      from admin_ad_forum")
@@ -125,8 +149,10 @@ public class AdminForumDAO {
 				pstmt.setString(1, "%" + aID + "%");
 				pstmt.setString(2, st);
 
-			} else if ((aID == null || aID.equals("")) && (gu != null && !gu.equals(""))
-					&& (pr != null && !pr.equals("")) && (st == null || st.equals(""))) {
+			}
+			// 지역, 카테고리로 검색했을 때
+			else if ((aID == null || aID.equals("")) && (gu != null && !gu.equals("")) && (pr != null && !pr.equals(""))
+					&& (st == null || st.equals(""))) {
 
 				query.append(" select af_num, a_id, gu_name, product, af_topic, posted_date, expiry_date, af_status ")
 						.append("      from admin_ad_forum")
@@ -137,8 +163,10 @@ public class AdminForumDAO {
 				pstmt.setString(1, gu);
 				pstmt.setString(2, pr);
 
-			} else if ((aID == null || aID.equals("")) && (gu != null && !gu.equals(""))
-					&& (pr == null || pr.equals("")) && (st != null && !st.equals(""))) {
+			}
+			// 지역, 상태로 검색했을 대
+			else if ((aID == null || aID.equals("")) && (gu != null && !gu.equals("")) && (pr == null || pr.equals(""))
+					&& (st != null && !st.equals(""))) {
 
 				query.append(" select af_num, a_id, gu_name, product, af_topic, posted_date, expiry_date, af_status ")
 						.append("      from admin_ad_forum")
@@ -149,8 +177,9 @@ public class AdminForumDAO {
 				pstmt.setString(1, gu);
 				pstmt.setString(2, st);
 
-			} else if ((aID == null || aID.equals("")) && (gu == null || gu.equals(""))
-					&& (pr != null && !pr.equals("")) && (st != null && !st.equals(""))) {
+			} // 카테고리 상태로 검색했을 때
+			else if ((aID == null || aID.equals("")) && (gu == null || gu.equals("")) && (pr != null && !pr.equals(""))
+					&& (st != null && !st.equals(""))) {
 
 				query.append(" select af_num, a_id, gu_name, product, af_topic, posted_date, expiry_date, af_status ")
 						.append("      from admin_ad_forum")
@@ -161,7 +190,9 @@ public class AdminForumDAO {
 				pstmt.setString(1, pr);
 				pstmt.setString(2, st);
 
-			} else if ((aID != null && !aID.equals("")) && (gu != null && !gu.equals(""))
+			}
+			// ID, 지역으로 검색했을 때
+			else if ((aID != null && !aID.equals("")) && (gu != null && !gu.equals(""))
 					&& (pr != null && !pr.equals("")) && (st == null || st.equals(""))) {
 
 				query.append(" select af_num, a_id, gu_name, product, af_topic, posted_date, expiry_date, af_status ")
@@ -174,8 +205,10 @@ public class AdminForumDAO {
 				pstmt.setString(2, gu);
 				pstmt.setString(3, pr);
 
-			} else if ((aID != null && !aID.equals("")) && (gu == null || gu.equals(""))
-					&& (pr != null && !pr.equals("")) && (st != null && !st.equals(""))) {
+			}
+			// ID, 카테고리, 상태로 검색했을 때
+			else if ((aID != null && !aID.equals("")) && (gu == null || gu.equals("")) && (pr != null && !pr.equals(""))
+					&& (st != null && !st.equals(""))) {
 
 				query.append(" select af_num, a_id, gu_name, product, af_topic, posted_date, expiry_date, af_status ")
 						.append("      from admin_ad_forum")
@@ -187,8 +220,10 @@ public class AdminForumDAO {
 				pstmt.setString(2, gu);
 				pstmt.setString(3, st);
 
-			} else if ((aID == null || aID.equals("")) && (gu != null && !gu.equals(""))
-					&& (pr != null && !pr.equals("")) && (st != null && !st.equals(""))) {
+			}
+			// 지역, 카테고리, 상태로 검색했을 때
+			else if ((aID == null || aID.equals("")) && (gu != null && !gu.equals("")) && (pr != null && !pr.equals(""))
+					&& (st != null && !st.equals(""))) {
 
 				query.append(" select af_num, a_id, gu_name, product, af_topic, posted_date, expiry_date, af_status ")
 						.append("      from admin_ad_forum")
@@ -200,7 +235,9 @@ public class AdminForumDAO {
 				pstmt.setString(2, pr);
 				pstmt.setString(3, st);
 
-			} else if ((aID != null && !aID.equals("")) && (gu != null && !gu.equals(""))
+			}
+			// ID, 지역, 카테고리, 상태로 검색했을 때
+			else if ((aID != null && !aID.equals("")) && (gu != null && !gu.equals(""))
 					&& (pr != null && !pr.equals("")) && (st != null && !st.equals(""))) {
 
 				query.append(" select af_num, a_id, gu_name, product, af_topic, posted_date, expiry_date, af_status ")
@@ -214,8 +251,9 @@ public class AdminForumDAO {
 				pstmt.setString(3, pr);
 				pstmt.setString(4, st);
 
-			} else {
-
+			}
+			// 검색 조건이 없을 때
+			else {
 				query.append("  select af_num, a_id, gu_name, product, af_topic, posted_date, expiry_date, af_status ")
 						.append("from admin_ad_forum order by af_num ");
 
@@ -249,6 +287,14 @@ public class AdminForumDAO {
 		return list;
 	} // selectAllFforum
 
+	/**
+	 * 광고게시글 상세조회 method
+	 * 
+	 * @param afNum 광고 게시글 번호
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
 	public AdForumVO selectAdForum(String afNum) throws SQLException, NamingException {
 		AdForumVO afVO = null;
 
@@ -293,6 +339,14 @@ public class AdminForumDAO {
 		return afVO;
 	}
 
+	/**
+	 * 광고게시글 추가 이미지 조회 method
+	 * 
+	 * @param afNum 광고 게시글 번호
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
 	public String selectAdImg(String afNum) throws SQLException, NamingException {
 		String imgs = "";
 
@@ -308,10 +362,8 @@ public class AdminForumDAO {
 
 			StringBuilder query = new StringBuilder();
 
-			query.append(" select af_num, LISTAGG(img,',') within group(order by af_num) as img")
-			.append(" 	   from ad_img")
-			.append("          where af_num =? ")
-			.append("  group by af_num ");
+			query.append(" select LISTAGG(img,',') within group(order by af_num) as img").append(" 	   from ad_img")
+					.append("          where af_num =? ").append("  group by af_num ");
 
 			pstmt = con.prepareStatement(query.toString());
 
@@ -330,8 +382,17 @@ public class AdminForumDAO {
 		return imgs;
 	} // selectAdImg
 
-	
-
+	/**
+	 * 유저 게시판 전체 조회 method
+	 * 
+	 * @param cID 유저 ID
+	 * @param gu  지역
+	 * @param pr  카테고리
+	 * @param st  상태
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
 	public List<CForumVO> selectAllCforum(String cID, String gu, String pr, String st)
 			throws SQLException, NamingException {
 
@@ -348,6 +409,7 @@ public class AdminForumDAO {
 			con = dc.getConn();
 
 			StringBuilder query = new StringBuilder();
+			// ID로 검색했을 때
 			if ((cID != null && !cID.equals("")) && (gu == null || gu.equals("")) && (pr == null || pr.equals(""))
 					&& (st == null || st.equals(""))) {
 
@@ -358,8 +420,10 @@ public class AdminForumDAO {
 
 				pstmt.setString(1, "%" + cID + "%");
 
-			} else if ((cID == null || cID.equals("")) && (gu != null && !gu.equals(""))
-					&& (pr == null || pr.equals("")) && (st == null || st.equals(""))) {
+			}
+			// 지역으로 조회했을 때
+			else if ((cID == null || cID.equals("")) && (gu != null && !gu.equals("")) && (pr == null || pr.equals(""))
+					&& (st == null || st.equals(""))) {
 
 				query.append(" select cf_num, c_id, gu_name, product, cf_topic, write_date, cf_status ")
 						.append("      from admin_c_forum").append("    where gu_name = ? order by cf_num");
@@ -368,8 +432,10 @@ public class AdminForumDAO {
 
 				pstmt.setString(1, gu);
 
-			} else if ((cID == null || cID.equals("")) && (gu == null || gu.equals(""))
-					&& (pr != null && !pr.equals("")) && (st == null || st.equals(""))) {
+			}
+			// 카테고리로 검색했을 때
+			else if ((cID == null || cID.equals("")) && (gu == null || gu.equals("")) && (pr != null && !pr.equals(""))
+					&& (st == null || st.equals(""))) {
 
 				query.append(" select cf_num, c_id, gu_name, product, cf_topic, write_date, cf_status ")
 						.append("      from admin_c_forum").append("    where product = ? order by cf_num");
@@ -378,7 +444,9 @@ public class AdminForumDAO {
 
 				pstmt.setString(1, pr);
 
-			} else if ((cID == null || cID.equals("")) && (gu == null || gu.equals("")) && (pr == null || pr.equals(""))
+			}
+			// 상태로 검색했을 때
+			else if ((cID == null || cID.equals("")) && (gu == null || gu.equals("")) && (pr == null || pr.equals(""))
 					&& (st != null && !st.equals(""))) {
 
 				query.append(" select cf_num, c_id, gu_name, product, cf_topic, write_date, cf_status ")
@@ -388,8 +456,10 @@ public class AdminForumDAO {
 
 				pstmt.setString(1, st);
 
-			} else if ((cID != null && !cID.equals("")) && (gu != null && !gu.equals(""))
-					&& (pr == null || pr.equals("")) && (st == null || st.equals(""))) {
+			}
+			// ID, 지역으로 검색했을 때
+			else if ((cID != null && !cID.equals("")) && (gu != null && !gu.equals("")) && (pr == null || pr.equals(""))
+					&& (st == null || st.equals(""))) {
 
 				query.append(" select cf_num, c_id, gu_name, product, cf_topic, write_date, cf_status ")
 						.append("      from admin_c_forum")
@@ -400,8 +470,10 @@ public class AdminForumDAO {
 				pstmt.setString(1, "%" + cID + "%");
 				pstmt.setString(2, gu);
 
-			} else if ((cID != null && !cID.equals("")) && (gu == null || gu.equals(""))
-					&& (pr != null && !pr.equals("")) && (st == null || st.equals(""))) {
+			}
+			// ID, 카테고리로 검색했을 때
+			else if ((cID != null && !cID.equals("")) && (gu == null || gu.equals("")) && (pr != null && !pr.equals(""))
+					&& (st == null || st.equals(""))) {
 
 				query.append(" select cf_num, c_id, gu_name, product, cf_topic, write_date, cf_status ")
 						.append("      from admin_c_forum")
@@ -412,8 +484,10 @@ public class AdminForumDAO {
 				pstmt.setString(1, "%" + cID + "%");
 				pstmt.setString(2, pr);
 
-			} else if ((cID != null && !cID.equals("")) && (gu == null || gu.equals(""))
-					&& (pr == null || pr.equals("")) && (st != null && !st.equals(""))) {
+			}
+			// ID, 상태로 검색했을 때
+			else if ((cID != null && !cID.equals("")) && (gu == null || gu.equals("")) && (pr == null || pr.equals(""))
+					&& (st != null && !st.equals(""))) {
 
 				query.append(" select cf_num, c_id, gu_name, product, cf_topic,write_date, cf_status ")
 						.append("      from admin_c_forum")
@@ -424,8 +498,10 @@ public class AdminForumDAO {
 				pstmt.setString(1, "%" + cID + "%");
 				pstmt.setString(2, st);
 
-			} else if ((cID == null || cID.equals("")) && (gu != null && !gu.equals(""))
-					&& (pr != null && !pr.equals("")) && (st == null || st.equals(""))) {
+			}
+			// 지역, 카테고리로 검색했을 때
+			else if ((cID == null || cID.equals("")) && (gu != null && !gu.equals("")) && (pr != null && !pr.equals(""))
+					&& (st == null || st.equals(""))) {
 
 				query.append(" select cf_num, c_id, gu_name, product, cf_topic, write_date, cf_status ")
 						.append("      from admin_c_forum")
@@ -436,8 +512,10 @@ public class AdminForumDAO {
 				pstmt.setString(1, gu);
 				pstmt.setString(2, pr);
 
-			} else if ((cID == null || cID.equals("")) && (gu != null && !gu.equals(""))
-					&& (pr == null || pr.equals("")) && (st != null && !st.equals(""))) {
+			}
+			// 지역, 상태로 검색했을 때
+			else if ((cID == null || cID.equals("")) && (gu != null && !gu.equals("")) && (pr == null || pr.equals(""))
+					&& (st != null && !st.equals(""))) {
 
 				query.append(" select cf_num, c_id, gu_name, product, cf_topic, write_date, cf_status ")
 						.append("      from admin_c_forum")
@@ -448,8 +526,10 @@ public class AdminForumDAO {
 				pstmt.setString(1, gu);
 				pstmt.setString(2, st);
 
-			} else if ((cID == null || cID.equals("")) && (gu == null || gu.equals(""))
-					&& (pr != null && !pr.equals("")) && (st != null && !st.equals(""))) {
+			}
+			// 카테고리, 상태로 검색했을 때
+			else if ((cID == null || cID.equals("")) && (gu == null || gu.equals("")) && (pr != null && !pr.equals(""))
+					&& (st != null && !st.equals(""))) {
 
 				query.append(" select cf_num, c_id, gu_name, product, cf_topic, write_date, cf_status ")
 						.append("      from admin_c_forum")
@@ -460,7 +540,9 @@ public class AdminForumDAO {
 				pstmt.setString(1, pr);
 				pstmt.setString(2, st);
 
-			} else if ((cID != null && !cID.equals("")) && (gu != null && !gu.equals(""))
+			}
+			// ID, 지역, 카테고리로 검색했을 때
+			else if ((cID != null && !cID.equals("")) && (gu != null && !gu.equals(""))
 					&& (pr != null && !pr.equals("")) && (st == null || st.equals(""))) {
 
 				query.append(" select cf_num, c_id, gu_name, product, cf_topic, write_date, cf_status ")
@@ -473,8 +555,10 @@ public class AdminForumDAO {
 				pstmt.setString(2, gu);
 				pstmt.setString(3, pr);
 
-			} else if ((cID != null && !cID.equals("")) && (gu == null || gu.equals(""))
-					&& (pr != null && !pr.equals("")) && (st != null && !st.equals(""))) {
+			}
+			// ID, 카테고리, 상태로 검색했을 때
+			else if ((cID != null && !cID.equals("")) && (gu == null || gu.equals("")) && (pr != null && !pr.equals(""))
+					&& (st != null && !st.equals(""))) {
 
 				query.append(" select cf_num, c_id, gu_name, product, cf_topic, write_date, cf_status ")
 						.append("      from admin_c_forum")
@@ -486,8 +570,10 @@ public class AdminForumDAO {
 				pstmt.setString(2, gu);
 				pstmt.setString(3, st);
 
-			} else if ((cID == null || cID.equals("")) && (gu != null && !gu.equals(""))
-					&& (pr != null && !pr.equals("")) && (st != null && !st.equals(""))) {
+			}
+			// 지역, 카테고리, 상태로 검색했을 때
+			else if ((cID == null || cID.equals("")) && (gu != null && !gu.equals("")) && (pr != null && !pr.equals(""))
+					&& (st != null && !st.equals(""))) {
 
 				query.append(" select cf_num, c_id, gu_name, product, cf_topic, write_date, cf_status ")
 						.append("      from admin_c_forum")
@@ -499,7 +585,9 @@ public class AdminForumDAO {
 				pstmt.setString(2, pr);
 				pstmt.setString(3, st);
 
-			} else if ((cID != null && !cID.equals("")) && (gu != null && !gu.equals(""))
+			}
+			// ID, 지역, 카테고리, 상태로 검색했을 때
+			else if ((cID != null && !cID.equals("")) && (gu != null && !gu.equals(""))
 					&& (pr != null && !pr.equals("")) && (st != null && !st.equals(""))) {
 
 				query.append(" select cf_num, c_id, gu_name, product, cf_topic, write_date, cf_status ")
@@ -513,7 +601,9 @@ public class AdminForumDAO {
 				pstmt.setString(3, pr);
 				pstmt.setString(4, st);
 
-			} else {
+			}
+			// 검색 조건이 없을 때
+			else {
 
 				query.append("  select cf_num, c_id, gu_name, product, cf_topic, write_date, cf_status ")
 						.append("from admin_c_forum order by cf_num");
@@ -547,7 +637,15 @@ public class AdminForumDAO {
 		return list;
 	} // selectAllFforum
 
-	public CForumVO selectForum(String cfNum) throws SQLException, NamingException {
+	/**
+	 * 유저 게시글 상세조회 method
+	 * 
+	 * @param cfNum 유저 게시글 번호
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
+	public CForumVO selectCForum(String cfNum) throws SQLException, NamingException {
 		CForumVO cfVO = null;
 
 		Connection con = null;
@@ -560,7 +658,7 @@ public class AdminForumDAO {
 
 			con = dc.getConn();
 
-			pstmt = con.prepareStatement("select * from admin_c_forum where cf_num ? ");
+			pstmt = con.prepareStatement("select * from admin_c_forum where cf_num = ? ");
 
 			pstmt.setString(1, cfNum);
 			rs = pstmt.executeQuery();
@@ -574,7 +672,7 @@ public class AdminForumDAO {
 				cfVO.setpCode(rs.getString("product"));
 				cfVO.setWriteDate(rs.getString("write_date"));
 				cfVO.setCfStatus(rs.getString("cf_status"));
-				cfVO.setMainImg(rs.getString("maing_img"));
+				cfVO.setMainImg(rs.getString("main_img"));
 
 			}
 
@@ -584,32 +682,89 @@ public class AdminForumDAO {
 
 		return cfVO;
 	}
-	
-//	public String selectHash(String cfNum) throws SQLException, NamingException {
-//		StringBuilder hashs = new StringBuilder();
-//		
-//		Connection con = null;
-//		PreparedStatement pstmt = null;
-//		ResultSet rs = null;
-//		
-//		DbConnection dc = DbConnection.getInstance();
-//		
-//		try {
-//			con = dc.getConn();
-//			
-//			pstmt = con.prepareStatement(" select * from hash where cf_num = ?");
-//			
-//			pstmt.setString(1, cfNum);
-//			
-//			rs = pstmt.executeQuery();
-//			
-//			while(rs.next()) {
-//				hashs.append(rs.getString("hash"));
-//			}
-//			
-//		} finally {
-//			dc.close(rs, pstmt, con);
-//		} 
-//		
-//	}
+
+	/**
+	 * HashTag 조회 method
+	 * 
+	 * @param cfNum 유저 게시글 번호
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
+	public String selectHash(String cfNum) throws SQLException, NamingException {
+		String hashes = "";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		DbConnection dc = DbConnection.getInstance();
+
+		try {
+			con = dc.getConn();
+
+			StringBuilder query = new StringBuilder();
+
+			query.append(" SELECT cf_num, LISTAGG(hash,',') WITHIN GROUP(ORDER BY cf_num) AS hash ")
+					.append(" FROM hashtag where cf_num = ? ").append(" GROUP BY cf_num ");
+
+			pstmt = con.prepareStatement(query.toString());
+
+			pstmt.setString(1, cfNum);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				hashes = rs.getString("hash");
+			}
+
+		} finally {
+			dc.close(rs, pstmt, con);
+		}
+		return hashes;
+	}
+
+	/**
+	 * 유저 게시글 추가 이미지 조회 method
+	 * 
+	 * @param cfNum
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
+	public String selectCImg(String cfNum) throws SQLException, NamingException {
+		String imgs = "";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		DbConnection dc = DbConnection.getInstance();
+
+		try {
+
+			con = dc.getConn();
+
+			StringBuilder query = new StringBuilder();
+
+			query.append(" select LISTAGG(img,',') within group(order by cf_num) as img").append(" 	   from c_img")
+					.append("          where cf_num =? ").append("  group by cf_num ");
+
+			pstmt = con.prepareStatement(query.toString());
+
+			pstmt.setString(1, cfNum);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				imgs = rs.getString("img");
+			}
+
+		} finally {
+			dc.close(rs, pstmt, con);
+		}
+
+		return imgs;
+	} // selectAdImg
+
 }

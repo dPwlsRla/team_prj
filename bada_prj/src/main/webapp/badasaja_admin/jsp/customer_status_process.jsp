@@ -1,6 +1,8 @@
 <%@page import="kr.co.sist.badasaja.admin.dao.AdminDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+    info="유저 상태변경 process 페이지"
+    %>
     
 <%
 

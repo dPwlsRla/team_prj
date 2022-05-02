@@ -62,6 +62,7 @@
     <script type="text/javascript">
     $(function(){
     	
+    	// ID로 검색했을 때
 		$("#idSearch").click(function() {
 			
 			 var local = '<%= request.getParameter("local") %>';
@@ -76,6 +77,7 @@
 			
 		})
 		
+		// 지역으로 검색했을 때
 		$(".lc").click(function(){
 			var local = $(this).text();
 			

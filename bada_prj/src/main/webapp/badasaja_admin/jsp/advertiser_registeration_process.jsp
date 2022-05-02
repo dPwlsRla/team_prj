@@ -2,7 +2,9 @@
 <%@page import="kr.co.sist.badasaja.admin.dao.AdminAdDAO"%>
 <%@page import="kr.co.sist.badasaja.vo.AdvertiserVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+    info="광고주 등록 process 페이지"
+    %>
 <%
 	
 	boolean flag = (boolean)session.getAttribute("insertAdvertiserFlag");

@@ -26,6 +26,13 @@ public class ProhibitDAO {
 		return pDAO;
 	}
 
+	/**
+	 * 전체 금지 품목 조회 method
+	 * @param keyword
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
 	public List<ProhibitVO> selectProhibit(String keyword) throws SQLException, NamingException {
 		List<ProhibitVO> list = new ArrayList<ProhibitVO>();
 
@@ -63,6 +70,12 @@ public class ProhibitDAO {
 		return list;
 	}
 	
+	/**
+	 * 금지 품목 조회 method
+	 * @param iKey 금지 품목
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
 	public void insertProhibit(String iKey) throws SQLException, NamingException {
 		
 		Connection con = null;

@@ -6,7 +6,9 @@
 <%@page import="java.io.File"%>
 <%@page import="java.sql.SQLException"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+   	info="광고 게시글 등록 process 페이지"
+    %>
 <%
 
 	boolean flag = (boolean)session.getAttribute("insertAdForumFlag");
@@ -76,42 +78,25 @@
 	 }catch(SQLException se){
 			se.printStackTrace();
 	%>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-		<script type="text/javascript">
-		alert("서비스가 원할하지 못합니다. /n 다시 시도 해주세요.")
-		location.replace('write_ad_forum.jsp');
-		</script>
+		out.println("<script>alert("서비스가 원할하지 못합니다. /n 다시 시도 해주세요.")</script>")
+		out.println("<script>location.replace('write_ad_forum.jsp');</script>")
 	<%
 	 } catch(Exception e){
 		 e.printStackTrace();
 		%>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-		<script type="text/javascript">
-		alert("업로드에 실패하였습니다. \n 다시 시도 해주세요.")
-		location.replace('write_ad_forum.jsp');
-		</script>
+		out.println("<script>alert("업로드에 실패하였습니다. \n 다시 시도 해주세요.")</script>")
+		out.println("<script>location.replace('write_ad_forum.jsp');</script>")
 		<%		
 	 } 
  		%>
- 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-		<script type="text/javascript">
-		alert("업로드 되었습니다.")
-		</script>		
- 		
+		out.println("<script>alert("업로드 되었습니다.")</script>")
  		<%
  		response.sendRedirect("ad_forum_list.jsp");
 	} else{
 		%>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-		<script type="text/javascript">
-		alert("이미 업로드 되었습니다.")
-		location.replace('ad_forum_list.jsp');
-		</script>
+		out.println("<script>alert("이미 업로드 되었습니다.")</script>")
+		out.println("<script>location.replace('write_ad_forum.jsp');</script>")
 		<%
 	}
 		session.setAttribute("insertAdForumFlag", true);
 %>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-		<script type="text/javascript">
-		alert("업로드 되었습니다.")
-		</script>		

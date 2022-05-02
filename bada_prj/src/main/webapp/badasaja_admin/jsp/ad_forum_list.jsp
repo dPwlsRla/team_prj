@@ -60,14 +60,14 @@
 $(function(){
 	
 	 getSearchData()
-	
+	// ID 로 검색했을 때
 	$("#idSearch").click(function(){
-		
 		
 		getSearchData();
 		
 	}) // click
 	
+	// 지역으로 검색했을 때
 	$(".local").click(function() {
 		
 		var gu = $(this).text();
@@ -79,6 +79,7 @@ $(function(){
 		getSearchData();
 	})
 	
+	// 카테고리로 검색했을 때
 	$(".category").click(function(){
 		var pr = $(this).text();
 		
@@ -90,6 +91,7 @@ $(function(){
 		
 	})
 	
+	// 상태로 검색했을 때
 	$(".status").click(function(){
 		var st = $(this).text();
 		
@@ -109,6 +111,7 @@ $(function(){
 	
 }) //ready
 
+// 광고게시글 전체조회 method
 function getSearchData(){
 	$.ajax({
 		url:"http://localhost/bada_prj/badasaja_admin/jsp/ad_forum_list_process.jsp",
@@ -134,6 +137,7 @@ function getSearchData(){
 					+"</td><td>"+jsonObj.topic+"</td><td>"+jsonObj.local+"</td><td>"+jsonObj.category
 					+"</td><td>"+jsonObj.status+"</td><td>"+jsonObj.postedDate+"</td><td>"+jsonObj.expiryDate+"</td></tr>") 
 			})
+				// 광고게시글 클릭시 상세보기 조회 method
 				$("tbody tr").click(function(e) {
 						
 						var tr = $(this);
@@ -158,9 +162,7 @@ function getSearchData(){
 	List<ProductVO> pList = bDAO.selectProductList();
 	List<LocalVO> lList = bDAO.selectLocalList();
  	
-
 	AdminForumDAO afDAO = AdminForumDAO.getInstance();
-	
 
 	pageContext.setAttribute("pList", pList);
 	pageContext.setAttribute("lList", lList);

@@ -30,6 +30,12 @@ public class BaseDAO {
 
 	} // getInstance
 
+	/**
+	 * 전체 카테고리 조회 method
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
 	public List<ProductVO> selectProductList() throws SQLException, NamingException {
 		List<ProductVO> list = new ArrayList<ProductVO>();
 
@@ -60,6 +66,12 @@ public class BaseDAO {
 		return list;
 	}
 	
+	/**
+	 * 전체 지역 조회 method
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
 	public List<LocalVO> selectLocalList() throws SQLException, NamingException {
 		List<LocalVO> list = new ArrayList<LocalVO>();
 

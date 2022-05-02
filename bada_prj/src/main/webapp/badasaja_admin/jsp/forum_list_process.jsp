@@ -6,6 +6,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     trimDirectiveWhitespaces="true"
+    info="유저 게시글 전체 조회 검색 process 페이지"
     %>
 <%
 	

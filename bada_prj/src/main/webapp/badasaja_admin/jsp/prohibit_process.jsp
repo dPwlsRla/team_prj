@@ -4,7 +4,9 @@
 <%@page import="java.util.List"%>
 <%@page import="kr.co.sist.badasaja.admin.dao.ProhibitDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+    info="금지 키워드 목록 조회 검색 process 페이지"
+    %>
 <%
 	String keyword = request.getParameter("key");
 

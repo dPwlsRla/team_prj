@@ -4,7 +4,9 @@
 <%@page import="java.util.List"%>
 <%@page import="kr.co.sist.badasaja.admin.dao.AdminReportDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"
+	info="게시글 신고 조회 검색 process페이지"
+	%>
 <%
 String rID = request.getParameter("rID");
 String ty = request.getParameter("ty"); 

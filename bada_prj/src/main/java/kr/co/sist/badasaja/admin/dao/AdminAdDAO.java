@@ -20,7 +20,6 @@ public class AdminAdDAO {
 	private static AdminAdDAO adDAO;
 
 	private AdminAdDAO() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public static AdminAdDAO getInstance() {
@@ -33,6 +32,16 @@ public class AdminAdDAO {
 
 	} // getInstance
 
+	/**
+	 * 베너 전체 조회 method
+	 * @param aID 광고주 ID
+	 * @param gu 지역
+	 * @param pr 카테고리
+	 * @param st 상태
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
 	public List<BannerVO> selectAllBanner(String aID, String gu, String pr, String st)
 			throws SQLException, NamingException {
 
@@ -50,6 +59,7 @@ public class AdminAdDAO {
 
 			StringBuilder query = new StringBuilder();
 
+			// ID로 검색했을 때
 			if ((aID != null && !aID.equals("")) && (gu == null || gu.equals("")) && (pr == null || pr.equals(""))
 					&& (st == null || st.equals(""))) {
 
@@ -60,7 +70,9 @@ public class AdminAdDAO {
 
 				pstmt.setString(1, "%" + aID + "%");
 
-			} else if ((aID == null || aID.equals("")) && (gu != null && !gu.equals(""))
+			}
+			// 지역으로 검색했을 때
+			else if ((aID == null || aID.equals("")) && (gu != null && !gu.equals(""))
 					&& (pr == null || pr.equals("")) && (st == null || st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
@@ -70,7 +82,9 @@ public class AdminAdDAO {
 
 				pstmt.setString(1, gu);
 
-			} else if ((aID == null || aID.equals("")) && (gu == null || gu.equals(""))
+			}
+			// 카테고리로 검색했을 때
+			else if ((aID == null || aID.equals("")) && (gu == null || gu.equals(""))
 					&& (pr != null && !pr.equals("")) && (st == null || st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
@@ -80,7 +94,9 @@ public class AdminAdDAO {
 
 				pstmt.setString(1, pr);
 
-			} else if ((aID == null || aID.equals("")) && (gu == null || gu.equals("")) && (pr == null || pr.equals(""))
+			}
+			// 상태로 검색 했을 때
+			else if ((aID == null || aID.equals("")) && (gu == null || gu.equals("")) && (pr == null || pr.equals(""))
 					&& (st != null && !st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
@@ -90,7 +106,9 @@ public class AdminAdDAO {
 
 				pstmt.setString(1, st);
 
-			} else if ((aID != null && !aID.equals("")) && (gu != null && !gu.equals(""))
+			}
+			// ID, 지역으로 검색했을 때
+			else if ((aID != null && !aID.equals("")) && (gu != null && !gu.equals(""))
 					&& (pr == null || pr.equals("")) && (st == null || st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
@@ -102,7 +120,9 @@ public class AdminAdDAO {
 				pstmt.setString(1, "%" + aID + "%");
 				pstmt.setString(2, gu);
 
-			} else if ((aID != null && !aID.equals("")) && (gu == null || gu.equals(""))
+			} 
+			// ID, 카테고리로 검색했을 때
+			else if ((aID != null && !aID.equals("")) && (gu == null || gu.equals(""))
 					&& (pr != null && !pr.equals("")) && (st == null || st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
@@ -114,7 +134,9 @@ public class AdminAdDAO {
 				pstmt.setString(1, "%" + aID + "%");
 				pstmt.setString(2, pr);
 
-			} else if ((aID != null && !aID.equals("")) && (gu == null || gu.equals(""))
+			}
+			// ID, 상태로 검색했을 때
+			else if ((aID != null && !aID.equals("")) && (gu == null || gu.equals(""))
 					&& (pr == null || pr.equals("")) && (st != null && !st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
@@ -126,7 +148,9 @@ public class AdminAdDAO {
 				pstmt.setString(1, "%" + aID + "%");
 				pstmt.setString(2, st);
 
-			} else if ((aID == null || aID.equals("")) && (gu != null && !gu.equals(""))
+			}
+			// 지역, 카테고리로 검색했을 때
+			else if ((aID == null || aID.equals("")) && (gu != null && !gu.equals(""))
 					&& (pr != null && !pr.equals("")) && (st == null || st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
@@ -138,7 +162,9 @@ public class AdminAdDAO {
 				pstmt.setString(1, gu);
 				pstmt.setString(2, pr);
 
-			} else if ((aID == null || aID.equals("")) && (gu != null && !gu.equals(""))
+			}
+			// 지역, 상태로 검색했을 때
+			else if ((aID == null || aID.equals("")) && (gu != null && !gu.equals(""))
 					&& (pr == null || pr.equals("")) && (st != null && !st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
@@ -150,7 +176,9 @@ public class AdminAdDAO {
 				pstmt.setString(1, gu);
 				pstmt.setString(2, st);
 
-			} else if ((aID == null || aID.equals("")) && (gu == null || gu.equals(""))
+			}
+			// 카테고리, 상태로 검색했을 때
+			else if ((aID == null || aID.equals("")) && (gu == null || gu.equals(""))
 					&& (pr != null && !pr.equals("")) && (st != null && !st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
@@ -162,7 +190,9 @@ public class AdminAdDAO {
 				pstmt.setString(1, pr);
 				pstmt.setString(2, st);
 
-			} else if ((aID != null && !aID.equals("")) && (gu != null && !gu.equals(""))
+			}
+			// 아이디, 지역, 카테고리로 검색했을 때
+			else if ((aID != null && !aID.equals("")) && (gu != null && !gu.equals(""))
 					&& (pr != null && !pr.equals("")) && (st == null || st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
@@ -175,7 +205,9 @@ public class AdminAdDAO {
 				pstmt.setString(2, gu);
 				pstmt.setString(3, pr);
 
-			} else if ((aID != null && !aID.equals("")) && (gu == null || gu.equals(""))
+			}
+			// 아이디, 카테고리, 상태로 검색했을 때
+			else if ((aID != null && !aID.equals("")) && (gu == null || gu.equals(""))
 					&& (pr != null && !pr.equals("")) && (st != null && !st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
@@ -188,7 +220,9 @@ public class AdminAdDAO {
 				pstmt.setString(2, pr);
 				pstmt.setString(3, st);
 
-			} else if ((aID != null && !aID.equals("")) && (gu == null || gu.equals(""))
+			}
+			// 아이디, 카테고리, 상태로 검색했을 때
+			else if ((aID != null && !aID.equals("")) && (gu == null || gu.equals(""))
 					&& (pr != null && !pr.equals("")) && (st != null && !st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
@@ -201,7 +235,9 @@ public class AdminAdDAO {
 				pstmt.setString(2, gu);
 				pstmt.setString(3, st);
 
-			} else if ((aID == null || aID.equals("")) && (gu != null && !gu.equals(""))
+			}
+			// 지역, 카테고리, 상태로 검색했을 때
+			else if ((aID == null || aID.equals("")) && (gu != null && !gu.equals(""))
 					&& (pr != null && !pr.equals("")) && (st != null && !st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
@@ -214,7 +250,9 @@ public class AdminAdDAO {
 				pstmt.setString(2, pr);
 				pstmt.setString(3, st);
 
-			} else if ((aID != null && !aID.equals("")) && (gu != null && !gu.equals(""))
+			}
+			// 아이디, 지역, 카테고리, 상태로 검색했을 때
+			else if ((aID != null && !aID.equals("")) && (gu != null && !gu.equals(""))
 					&& (pr != null && !pr.equals("")) && (st != null && !st.equals(""))) {
 
 				query.append(" select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
@@ -228,7 +266,9 @@ public class AdminAdDAO {
 				pstmt.setString(3, pr);
 				pstmt.setString(4, st);
 
-			} else {
+			}
+			// 검색조건이 없을 때
+			else {
 
 				query.append("  select b_num, a_id, gu_name, product, a_url, posted_date, expiry_date, b_status ")
 						.append("from admin_banner order by b_num");
@@ -263,6 +303,14 @@ public class AdminAdDAO {
 		return list;
 	} // selectAllBanner
 
+	/**
+	 * 전체 광고주 조회 method
+	 * @param aID 광고주 ID
+	 * @param local 지역
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
 	public List<AdvertiserVO> selectAllAdvertiser(String aID, String local) throws SQLException, NamingException {
 
 		List<AdvertiserVO> list = new ArrayList<AdvertiserVO>();
@@ -279,6 +327,7 @@ public class AdminAdDAO {
 
 			StringBuilder query = new StringBuilder();
 
+			// ID로 검색했을 때
 			if ((aID != null && !aID.equals("")) && (local == null || local.equals(""))) {
 				query.append(" 	select a_id, a_name, gu_name,").append(
 						" 	to_char(CONTRACT_DATE,'yyyy-mm-dd') contract_date, to_char(EXPIRY_DATE,'yyyy-mm-dd') expiry_date")
@@ -289,7 +338,9 @@ public class AdminAdDAO {
 
 				pstmt.setString(1, "%" + aID + "%");
 
-			} else if ((aID == null || aID.equals("")) && (local != null && !local.equals(""))) {
+			}
+			// 지역으로 검색했을 때
+			else if ((aID == null || aID.equals("")) && (local != null && !local.equals(""))) {
 				query.append(" 	select a_id, a_name, gu_name,").append(
 						" 	to_char(CONTRACT_DATE,'yyyy-mm-dd') contract_date, to_char(EXPIRY_DATE,'yyyy-mm-dd') expiry_date")
 						.append(" 	from advertiser av").append(" 	inner join local l")
@@ -298,7 +349,9 @@ public class AdminAdDAO {
 				pstmt = con.prepareStatement(query.toString());
 
 				pstmt.setString(1, local);
-			} else if ((aID != null && !aID.equals("")) && (local != null && !local.equals(""))) {
+			}
+			// 아이디, 지역으로 검색했을 때
+			else if ((aID != null && !aID.equals("")) && (local != null && !local.equals(""))) {
 				query.append(" 	select a_id, a_name, gu_name,").append(
 						" 	to_char(CONTRACT_DATE,'yyyy-mm-dd') contract_date, to_char(EXPIRY_DATE,'yyyy-mm-dd') expiry_date")
 						.append(" 	from advertiser av").append(" 	inner join local l")
@@ -309,7 +362,9 @@ public class AdminAdDAO {
 
 				pstmt.setString(1, "%" + aID + "%");
 				pstmt.setString(2, local);
-			} else {
+			}
+			// 아무런 조건이 없을 때
+			else {
 
 				query.append(" 	select a_id, a_name, gu_name,").append(
 						" 	to_char(CONTRACT_DATE,'yyyy-mm-dd') contract_date, to_char(EXPIRY_DATE,'yyyy-mm-dd') expiry_date")
@@ -343,6 +398,12 @@ public class AdminAdDAO {
 		return list;
 	} // selectAllAdvertiser
 
+	/**
+	 * 광고주 등록 method
+	 * @param adVO 광고주 정보
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
 	public void insertAdvertiser(AdvertiserVO adVO) throws SQLException, NamingException {
 
 		Connection con = null;
@@ -367,6 +428,12 @@ public class AdminAdDAO {
 		}
 	} // insertAdvertiser
 
+	/**
+	 * 게시글 작성 method
+	 * @param afVO 게시글 Data
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
 	public void insertAdForum(AdForumVO afVO) throws SQLException, NamingException {
 
 		Connection con = null;
@@ -381,7 +448,7 @@ public class AdminAdDAO {
 			StringBuilder query = new StringBuilder();
 
 			query.append("insert into ad_forum(af_num, a_id, p_code, af_topic, af_main, af_status, main_img)")
-					.append(" values('ad'||PRO1.AD_FORUM_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?)");
+					.append(" values('ad'||AD_FORUM_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?)");
 
 			pstmt = con.prepareStatement(query.toString());
 
@@ -399,6 +466,12 @@ public class AdminAdDAO {
 		}
 	}
 
+	/**
+	 * 광고 게시글 이미지 조회 method
+	 * @param imgs
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
 	public void inserFImg(String imgs) throws SQLException, NamingException {
 
 		Connection con = null;
@@ -412,12 +485,13 @@ public class AdminAdDAO {
 
 			StringBuilder query = null;
 
+			// 조회 결과에 사진이 2장 이상인 경우
 			if (imgs.contains(",")) {
 				String[] imgArr = imgs.split(",");
 				for (int i = 0; i < imgArr.length; i++) {
 					query = new StringBuilder();
 					query.append("insert into ad_img(af_num, img)")
-							.append(" values('ad'||PRO1.AD_FORUM_SEQ.CURRVAL, ?)");
+							.append(" values('ad'||AD_FORUM_SEQ.CURRVAL, ?)");
 
 					pstmt = con.prepareStatement(query.toString());
 
@@ -425,9 +499,11 @@ public class AdminAdDAO {
 
 					pstmt.executeUpdate();
 				}
-			} else {
+			}
+			// 한장인 경우
+			else {
 				query = new StringBuilder();
-				query.append("insert into ad_img(af_num, img)").append(" values('ad'||PRO1.AD_FORUM_SEQ.CURRVAL, ?)");
+				query.append("insert into ad_img(af_num, img)").append(" values('ad'||AD_FORUM_SEQ.CURRVAL, ?)");
 
 				pstmt = con.prepareStatement(query.toString());
 
@@ -441,6 +517,12 @@ public class AdminAdDAO {
 		}
 	}
 
+	/**
+	 * 배너광고 등록 method
+	 * @param bVO 배너 등록 data
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
 	public void insertBanner(BannerVO bVO) throws SQLException, NamingException {
 
 		Connection con = null;
@@ -455,7 +537,7 @@ public class AdminAdDAO {
 			StringBuilder query = new StringBuilder();
 
 			query.append("insert into banner(b_num, a_id, a_url, p_code, img)")
-					.append(" values('b'||PRO1.BANNER_SEQ.NEXTVAL, ?, ?, ?, ?)");
+					.append(" values('b'||BANNER_SEQ.NEXTVAL, ?, ?, ?, ?)");
 
 			pstmt = con.prepareStatement(query.toString());
 
@@ -471,6 +553,12 @@ public class AdminAdDAO {
 		}
 	} // insertBanner
 
+	/**
+	 * 광고 게시글 업데이트 method
+	 * @param afVO 광고 게시글 data
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
 	public void updateAdForum(AdForumVO afVO) throws SQLException, NamingException {
 
 		Connection con = null;
@@ -503,6 +591,12 @@ public class AdminAdDAO {
 
 	} // updateAdForum
 
+	/**
+	 * 게시글 상태 변경 method
+	 * @param afNum 광고 게시글 번호
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
 	public void updateAfStatus(String afNum) throws SQLException, NamingException {
 
 		Connection con = null;
