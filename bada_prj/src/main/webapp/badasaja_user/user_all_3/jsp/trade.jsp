@@ -42,9 +42,23 @@ info ="물물교환 게시판 메인"%>
 	
 	// 게시물 상세 조회
 	function goForum(cfNum){
+		
+		var forumType = cfNum.substr(0,2);
+		
+		// case 1. 일반 게시글일 경우
+		if(forumType == "cf"){
+			
+			document.fFrm.action = "forum.jsp";
+			
+		// case 2. 광고 게시글일 경우
+		}else if(forumType == "ad"){
+			
+			document.fFrm.action = "ad_forum.jsp";
+		}
+		
 		document.fFrm.cfNum.value = cfNum;
 		$("#fFrm").submit();
-	} 
+	}
 	
 	function activeA(){
 		$(".nav-link").css("background-color","white");
