@@ -11,7 +11,7 @@ String product = request.getParameter("product");
 System.out.println(cId+"/"+product);
 if(cId == null || product == null){
 	return;
-}   
+}
 EntireForumDAO efDAO = new EntireForumDAO();
 List<EntireForumVO> efList = efDAO.selectEntireForum(cId,product);
 pageContext.setAttribute("efList", efList);
@@ -58,9 +58,19 @@ pageContext.setAttribute("cId", cId);
 	
 	// 게시물 상세 조회
 	function goForum(cfNum){
-		document.fFrm.cfNum.value = cfNum;
+		var forumType = cfNum.substr(0,2);
+		
+		//case 1. 일반 게시글일 경우
+		if(forumType=="cf"){
+			document.fFrm.action="forum.jsp"
+		}//case 2. 광고 게시글일 경우
+		else if(forumType=="ad"){
+			document.fFrm.action = "ad_forum.jsp";
+		}
+		document.fFrm.cfNum.value=cfNum;
 		$("#fFrm").submit();
-	}
+	} 
+	
 </script>	
 	<form action="forum.jsp" id="fFrm" name="fFrm" method="post">
 	<input type="hidden" name="cfNum" value="">
@@ -79,7 +89,14 @@ pageContext.setAttribute("cId", cId);
 	            </div>
 	        </div>
 	        <figure class="block-4-image">
+	        	<c:choose>
+	        	<c:when test="${efVO.cfNum.startsWith('a')}">
 	        	<a href="javascript:void(0);"  onclick="goForum('${efVO.cfNum}')"><img src="../forum_img/${efVO.img}" alt="Image placeholder" class="img-fluid"></a>
+	        	</c:when>
+	        	<c:when test="${efVO.cfNum.startsWith('c')}">
+	        	<a href="javascript:void(0);"  onclick="goForum('${efVO.cfNum}')"><img src="../forum_img/${efVO.img}" alt="Image placeholder" class="img-fluid"></a>
+	        	</c:when>
+	       		</c:choose>
 	        </figure>
 	        <div class="block-4-text">
 	            <ul>

@@ -35,6 +35,13 @@ info ="물물교환 게시판 메인"%>
 	// TODO
 	pageContext.setAttribute("pList", pList);
 	
+	String id = (String)session.getAttribute("cId");
+
+
+ 	if(id==null) {
+		response.sendRedirect("login.jsp");
+		return;
+	}//end if 
 
 %>
 
@@ -42,23 +49,17 @@ info ="물물교환 게시판 메인"%>
 	
 	// 게시물 상세 조회
 	function goForum(cfNum){
-		
 		var forumType = cfNum.substr(0,2);
 		
-		// case 1. 일반 게시글일 경우
-		if(forumType == "cf"){
-			
-			document.fFrm.action = "forum.jsp";
-			
-		// case 2. 광고 게시글일 경우
-		}else if(forumType == "ad"){
-			
-			document.fFrm.action = "ad_forum.jsp";
+		//case 1. 일반 게시글일 경우
+		if(forumType=="cf"){
+			document.fFrm.action="forum.jsp"
+		}//case 2. 광고 게시글일 경우
+		else if(forumType=="ad"){
+			document.fFrm.cfNum.value = "ad_forum.jsp";
 		}
-		
-		document.fFrm.cfNum.value = cfNum;
 		$("#fFrm").submit();
-	}
+	} 
 	
 	function activeA(){
 		$(".nav-link").css("background-color","white");
@@ -114,6 +115,58 @@ info ="물물교환 게시판 메인"%>
 	}
 	
 	
+		function activeLoad(){
+		
+		id = '<%=(String)session.getAttribute("cId")%>';
+		pName = "기타 물품";
+		if(<%=request.getParameter("product")%>!=null){
+			pName = '<%=request.getParameter("product")%>';
+		}
+		
+		$.ajax({
+			url:"http://localhost/bada_prj/badasaja_user/user_all_3/jsp/entire_forum_table.jsp",
+			 data: {
+				   cId : id,
+				   product : pName,
+			},
+			type:"get",
+			dataType:"html",
+			error:function( xhr ){
+				alert( xhr.text + "/" + xhr.status);
+			},
+			success:function(data){
+				$("#includeAjax").html(data);
+			}
+		}) //ajax
+		
+		$.ajax({
+			url:"http://localhost/bada_prj/badasaja_user/user_all_3/jsp/banner_info.jsp",
+			 data: {
+				   cId : id,
+				   product : pName,
+			},
+			type:"get",
+			dataType:"json",
+			error:function( xhr ){
+				alert( xhr.text + "/" + xhr.status);
+			},
+			success:function(json){
+				
+				if(!json.bFlag){
+
+					$("#banner").html("<div style='background-color:lightgray; color:black; height:200px;margin-bottom: 20px; text-align:center; padding:75px;'>"
+			          +"<h5>앗! 현재 카테고리에 배너 광고가 없습니다.</h5>"+"<h5>광고 문의 : 02-XXXX-XXXX</h5></div>");
+					
+				}else{
+					$("#banner").html("<div style='height:200px;margin-bottom: 20px;'>"+
+			          "<a href='http://"+json.url+"'><img src='../../../badasaja_admin/banner_upload/"+json.img+"'"
+			          +"style='width:100%; height:100%;'></a></div>");
+				}//end else
+			}
+		}) //ajax
+	}
+	 
+	
 	
 
 </script>
@@ -139,7 +192,7 @@ info ="물물교환 게시판 메인"%>
 
 </head>
 
-<body>
+<body onload="activeLoad()">
 <div class="site-wrap">
     <%@include file="components/header.jsp"%>
 
