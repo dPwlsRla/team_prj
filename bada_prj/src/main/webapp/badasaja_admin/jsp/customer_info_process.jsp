@@ -36,7 +36,7 @@
 	jsonObj.put("tel", cVO.getTel());
 	jsonObj.put("profile", cVO.getProfile());
 	jsonObj.put("email", cVO.getEmail());
-	jsonObj.put("status", cVO.getScore());
+	jsonObj.put("status", cVO.getcStatus());
 	jsonObj.put("signDate", cVO.getSignDate());
 	jsonObj.put("accessDate", cVO.getAccessDate());
 	jsonObj.put("ipaddress", cVO.getIpAddress());

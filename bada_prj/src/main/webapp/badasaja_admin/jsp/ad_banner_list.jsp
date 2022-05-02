@@ -22,12 +22,12 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Tables - Basic Tables | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+    <title>Badasaja Admin</title>
 
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/badasaja.ico" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -134,7 +134,6 @@
 				if(jsonObj.resultData.length == 0){
 					$("#tab > tbody").append("<tr><td colspan='5'><strong>조회결과 없음</strong></td></tr>"  )					
 				}
-				
 				$.each(jsonObj.resultData, function(i, jsonObj){
 				$("#tab > tbody").append("<tr><td>"+jsonObj.bNum+"</td><td>"+jsonObj.aID
 						+"</td><td>"+jsonObj.URL+"</td><td>"+jsonObj.local+"</td><td>"+jsonObj.category

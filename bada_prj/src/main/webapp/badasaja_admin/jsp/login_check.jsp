@@ -23,7 +23,7 @@ if(flag) {
 }else{
 	%>
 	out.println("<script>alert("존재하는 아이디가 없습니다.")</script>")
-	out.println("<script>history.go(-1);</script>")
+	out.println("<script>location.replace("login.jsp")</script>")
 <%
 }
 %>

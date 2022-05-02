@@ -4,11 +4,8 @@
 <%@page import="java.util.List"%>
 <%@page import="kr.co.sist.badasaja.admin.dao.AdminAdDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"
-    info="광고 게시글 전체 조회, 검색 process 페이지"
-    %>
+	pageEncoding="UTF-8" info="광고 게시글 전체 조회, 검색 process 페이지"%>
 <%
-
 String aID = request.getParameter("aID");
 String gu = request.getParameter("gu");
 String pr = request.getParameter("pr");
@@ -17,20 +14,20 @@ String st = request.getParameter("st");
 /* if(aID == null){
 	aID="";
 } */
-if(pr == null || pr.equals("카테고리 선택")){
-	pr="";
-} 
+if (pr == null || pr.equals("카테고리 선택")) {
+	pr = "";
+}
 
-if(gu == null || gu.equals("지역")){
+if (gu == null || gu.equals("지역")) {
 	gu = "";
 }
 
-if(st == null || st.equals("상태")){
+if (st == null || st.equals("상태")) {
 	st = "";
-} else if( st.equals("게시중")){
+} else if (st.equals("게시중")) {
 	st = "y";
-} else if( st.equals("게시종료")){
-	st= "n";
+} else if (st.equals("게시종료")) {
+	st = "n";
 }
 /*String gu = "";
 String st = ""; */
@@ -45,24 +42,29 @@ JSONObject jsonObj = new JSONObject();
 JSONArray jsonArr = new JSONArray();
 
 JSONObject jsonTemp = null;
-for(BannerVO bVO : bannerList){
+
+String status = "";
+for (BannerVO bVO : bannerList) {
 	jsonTemp = new JSONObject();
 	jsonTemp.put("bNum", bVO.getbNum());
 	jsonTemp.put("aID", bVO.getaID());
 	jsonTemp.put("URL", bVO.getaURL());
 	jsonTemp.put("local", bVO.getLocal());
 	jsonTemp.put("category", bVO.getpCode());
-	jsonTemp.put("status", String.valueOf(bVO.getbStatus()));
+	status = String.valueOf(bVO.getbStatus());
+	if(status.equals("y")){
+		status="게시중";
+	} else if( status.equals("n")){
+		status="게시종료";
+	}
+	jsonTemp.put("status", status);
 	jsonTemp.put("postedDate", bVO.getPostedDate());
 	jsonTemp.put("expiryDate", bVO.getExpiryDate());
-	
+
 	jsonArr.add(jsonTemp);
 }
 
 jsonObj.put("resultData", jsonArr);
 
 out.println(jsonObj.toString());
-
-
-
 %>

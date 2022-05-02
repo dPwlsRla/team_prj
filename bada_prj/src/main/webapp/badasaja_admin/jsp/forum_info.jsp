@@ -21,10 +21,13 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-<title>Vertical Layouts - Forms | Sneat - Bootstrap 5 HTML Admin
-	Template - Pro</title>
+<title>Badasaja Admin</title>
 
 <meta name="description" content="" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon"
+	href="../assets/img/favicon/badasaja.ico" />
 <style type="text/css">
 img {
 	width: 200px;
@@ -157,9 +160,6 @@ img {
 	widows: 900px
 }
 </style>
-<!-- Favicon -->
-<link rel="icon" type="image/x-icon"
-	href="../assets/img/favicon/favicon.ico" />
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -233,39 +233,37 @@ pageContext.setAttribute("comVOList", comVOList);
 		$("#forumMain").val("<%=cfVO.getCfMain()%>")
 		$("#category").val("<%=cfVO.getpCode()%>")
 		$("#cstatus").val("<%=cfVO.getCfStatus()%>")
- 		$("#preview").attr("src"," ../forum_img/" + "<%=cfVO.getMainImg()%>" )
+ 		<%--  $("#preview").attr("src","http://localhost/bada_prj/badasaja_user/user_all_3/forum_img/" + "<%=cfVO.getMainImg()%>" )
 		
-	 <	var str = '<%= imgs %>'
+	 	var str = '<%=imgs%>'
 		if( str != ""){
 			var imgs = str.split(",");
 			if(imgs.length == 1){
-			$("#preview1").attr("src"," ../forum_img/" + imgs[0] )
+			$("#preview1").attr("src","http://localhost/bada_prj/badasaja_user/user_all_3/forum_img/" + imgs[0] )
 			} else if( imgs.length == 2){
-			$("#preview1").attr("src"," ../forum_img/" + imgs[0] )
-			$("#preview2").attr("src"," ../forum_img/" + imgs[1] )
+			$("#preview1").attr("src","http://localhost/bada_prj/badasaja_user/user_all_3/forum_img/" + imgs[0] )
+			$("#preview2").attr("src","http://localhost/bada_prj/badasaja_user/user_all_3/forum_img/" + imgs[1] )
 			}
-		} 
+		} --%>
 	 	
 	 	var hashes = '<%=hashes%>';
-	 	 if( hashes != "" ){
-	 		var hashArr = hashes.split(",");
-			if(hashArr.length == 1){
-			$("#hash1").val(hashArr[0] )
-			} else if( hashArr.length == 2){
-			$("#hash1").val(hashArr[0] )
-			$("#hash2").val(hashArr[1] )
-			} else if( hashArr.length == 3){
-			$("#hash1").val(hashArr[0] )
-			$("#hash2").val(hashArr[1] )
-			$("#hash3").val(hashArr[2] )
-			} else{
+		if (hashes != "") {
+			var hashArr = hashes.split(",");
+			if (hashArr.length == 1) {
+				$("#hash1").val(hashArr[0])
+			} else if (hashArr.length == 2) {
+				$("#hash1").val(hashArr[0])
+				$("#hash2").val(hashArr[1])
+			} else if (hashArr.length == 3) {
+				$("#hash1").val(hashArr[0])
+				$("#hash2").val(hashArr[1])
+				$("#hash3").val(hashArr[2])
+			} else {
 				$("#hash1").val(hashes)
 			}
-	 	} 
-		
-		
+		}
+
 	})
-	
 </script>
 </head>
 
@@ -286,7 +284,7 @@ pageContext.setAttribute("comVOList", comVOList);
 
 					<div class="container-xxl flex-grow-1 container-p-y">
 						<h4 class="fw-bold py-3 mb-4">
-							<span class="text-muted fw-light">Advertiserment/</span>Ad Forum
+							<span class="text-muted fw-light">Customer/</span>Customer Forum
 							Info
 						</h4>
 
@@ -416,7 +414,8 @@ pageContext.setAttribute("comVOList", comVOList);
 
 									<div class="mb-3">
 										<div class="input-group input-group-merge">
-											<div class="mb-3" style="margin-left: 15px; margin-right: 4%;">
+											<div class="mb-3"
+												style="margin-left: 15px; margin-right: 4%;">
 												<label for="defaultSelect" class="form-label">Hasg
 													Tag</label>
 												<div class="input-group input-group-merge">
@@ -451,8 +450,8 @@ pageContext.setAttribute("comVOList", comVOList);
 						<div class="mb-2 mb-md-0">
 							©
 							<script>
-									document.write(new Date().getFullYear());
-								</script>
+								document.write(new Date().getFullYear());
+							</script>
 							, made with ❤️ by <a href="https://themeselection.com"
 								target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
 						</div>

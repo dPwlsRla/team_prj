@@ -4,9 +4,7 @@
 <%@page import="java.util.List"%>
 <%@page import="kr.co.sist.badasaja.admin.dao.BaseDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"
-	info="광고 게시글 등록 페이지"
-	%>
+	pageEncoding="UTF-8" info="광고 게시글 등록 페이지"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 session.setAttribute("insertAdForumFlag", false);
@@ -24,10 +22,13 @@ if (request.getParameter("addcnt") != null) {
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-<title>Vertical Layouts - Forms | Sneat - Bootstrap 5 HTML Admin
-	Template - Pro</title>
+<title>Badasaja Admin</title>
 
 <meta name="description" content="" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon"
+	href="../assets/img/favicon/badasaja.ico" />
 <style type="text/css">
 img {
 	width: 200px;
@@ -67,9 +68,6 @@ img {
 	}
 }
 </style>
-<!-- Favicon -->
-<link rel="icon" type="image/x-icon"
-	href="../assets/img/favicon/favicon.ico" />
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -287,15 +285,15 @@ img {
                         <label class="input-group-text" for="inputGroupFile02">Upload</label> -->
 													<table style="margin: 0px auto;">
 														<tr>
-															<td><img id="preview" /> <br />
-															<br /> <input type="file" onchange="readURL(this);"
-																class="btnAttach" name="upImg1" id="upImg1"></td>
-															<td><img id="preview1" /> <br />
-															<br /> <input type="file" onchange="readURL1(this);"
-																class="btnAttach" name="upImg2" id="upImg2"></td>
-															<td><img id="preview2" /> <br />
-															<br /> <input type="file" onchange="readURL2(this);"
-																class="btnAttach" name="upImg3" id="upImg3"></td>
+															<td><img id="preview" /> <br /> <br /> <input
+																type="file" onchange="readURL(this);" class="btnAttach"
+																name="upImg1" id="upImg1"></td>
+															<td><img id="preview1" /> <br /> <br /> <input
+																type="file" onchange="readURL1(this);" class="btnAttach"
+																name="upImg2" id="upImg2"></td>
+															<td><img id="preview2" /> <br /> <br /> <input
+																type="file" onchange="readURL2(this);" class="btnAttach"
+																name="upImg3" id="upImg3"></td>
 														</tr>
 													</table>
 												</div>
@@ -307,10 +305,9 @@ img {
 															ID</label>
 														<div class="input-group input-group-merge">
 															<span id="basic-icon-default-fullname2"
-																class="input-group-text"><i
-																class="bx bx-user"></i></span> <input type="text"
-																class="form-control" id="aID" name="aID"
-																placeholder="Advertiser ID"
+																class="input-group-text"><i class="bx bx-user"></i></span>
+															<input type="text" class="form-control" id="aID"
+																name="aID" placeholder="Advertiser ID"
 																aria-label="Advertiser ID"
 																aria-describedby="basic-icon-default-fullname2" />
 														</div>
@@ -326,8 +323,8 @@ img {
 														</select>
 													</div>
 													<div class="mb-3">
-														<label for="defaultSelect" class="form-label">상태</label>
-														 <select id="status" name="status" class="form-select">
+														<label for="defaultSelect" class="form-label">상태</label> <select
+															id="status" name="status" class="form-select">
 															<option value="게시중">게시중</option>
 														</select>
 													</div>
@@ -370,9 +367,7 @@ img {
 									href="https://themeselection.com/" target="_blank"
 									class="footer-link me-4">More Themes</a> <a
 									href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
-									target="_blank" class="footer-link me-4">Documentation</a>
-
-								<a
+									target="_blank" class="footer-link me-4">Documentation</a> <a
 									href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
 									target="_blank" class="footer-link me-4">Support</a>
 							</div>

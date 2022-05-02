@@ -15,15 +15,13 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-<title>Tables - Basic Tables | Sneat - Bootstrap 5 HTML Admin
-	Template - Pro</title>
+<title>Badasaja Admin</title>
 
 <meta name="description" content="" />
 
 <!-- Favicon -->
 <link rel="icon" type="image/x-icon"
-	href="../assets/img/favicon/favicon.ico" />
-
+	href="../assets/img/favicon/badasaja.ico" />
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -57,100 +55,103 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
-$(function(){
-	
-	 getSearchData()
-	// ID 로 검색했을 때
-	$("#idSearch").click(function(){
-		
-		getSearchData();
-		
-	}) // click
-	
-	// 지역으로 검색했을 때
-	$(".local").click(function() {
-		
-		var gu = $(this).text();
-		
-		$("#gu").attr("value", gu);
-		$("#local").html(gu);
-		
-		
-		getSearchData();
-	})
-	
-	// 카테고리로 검색했을 때
-	$(".category").click(function(){
-		var pr = $(this).text();
-		
-		$("#pr").attr("value", pr);
-		$("#category").html(pr);
-		
-		
-		getSearchData();
-		
-	})
-	
-	// 상태로 검색했을 때
-	$(".status").click(function(){
-		var st = $(this).text();
-		
-		if(st == 'null'){
-			st = "상태";
-			
-		}
-		
-		$("#st").attr("value", st);
-		$("#status").html(st);
-		
-		getSearchData();
-		
-	})
-	
-	
-	
-}) //ready
+	$(function() {
 
-// 광고게시글 전체조회 method
-function getSearchData(){
-	$.ajax({
-		url:"http://localhost/bada_prj/badasaja_admin/jsp/ad_forum_list_process.jsp",
-		 data: {
-			   aID : $("#aID").val(),
-			   gu : $("#gu").val(),
-			   st : $("#st").val(),
-			   pr : $("#pr").val(),			
-		},
-		type:"get",
-		dataType:"json",
-		error:function( xhr ){
-			alert( xhr.text + "/" + xhr.status);
-		},
-		success:function(jsonObj){
-			 $("tbody").empty();
-			if(jsonObj.resultData.length == 0){
-				$("#tab > tbody").append("<tr><td colspan='5'><strong>조회결과 없음</strong></td></tr>"  )					
+		getSearchData()
+		// ID 로 검색했을 때
+		$("#idSearch").click(function() {
+
+			getSearchData();
+
+		}) // click
+
+		// 지역으로 검색했을 때
+		$(".local").click(function() {
+
+			var gu = $(this).text();
+
+			$("#gu").attr("value", gu);
+			$("#local").html(gu);
+
+			getSearchData();
+		})
+
+		// 카테고리로 검색했을 때
+		$(".category").click(function() {
+			var pr = $(this).text();
+
+			$("#pr").attr("value", pr);
+			$("#category").html(pr);
+
+			getSearchData();
+
+		})
+
+		// 상태로 검색했을 때
+		$(".status").click(function() {
+			var st = $(this).text();
+
+			if (st == 'null') {
+				st = "상태";
+
 			}
-			
-			$.each(jsonObj.resultData, function(i, jsonObj){
-			$("#tab > tbody").append("<tr><td class='afNum'>"+jsonObj.afNum+"</td><td>"+jsonObj.aID
-					+"</td><td>"+jsonObj.topic+"</td><td>"+jsonObj.local+"</td><td>"+jsonObj.category
-					+"</td><td>"+jsonObj.status+"</td><td>"+jsonObj.postedDate+"</td><td>"+jsonObj.expiryDate+"</td></tr>") 
-			})
-				// 광고게시글 클릭시 상세보기 조회 method
-				$("tbody tr").click(function(e) {
-						
-						var tr = $(this);
-						var td = tr.children();
-						
-						var data = td.eq(0).text();
-						
-						window.location.href = "ad_forum_info.jsp?afNum=" + data;
-					})
-		},
-		
-	}) //ajax
-}
+
+			$("#st").attr("value", st);
+			$("#status").html(st);
+
+			getSearchData();
+
+		})
+
+	}) //ready
+
+	// 광고게시글 전체조회 method
+	function getSearchData() {
+		$.ajax({
+			url : "http://localhost/bada_prj/badasaja_admin/jsp/ad_forum_list_process.jsp",
+			data : {
+				aID : $("#aID").val(),
+				gu : $("#gu").val(),
+				st : $("#st").val(),
+				pr : $("#pr").val(),
+				},
+			type : "get",
+			dataType : "json",
+			error : function(xhr) {
+				alert(xhr.text + "/" + xhr.status);
+			},
+			success : function(jsonObj) {
+				$("tbody").empty();
+				if (jsonObj.resultData.length == 0) {
+					$("#tab > tbody").append("<tr><td colspan='5'><strong>조회결과 없음</strong></td></tr>")
+				}
+
+						$.each(jsonObj.resultData, function(i, jsonObj) {
+							$("#tab > tbody").append(
+									"<tr><td class='afNum'>" + jsonObj.afNum
+											+ "</td><td>" + jsonObj.aID
+											+ "</td><td>" + jsonObj.topic
+											+ "</td><td>" + jsonObj.local
+											+ "</td><td>" + jsonObj.category
+											+ "</td><td>" + jsonObj.status
+											+ "</td><td>" + jsonObj.postedDate
+											+ "</td><td>" + jsonObj.expiryDate
+											+ "</td></tr>")
+						})
+						// 광고게시글 클릭시 상세보기 조회 method
+						$("tbody tr").click(function(e) {
+
+							var tr = $(this);
+							var td = tr.children();
+
+							var data = td.eq(0).text();
+
+							window.location.href = "ad_forum_info.jsp?afNum="+ data;
+						})
+					},
+
+				}) //ajax
+	}
 </script>
 </head>
 
@@ -161,13 +162,13 @@ function getSearchData(){
 	BaseDAO bDAO = BaseDAO.getInstance();
 	List<ProductVO> pList = bDAO.selectProductList();
 	List<LocalVO> lList = bDAO.selectLocalList();
- 	
+
 	AdminForumDAO afDAO = AdminForumDAO.getInstance();
 
 	pageContext.setAttribute("pList", pList);
 	pageContext.setAttribute("lList", lList);
 	%>
-	
+
 	<%@ include file="nav.jsp"%>
 
 	<!-- Layout wrapper -->
@@ -191,71 +192,72 @@ function getSearchData(){
 						</h4>
 						<div class="card" style="height: 800px; overflow-y: scroll;">
 							<!-- Search -->
-								<div class="navbar-nav mb-3">
-									<div class="nav-item d-inline">
-										<a href="write_ad_forum.jsp"
-											class="btn btn-outline-primary float-end shadow-none"
-											style="margin-top: 15px; margin-left: 15px">글쓰기</a>
-										<button type="button"
-											class="btn btn-outline-primary dropdown-toggle float-end"
-											data-bs-toggle="dropdown"
-											name="status"
-											id="status"
-											style="margin-top: 15px; margin-left: 20px;">
-												<c:choose>
-												<c:when test="${ not empty param.st }">${ param.st }</c:when>
-												<c:when test="${ empty param.st }">상태</c:when>
-											</c:choose>
-											</button>
-											<input type="hidden" name="st" id="st"/>
-										<ul class="dropdown-menu">
-											<li class="status"><a class="dropdown-item" href="javascript:void(0);">상태</a></li>
-											<li class="status"><a class="dropdown-item" href="javascript:void(0);">게시중</a></li>
-											<li class="status"><a class="dropdown-item" href="javascript:void(0);">게시삭제</a></li>
-										</ul>
-										 <input type="hidden" name="gu" id="gu"/>
-										<button type="button"
-											class="btn btn-outline-primary dropdown-toggle float-end"
-											data-bs-toggle="dropdown"
-											id="local"
-											style="margin-top: 15px; margin-left: 20px;">지역</button>
-										<ul class="dropdown-menu">
-											<li class="local"><a class="dropdown-item" href="javascript:void(0)">지역</a></li>
-											<c:forEach var="data" items="${lList }">
-												<li class="local"><a class="dropdown-item" href="javascript:void(0)"><c:out
-															value="${ data.guName }" /> </a></li>
-											</c:forEach>
-										</ul>
-										<button type="button"
-											class="btn btn-outline-primary dropdown-toggle float-end"
-											data-bs-toggle="dropdown"
-											name="category"
-											id="category"
-											style="margin-top: 15px; margin-left: 20px;">
-											<c:choose>
-												<c:when test="${ not empty param.product }">${ param.product }</c:when>
-												<c:when test="${ empty param.product }">카테고리 선택</c:when>
-											</c:choose>
-											
-											</button>
-										<input type="hidden" name="pr" id="pr"/>
-										<ul class="dropdown-menu">
-												<li class="category"><a class="dropdown-item" href="javascript:void(0)">카테고리 선택</a></li>
-											<c:forEach var="data" items="${ pList }">
-												<li class="category"><a class="dropdown-item" href="javascript:void(0)"><c:out
-															value="${ data.product }" /> </a></li>
-											</c:forEach>
-										</ul>
-										
-										<a href="javascript:void(0);" id="idSearch"
-											class="btn btn-primary float-end shadow-none"
-											style="margin-top: 15px; margin-left: 10px">검색</a> 
-											<input type="text" name="aID" id="aID"
-											class="form-control shadow-none float-end"
-											placeholder="광고주_ID검색"
-											style="margin-top: 15px; width: 150px;" />
-									</div>
+							<div class="navbar-nav mb-3">
+								<div class="nav-item d-inline">
+									<a href="write_ad_forum.jsp"
+										class="btn btn-outline-primary float-end shadow-none"
+										style="margin-top: 15px; margin-left: 15px">글쓰기</a>
+									<button type="button"
+										class="btn btn-outline-primary dropdown-toggle float-end"
+										data-bs-toggle="dropdown" name="status" id="status"
+										style="margin-top: 15px; margin-left: 20px;">
+										<c:choose>
+											<c:when test="${ not empty param.st }">${ param.st }</c:when>
+											<c:when test="${ empty param.st }">상태</c:when>
+										</c:choose>
+									</button>
+									<input type="hidden" name="st" id="st" />
+									<ul class="dropdown-menu">
+										<li class="status"><a class="dropdown-item"
+											href="javascript:void(0);">상태</a></li>
+										<li class="status"><a class="dropdown-item"
+											href="javascript:void(0);">게시중</a></li>
+										<li class="status"><a class="dropdown-item"
+											href="javascript:void(0);">게시삭제</a></li>
+									</ul>
+									<input type="hidden" name="gu" id="gu" />
+									<button type="button"
+										class="btn btn-outline-primary dropdown-toggle float-end"
+										data-bs-toggle="dropdown" id="local"
+										style="margin-top: 15px; margin-left: 20px;">지역</button>
+									<ul class="dropdown-menu">
+										<li class="local"><a class="dropdown-item"
+											href="javascript:void(0)">지역</a></li>
+										<c:forEach var="data" items="${lList }">
+											<li class="local"><a class="dropdown-item"
+												href="javascript:void(0)"><c:out
+														value="${ data.guName }" /> </a></li>
+										</c:forEach>
+									</ul>
+									<button type="button"
+										class="btn btn-outline-primary dropdown-toggle float-end"
+										data-bs-toggle="dropdown" name="category" id="category"
+										style="margin-top: 15px; margin-left: 20px;">
+										<c:choose>
+											<c:when test="${ not empty param.product }">${ param.product }</c:when>
+											<c:when test="${ empty param.product }">카테고리 선택</c:when>
+										</c:choose>
+
+									</button>
+									<input type="hidden" name="pr" id="pr" />
+									<ul class="dropdown-menu">
+										<li class="category"><a class="dropdown-item"
+											href="javascript:void(0)">카테고리 선택</a></li>
+										<c:forEach var="data" items="${ pList }">
+											<li class="category"><a class="dropdown-item"
+												href="javascript:void(0)"><c:out
+														value="${ data.product }" /> </a></li>
+										</c:forEach>
+									</ul>
+
+									<a href="javascript:void(0);" id="idSearch"
+										class="btn btn-primary float-end shadow-none"
+										style="margin-top: 15px; margin-left: 10px">검색</a> <input
+										type="text" name="aID" id="aID"
+										class="form-control shadow-none float-end"
+										placeholder="광고주_ID검색" style="margin-top: 15px; width: 150px;" />
 								</div>
+							</div>
 							<!-- /Search -->
 							<div class="table-responsive text-nowrap">
 								<table id="tab" class="table table-hover">

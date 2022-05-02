@@ -6,9 +6,7 @@
 <%@page import="java.util.List"%>
 <%@page import="kr.co.sist.badasaja.admin.dao.BaseDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"
-	info="광고 게시글 상세조회 페이지"
-	%>
+	pageEncoding="UTF-8" info="광고 게시글 상세조회 페이지"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr"
 	data-theme="theme-default" data-assets-path="../assets/"
@@ -18,10 +16,13 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-<title>Vertical Layouts - Forms | Sneat - Bootstrap 5 HTML Admin
-	Template - Pro</title>
+<title>Badasaja Admin</title>
 
 <meta name="description" content="" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon"
+	href="../assets/img/favicon/badasaja.ico" />
 <style type="text/css">
 img {
 	width: 200px;
@@ -90,28 +91,26 @@ img {
 
 <!-- Page CSS -->
 <%
-	BaseDAO bDAO = BaseDAO.getInstance();
-	List<ProductVO> pList = bDAO.selectProductList();
-	pageContext.setAttribute("pList", pList);
-	
-	String afNum = request.getParameter("afNum");
-	
-	pageContext.setAttribute("afNum", afNum);
- 	if(afNum == null){
-		response.sendRedirect("login.jsp");
-		return;
-	}
-	 
-	AdminForumDAO afDAO = AdminForumDAO.getInstance();
-	
-	AdForumVO afVO = afDAO.selectAdForum(afNum);
-	
-	pageContext.setAttribute("afVO", afVO);
-	
-	String imgs = afDAO.selectAdImg(afNum);
-	
-	
-	%>
+BaseDAO bDAO = BaseDAO.getInstance();
+List<ProductVO> pList = bDAO.selectProductList();
+pageContext.setAttribute("pList", pList);
+
+String afNum = request.getParameter("afNum");
+
+pageContext.setAttribute("afNum", afNum);
+if (afNum == null) {
+	response.sendRedirect("login.jsp");
+	return;
+}
+
+AdminForumDAO afDAO = AdminForumDAO.getInstance();
+
+AdForumVO afVO = afDAO.selectAdForum(afNum);
+
+pageContext.setAttribute("afVO", afVO);
+
+String imgs = afDAO.selectAdImg(afNum);
+%>
 
 <!-- Helpers -->
 <script src="../assets/vendor/js/helpers.js"></script>
@@ -126,91 +125,88 @@ img {
 <script type="text/javascript">
 	$(function(){
 		
-		var afNum = '<%= afNum %>';
+		var afNum = '<%=afNum%>';
 		
-		$("#aID").val("<%= afVO.getaID() %>");
-		$("#topic").val("<%= afVO.getAfTopic() %>");
-		$("#forumMain").val("<%= afVO.getAfMain() %>")
-		$("#category").val("<%= afVO.getpCode() %>")
-		$("#status").val("<%= afVO.getAfStatus() %>")
-		$("#preview").attr("src","../upload/" + "<%= afVO.getMainImg() %>" )
+		$("#aID").val("<%=afVO.getaID()%>");
+		$("#topic").val("<%=afVO.getAfTopic()%>");
+		$("#forumMain").val("<%=afVO.getAfMain()%>")
+		$("#category").val("<%=afVO.getpCode()%>")
+		$("#status").val("<%=afVO.getAfStatus()%>")
+		$("#preview").attr("src","../upload/" + "<%=afVO.getMainImg()%>" )
 		
-		var str = '<%= imgs %>'
-		if( str == ""){
+		var str = '<%=imgs%>';
+		if (str == "") {
 			return;
 		}
 		var imgs = str.split(",");
-		if(imgs.length == 1){
-		$("#preview1").attr("src","../upload/" + imgs[0] )
-		} else if( imgs.length == 2){
-		$("#preview1").attr("src","../upload/" + imgs[0] )
-		$("#preview2").attr("src","../upload/" + imgs[1] )
+		if (imgs.length == 1) {
+			$("#preview1").attr("src", "../upload/" + imgs[0])
+		} else if (imgs.length == 2) {
+			$("#preview1").attr("src", "../upload/" + imgs[0])
+			$("#preview2").attr("src", "../upload/" + imgs[1])
 		}
-		
-	 	$("#modify").click(function(){
-	 		
-	 		if ($("#topic").val().trim() == "") {
+
+		$("#modify").click(	function() {
+			if ($("#topic").val().trim() == "") {
 				alert("제목을 입력해주세요");
 				$("#topic").focus();
 				return;
 			}
-	 		
-	 		if ($("#forumMain").val() == "") {
+
+			if ($("#forumMain").val() == "") {
 				alert("내용을 입력해주세요")
 				$("#forumMain").focus();
 				return;
 			}
 			
- 			$.ajax({
-				url : "http://localhost/bada_prj/badasaja_admin/jsp/ad_forum_modify_process.jsp",
-				data : { 
-					afNum : afNum,
-					topic : $("#topic").val(),
-					main : $("#forumMain").val(),
-					pr : $("#category option:selected").val(),
-					st : $("#status option:selected").val(),
-					},
-				type:"post",
-				error:function( xhr ){
-					alert( xhr.text + "/" + xhr.status);
-				},
-				success:function(){
-					alert("변경 되었습니다.")
-					location.replace("http://localhost/bada_prj/badasaja_admin/jsp/ad_forum_list.jsp")
-				},
-				
-			})  
-			
-		}) // click 
-		
-		$("#del").click(function() {
-			
+				$.ajax({
+						url : "http://localhost/bada_prj/badasaja_admin/jsp/ad_forum_modify_process.jsp",
+						data : {
+						afNum : afNum,
+						topic : $("#topic").val(),
+						main : $("#forumMain").val(),
+						pr : $("#category option:selected").val(),
+						st : $("#status option:selected").val(),
+						},
+						type : "post",
+						error : function(xhr) {
+						alert(xhr.text + "/" + xhr.status);
+						},
+						success : function() {
+						alert("변경 되었습니다.")
+						location.href="http://localhost/bada_prj/badasaja_admin/jsp/ad_forum_list.jsp";
+						},
+
+					})
+
+				}) // click 
+
+/* 		$("#del").click(function() {
+
 			$.ajax({
 				url : "http://localhost/bada_prj/badasaja_admin/jsp/ad_forum_delete_process.jsp",
-				data : { 
+				data : {
 					afNum : afNum,
-					},
-				type:"get",
-				error:function( xhr ){
-					alert( xhr.text + "/" + xhr.status);
 				},
-				success:function(){
-					alert("삭제 되었습니다.")
+				type : "get",
+				error : function(xhr) {
+					alert(xhr.text + "/" + xhr.status);
+				},
+				success : function() {
+				alert("삭제 되었습니다.")
 					location.replace("http://localhost/bada_prj/badasaja_admin/jsp/ad_forum_list.jsp")
 				},
-				
-			})  
-			
-			
-		}) // click
-		
-	})
-	
+
+			})
+
+	}) // click */
+
+})
 </script>
 </head>
 
 <body>
-	
+
 	<%@ include file="nav.jsp"%>
 	<!-- Layout wrapper -->
 	<div class="layout-wrapper layout-content-navbar">
@@ -226,7 +222,8 @@ img {
 
 					<div class="container-xxl flex-grow-1 container-p-y">
 						<h4 class="fw-bold py-3 mb-4">
-							<span class="text-muted fw-light">Advertiserment/</span>Ad Forum Info
+							<span class="text-muted fw-light">Advertiserment/</span>Ad Forum
+							Info
 						</h4>
 
 						<!-- Basic Layout -->
@@ -237,77 +234,74 @@ img {
 										class="card-header d-flex justify-content-between align-items-center">
 									</div>
 									<div class="card-body">
-											<div class="mb-3">
-												<label class="form-label" for="basic-default-fullname">Board
-													Topic</label> <input type="text" id="topic" name="topic"
-													class="form-control" id="basic-default-fullname"
-													placeholder="Banner Topic" />
-											</div>
-											<div class="mb-3">
-												<label class="form-label" for="basic-default-company"
-													style="margin-top: 10px;">Img</label>
-												<div class="input-group">
-													<!-- <input type="file" class="form-control" id="input_imgs" name="input_imgs" multiple="multiple"/>
+										<div class="mb-3">
+											<label class="form-label" for="basic-default-fullname">Board
+												Topic</label> <input type="text" id="topic" name="topic"
+												class="form-control" id="basic-default-fullname"
+												placeholder="Banner Topic" />
+										</div>
+										<div class="mb-3">
+											<label class="form-label" for="basic-default-company"
+												style="margin-top: 10px;">Img</label>
+											<div class="input-group">
+												<!-- <input type="file" class="form-control" id="input_imgs" name="input_imgs" multiple="multiple"/>
                         <label class="input-group-text" for="inputGroupFile02">Upload</label> -->
-													<table style="margin: 0px auto;">
-														<tr>
-															<td style="padding: 30px;"><img id="preview" /> <br />
-															<br/></td>
-															<td style="padding: 30px;"><img id="preview1" /> <br />
-															<br /> </td>
-															<td style="padding: 30px;"><img id="preview2" /> <br />
+												<table style="margin: 0px auto;">
+													<tr>
+														<td style="padding: 30px;"><img id="preview" /> <br />
 															<br /></td>
-														</tr>
-													</table>
+														<td style="padding: 30px;"><img id="preview1" /> <br />
+															<br /></td>
+														<td style="padding: 30px;"><img id="preview2" /> <br />
+															<br /></td>
+													</tr>
+												</table>
+											</div>
+										</div>
+										<div class="mb-3">
+											<div class="input-group input-group-merge">
+												<div class="mb-3" style="margin-right: 4%;">
+													<label for="defaultSelect" class="form-label">Advertiser
+														ID</label>
+													<div class="input-group input-group-merge">
+														<span id="basic-icon-default-fullname2"
+															class="input-group-text"><i class="bx bx-user"></i></span>
+														<input type="text" class="form-control" id="aID"
+															name="aID" readonly="readonly"
+															aria-describedby="basic-icon-default-fullname2" />
+													</div>
+													<div id="idCheck">&nbsp;&nbsp;&nbsp;&nbsp;</div>
+												</div>
+												<div class="mb-3" style="margin-right: 5%;">
+													<label for="defaultSelect" class="form-label">카테고리</label>
+													<select id="category" name="category" class="form-select">
+														<c:forEach items="${ pList }" var="data">
+															<option value="${ data.pCode }">${ data.product }</option>
+														</c:forEach>
+													</select>
+												</div>
+												<div class="mb-3">
+													<label for="defaultSelect" class="form-label">상태</label> <select
+														id="status" name="status" class="form-select">
+														<option value="게시중">게시중</option>
+														<option value="삭제">삭제</option>
+													</select>
 												</div>
 											</div>
-											<div class="mb-3">
-												<div class="input-group input-group-merge">
-													<div class="mb-3" style="margin-right: 4%;">
-														<label for="defaultSelect" class="form-label">Advertiser
-															ID</label>
-														<div class="input-group input-group-merge">
-															<span id="basic-icon-default-fullname2"
-																class="input-group-text"><i
-																class="bx bx-user"></i></span> <input type="text"
-																class="form-control" id="aID" name="aID"
-																readonly="readonly"
-																aria-describedby="basic-icon-default-fullname2" />
-														</div>
-														<div id="idCheck">&nbsp;&nbsp;&nbsp;&nbsp;</div>
-													</div>
-													<div class="mb-3" style="margin-right: 5%;">
-														<label for="defaultSelect" class="form-label">카테고리</label>
-														<select id="category" name="category" class="form-select">
-															<c:forEach items="${ pList }" var="data">
-																<option value="${ data.pCode }">${ data.product }</option>
-															</c:forEach>
-														</select>
-													</div>
-													<div class="mb-3">
-														<label for="defaultSelect" class="form-label">상태</label>
-														<select id="status" name="status" class="form-select">
-															<option value="게시중">게시중</option>
-															<option value="삭제">삭제</option>
-														</select>
-													</div>
-												</div>
-											</div>
+										</div>
 
-											<div class="mb-3">
-												<label class="form-label" for="basic-default-fullname">Board
-													Main</label>
-												<div class="input-group input-group-merge">
-													<textarea class="form-control" id="forumMain"
-														name="forumMain" aria-label="With textarea"
-														style="height: 400px;"></textarea>
-												</div>
+										<div class="mb-3">
+											<label class="form-label" for="basic-default-fullname">Board
+												Main</label>
+											<div class="input-group input-group-merge">
+												<textarea class="form-control" id="forumMain"
+													name="forumMain" aria-label="With textarea"
+													style="height: 400px;"></textarea>
 											</div>
+										</div>
 
-											<button type="button" id="modify" name="modify"
-												class="btn btn-primary" style="margin-right: 20px;">수정</button>
-											<button type="button" id="del" name="del"
-												class="btn btn-primary">삭제</button>
+										<button type="button" id="modify" name="modify"
+											class="btn btn-primary" style="margin-right: 20px;">수정</button>
 									</div>
 								</div>
 							</div>
@@ -331,9 +325,7 @@ img {
 									href="https://themeselection.com/" target="_blank"
 									class="footer-link me-4">More Themes</a> <a
 									href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
-									target="_blank" class="footer-link me-4">Documentation</a>
-
-								<a
+									target="_blank" class="footer-link me-4">Documentation</a> <a
 									href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
 									target="_blank" class="footer-link me-4">Support</a>
 							</div>

@@ -19,12 +19,12 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Tables - Basic Tables | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+    <title>Badasaja Admin</title>
 
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/badasaja.ico" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -206,6 +206,7 @@
 	// 상세조회 출력 function
 	function printCustomerInfo(jsonObj){
 		
+		$("#profile").attr("src","http://localhost/bada_prj/badasaja_user/user_all_3/forum_img/" + jsonObj.profile)
 		$("#customer_nickcname").html(jsonObj.nickname);
 		$("#customer-id").html('ID : ' + jsonObj.cID);
 		$("#customer-gender").html('gender : ' + jsonObj.gender);
@@ -307,7 +308,7 @@
                         <!-- /Search -->
                         <div class="user-grid">
                             <div class="user-avatar">
-                                <img id="profile" src="../assets/img/avatars/1.png"/>
+                                <img id="profile">
                                 <a href="#" class="avatar-name">
                                     <span class="app-brand-text demo fw-bolder ms-2" id="customer_nickcname"></span>
                                 </a>
