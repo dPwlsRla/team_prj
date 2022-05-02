@@ -2,20 +2,21 @@ package kr.co.sist.badasaja.vo;
 
 public class ComVO {
 	
-	private String comNum, comMain, comDate, cID;
+	private String comNum, comMain, comDate, cID, cfNum;
 	private char secret, del;
 	
 	public ComVO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ComVO(String comNum, String comMain, String comDate, String cID, char secret, char del) {
+	public ComVO(String comNum, String comMain, String comDate, String cID, String cfNum, char secret, char del) {
 		this.comNum = comNum;
 		this.comMain = comMain;
 		this.comDate = comDate;
 		this.cID = cID;
 		this.secret = secret;
 		this.del = del;
+		this.cfNum = cfNum;
 	}
 
 	public String getComNum() {
@@ -65,5 +66,15 @@ public class ComVO {
 	public void setDel(char del) {
 		this.del = del;
 	}
+
+	public String getCfNum() {
+		return cfNum;
+	}
+
+	public void setCfNum(String cfNum) {
+		this.cfNum = cfNum;
+	}
+	
+	
 	
 }
