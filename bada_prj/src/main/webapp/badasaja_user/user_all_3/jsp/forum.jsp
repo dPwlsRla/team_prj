@@ -440,6 +440,7 @@
   %>
   
   <script type="text/javascript">
+  
   window.onbeforeunload = function () {
       var scrollPos;
       if (typeof window.pageYOffset != 'undefined') {
@@ -465,6 +466,12 @@
   function commentProcess(){
 	  var cfNum = '<%=cfNum%>';
 	  var cId = '<%=(String)session.getAttribute("cId")%>';
+	  if (cId == "null"){
+		  alert("로그인 후 사용해주세요");
+		  window.location.replace("login.jsp");
+		  return;
+	  }
+
 	  $.ajax({
 		  type : "POST",
 		  url : "insert_comment.jsp",
@@ -653,6 +660,11 @@ function goEditForum(){
 	
 function addReply(comNum){
 		  var cId = '<%=(String)session.getAttribute("cId")%>';
+		  if (cId == "null"){
+			  alert("로그인 후 사용해주세요");
+			  window.location.replace("login.jsp");
+			  return;
+		  }
 		  $.ajax({
 			  type : "POST",
 			  url : "insert_reply.jsp",
@@ -750,16 +762,16 @@ function okBtn(){
   <div class="carousel-inner">
   	
     <div class="carousel-item active">
-      <img src="../images/c_img/${cImg1.img}" class="d-block w-100" alt="...">
+      <img src="../forum_img/${cImg1.img}" class="d-block w-100" alt="...">
     </div>
     <c:if test="${cImg2.img!=null}">
     <div class="carousel-item">
-      <img src="../images/c_img/${cImg2.img}" class="d-block w-100" alt="...">
+      <img src="../forum_img/${cImg2.img}" class="d-block w-100" alt="...">
     </div>
     </c:if>
     <c:if test="${cImg3.img!=null}">
     <div class="carousel-item">
-      <img src="../images/c_img/${cImg3.img}" class="d-block w-100" alt="...">
+      <img src="../forum_img/${cImg3.img}" class="d-block w-100" alt="...">
     </div>
     </c:if>
     
