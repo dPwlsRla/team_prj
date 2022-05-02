@@ -68,11 +68,13 @@ public class CForumDAO {
 			pstmt.setString(1,cfNum);
 			rs = pstmt.executeQuery();
 			
-			while(rs.next()) {
-				CImgVO cIVO = new CImgVO();
-				cIVO.setCfNum(cfNum);
-				cIVO.setImg(rs.getString("IMG"));
-				imageList.add(cIVO);
+			if(rs.next()) {
+				for(String img : rs.getString("IMG").split(",")) {
+					CImgVO cIVO = new CImgVO();
+					cIVO.setCfNum(cfNum);
+					cIVO.setImg(img);
+					imageList.add(cIVO);
+				}
 			}
 			
 		}finally {
