@@ -1,5 +1,11 @@
+<%@page import="kr.co.sist.badasaja.vo.AdImgVO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="kr.co.sist.badasaja.vo.AdForumVO"%>
+<%@page import="java.util.List"%>
+<%@page import="kr.co.sist.badasaja.user.dao.AdForumDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -126,20 +132,38 @@
 									}
   </style>
   <body>
+ <%
+	
+ 	AdForumDAO adfDAO = new AdForumDAO();
+ 	AdForumVO adVO = new AdForumVO();
+ 	
+ 	String afNum = request.getParameter("cfNum");
+ 	
+ 	List<AdForumVO>adList =adfDAO.selectAdForum(afNum);
+ 	List<AdForumVO>adList2 = adfDAO.selectAdNickname(afNum);
+ 	List<AdImgVO>adList3 = adfDAO.selectImg(afNum); 
+ 	
+ 	pageContext.setAttribute("adList", adList);
+ 	pageContext.setAttribute("adList2", adList2);
+ 	pageContext.setAttribute("adList3", adList3);
+ 	
+ 
+ %>
   
 <%@include file="components/header.jsp"%>
-
+<input type="hidden" name="afNum" value="<%=afNum%>"/>
   
 	<div style="margin: 0px auto; width: 700px; text-align: right; ">
 	</div>
     <div class="container1"  >
     	<table style="width: 700px">
-    	
+    	<c:forEach var="adVO" items="${adList}">
     	<tr>
-    	<td style="font-size: 20px; font-weight: bold; ">제목 : 광고게시글</td>
+    	<td style="font-size: 20px; font-weight: bold; ">제목 : ${adVO.afTopic}</td>
     	<td></td>
-    	<td style="text-align: right">2022-03-31 02:57AM</td>
+    	<td style="text-align: right">${adVO.postedDate}</td>
     	</tr>
+    	</c:forEach>
     	</table>
     </div>
     
@@ -173,7 +197,9 @@
 	    	<tr>
 	    		<td id="profileTd" >
 	    		<input type="image" style="width:50px; height:50px" src="../images/user.png"></td>
-	    		<td ><span id="nickname">닉네임: 하남돼지집</span></td>
+	    		<c:forEach var="adVO" items="${adList2}" >
+	    		<td ><span id="nickname">닉네임: ${adVO.aName}</span></td>
+	    		</c:forEach>
 	   
 	    		<td style="text-align: right">
 		    		<label id="onBoard">광고중</label>
@@ -181,8 +207,11 @@
 	    	</tr>
     </table>
     </div>
+    
     <div class="container4" >
-    	<div id="textDiv"></div>
+    <c:forEach var ="adVO" items="${adList}">
+    	<div id="textDiv">${adVO.afMain}</div>
+    </c:forEach>
   </div>
   
   <!--footer  -->

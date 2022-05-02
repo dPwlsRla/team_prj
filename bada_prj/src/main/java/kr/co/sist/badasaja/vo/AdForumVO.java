@@ -1,8 +1,13 @@
 package kr.co.sist.badasaja.vo;
 
+/**
+ * @author user
+ *
+ */
 public class AdForumVO { 
 
-	private String afNum, aID, pCode, local, afTopic, afMain, postedDate, expiryDate, afStatus, mainImg, type;
+	private String afNum, aID, pCode, local, afTopic, afMain, postedDate, expiryDate, afStatus, mainImg, type,
+	aName;
 	private int afCost;
 
 	public AdForumVO() {
@@ -10,7 +15,7 @@ public class AdForumVO {
 	}
 
 	public AdForumVO(String afNum, String aID, String pCode, String local, String afTopic, String afMain,
-			String postedDate, String expiryDate, String afStatus, String mainImg, String type, int afCost) {
+			String postedDate, String expiryDate, String afStatus, String mainImg, String type, String aName, int afCost) {
 		this.afNum = afNum;
 		this.aID = aID;
 		this.pCode = pCode;
@@ -23,6 +28,7 @@ public class AdForumVO {
 		this.mainImg = mainImg;
 		this.type = type;
 		this.afCost = afCost;
+		this.aName = aName;
 	}
 
 	public String getLocal() {
@@ -121,4 +127,13 @@ public class AdForumVO {
 		this.afCost = afCost;
 	}
 
+	public String getaName() {
+		return aName;
+	}
+
+	public void setaName(String aName) {
+		this.aName = aName;
+	}
+
+	
 }
