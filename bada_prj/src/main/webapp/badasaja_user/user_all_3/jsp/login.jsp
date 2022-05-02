@@ -67,7 +67,7 @@
 	  
 	  
   </style>
-  <body>
+  <body >
   
   
   <%@include file="components/header.jsp"%>
@@ -243,6 +243,17 @@
   <script type="text/javascript">
   
   $(function () {
+	  if(localStorage.getItem("ID")!=null){
+		    $("#chk").prop('checked',true)
+		  	$("#id").val(localStorage.getItem("ID"));
+		} 
+	  $("#chk").change(function () {
+		if($("#chk").is(":checked")){
+			localStorage.setItem("ID",$("#id").val());
+		}else{
+			localStorage.clear();
+		}
+	})
 	  $("#find_id_send").click(function () {
 		  $.ajax({
 				url:"login2.jsp",
@@ -294,6 +305,16 @@
 			}
 			$("#frm").submit();		
 		})
+		
+	$("#passWd").keyup(function (key) {
+		if(key.keyCode=="13"){
+			if($("#id").val()=='' || $("#passWd").val()==''){
+				$('#fail').modal("show");
+				return;
+			}
+			$("#frm").submit();		
+		}
+	})
 	  
 	  /* 아이디 찾기  */
 	  $('#search_id').click(function(e){
@@ -327,6 +348,9 @@
 
 	  
 })
+function load() {
+
+}
   </script>
 
    

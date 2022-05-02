@@ -9,7 +9,7 @@
     pageEncoding="UTF-8"
     info="수정"%>
 <%
-
+request.setCharacterEncoding("UTF-8");
 JSONArray jsonArr = new JSONArray();
 MypageDAO mDAO = new MypageDAO();
 

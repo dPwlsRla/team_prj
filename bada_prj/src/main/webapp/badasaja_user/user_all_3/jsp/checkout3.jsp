@@ -68,6 +68,6 @@ out.println(jso.toJSONString());
 		cuVO2.setIpAddress(request.getRemoteAddr());
 		MemberDAO uDAO2 = new MemberDAO();
 		uDAO2.insertMember(cuVO2); 
-		out.println("<script>location.href='index.jsp'</script>");
+		out.println("<script>location.href='signupComplete.jsp'</script>");
 }//end if
 %>

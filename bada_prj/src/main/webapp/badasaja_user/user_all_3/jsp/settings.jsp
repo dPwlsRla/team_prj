@@ -8,6 +8,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     info="수정"%><!-- rset=UTF-8" language="java" %> -->
+    <% request.setCharacterEncoding("UTF-8"); %>
 <!DOCTYPE html>
 
 <html lang="en">
@@ -360,8 +361,7 @@ let flag = true;
 				id = data.id;
 				password = data.password;
 				nick=data.nick;
-				alert(password)
-	
+					
 				$("#id").val(id);
 				$("#nick").val(nick);
 				$("#email").val(data.email);
