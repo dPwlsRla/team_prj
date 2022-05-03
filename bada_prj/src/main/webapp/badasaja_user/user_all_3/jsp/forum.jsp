@@ -35,6 +35,7 @@
     <link rel="stylesheet" href="../css/jquery-ui.css">
     <link rel="stylesheet" href="../css/owl.carousel.min.css">
     <link rel="stylesheet" href="../css/owl.theme.default.min.css">
+    
 
     <link rel="stylesheet" href="../css/aos.css">
 
@@ -428,13 +429,12 @@
 	pageContext.setAttribute("cfNum", cfNum);
 	pageContext.setAttribute("comVOList", comVOList);
 	
-	
 
 	//거래상태 바꾸기
 	TransactionVO trVO = new TransactionVO();
 	DetailCForumDAO dcfDAO = new DetailCForumDAO();
 	
-	//dcfDAO.insertTstatus("cd");
+	//dcfDAO.insertTstatus(trVO);
 	
 
   %>
@@ -642,15 +642,17 @@
 	$("#Trans").click(function(e) {
 		e.preventDefault();
 		$("#testModal5").modal("show");
-		
+	
 		$("#okBtn").click(function(e) {
-			$("#testModal5").modal("hide");
+			e.preventDefault();
+				 $("#testModal5").modal("hide");
+		})//okBtn 
+			
 		});
 	
 	$(".close").click(function(e) {
 		e.preventDefault();
 		$("#testModal5").modal("hide");	
-	});
 	});//transClick
 
 
@@ -699,31 +701,23 @@ window.onclick = function(event) {
   }
 }//myFunction()
 
-
-function okBtn(){
-	console.log($("input[name=cfNum]").val());
-	 $.ajax({
-			url:"transactionProcess.jsp",
-			type:"get",
-			//댓글 구현 이후 주석 풀기 
-			//근데 값이 안받아지긴 함.. -> 오류 해결 필요
-			//data:{"cID" : "${cVO.cID}","cfNum" : $("input[name=cfNum]").val()} ,
-			data:{"cID" : "user", "cfNum" : "cf5"},
-			error:function(xhr){
-				alert(xhr.status+"/"+xhr.status.text)
-			},
-			success:function(result){
-				if(result){
-					alert("거래가 확정되었습니다.");
-				}else{
-					alert("거래 권한이 없습니다.");
-				}
-				
-			}
-		});//ajax 
-			 
 	
-}//okBtn
+	function okBtn(cId){
+		alert("거래약속을 하시겠습니까?");
+		console.log(cId);
+		console.log($("input[name=cfNum]").val());
+			$.ajax({
+					url:"transactionProcess.jsp",
+					type:"get", 
+					data:{"cId" : cId , "cfNum" : $("input[name=cfNum]").val()} ,
+					error:function(xhr){
+					alert("거래 약속을 할 수 없습니다. \n"+ xhr.status+"/"+xhr.status.text);
+						},
+					success:function(result){
+						alert("거래약속이 설정되었습니다.");
+						}
+				});//ajax   
+		}//okBtn
 	
 	
 
@@ -742,10 +736,12 @@ function okBtn(){
   <form action="edit_forum.jsp" id="fFrm" name="fFrm" method="post">
 	<input type="hidden" name="cfNum" value="<%=cfNum%>">
 </form>
+	
+
   
 	<div style="margin: 0px auto; width: 700px; text-align: right; ">
 	<c:if test = "${cVO.cID eq cId}"><a href="javascript:void(0);" onclick="goEditForum()"><input type="button" value="수정하기" class="editBtn"></a></c:if>
-	<c:if test = "${cVO.cID eq cId}"><a href="javascript:void(0);" ><input type="button" id="tesetBtn7" value="삭제하기" class="deleteBtn"></a></c:if>
+	<c:if test = "${cVO.cID eq cId}"><a href="javascript:void(0);" ><input type="button" id="testBtn7" value="삭제하기" class="deleteBtn"></a></c:if>
 	</div>
 									<!--container1: 제목 및 작성일시 div-->
     <div class="container1"  >
@@ -1001,6 +997,7 @@ function okBtn(){
     	<!--부모 댓글  -->
     	<c:forEach var="comVO" items="${comVOList}">
     	<div class="parent">
+    	<input type="hidden" id="comId" name="comId" value="${comVO.cId}" >
     	<div style=" font-weight: bold; ">
     	<div class="dropdown">
 	    <img id="commentProfile" src="${comVO.profile }" alt=""  id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"/>${comVO.nickname }
@@ -1008,10 +1005,10 @@ function okBtn(){
   	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
     	<li><a class="dropdown-item" href="#score" id="score2">친절 점수 주기</a></li>
     	<li><a class="dropdown-item" href="#CReport" id="CReport2">계정 신고</a></li>
-    	<li><a class="dropdown-item" href="#goTransaction" id="Trans">거래 약속 신청</a></li>
+    	<li><a class="dropdown-item" href="#goTransaction" id="Trans" onclick="okBtn('${comVO.cId}')">거래 약속 신청</a></li>
   	</ul>
 	</div>
-    	<div class="addr" >${comVO.comDate }</div>
+    	<div class="addr" >${comVO.comDate}</div>
     	</div>
     	<div class="commentContent">
     	<div>
@@ -1031,6 +1028,7 @@ function okBtn(){
     	<!-- 자식댓글 -->
     	<c:forEach var="rVO" items="${comVO.replyList}" varStatus="idx">
     	<div class="child">
+    	<input type="hidden" id="comId" name="comId" value="${comVO.cId}" >
     	<div style=" font-weight: bold; ">
     	<div class="dropdown">
 	    <img id="commentProfile" src="${rVO.profile }" alt=""  id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"/>${rVO.nickname }

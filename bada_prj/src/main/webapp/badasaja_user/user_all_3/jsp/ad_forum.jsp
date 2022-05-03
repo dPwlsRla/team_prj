@@ -170,15 +170,17 @@
     	<!---container2 : 사진 div-->
  	<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
+  <c:forEach var="adiVO" items="${adList3}">
     <div class="carousel-item active">
-      <img src="../images/cloth_1.jpg" class="d-block w-100" alt="...">
+      <img src="${adiVO.img }" class="d-block w-100" alt="...">
     </div>
     <div class="carousel-item">
-      <img src="../images/cloth_2.jpg" class="d-block w-100" alt="...">
+      <img src="${adiVO.img }" class="d-block w-100" alt="...">
     </div>
     <div class="carousel-item">
-      <img src="../images/cloth_3.jpg" class="d-block w-100" alt="...">
+      <img src="${adiVO.img }" class="d-block w-100" alt="...">
     </div>
+  </c:forEach>
   </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>

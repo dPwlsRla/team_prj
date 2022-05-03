@@ -317,8 +317,8 @@ public void insertFreport(FReportVO frVO) throws SQLException, NamingException {
 	 * @param id
 	 * @throws NamingException
 	 */
-	public boolean insertTstatus(TransactionVO trVO) throws SQLException, NamingException {
-		boolean flag = false;
+	public void insertTstatus(TransactionVO trVO) throws SQLException, NamingException {
+		
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs= null;
@@ -336,9 +336,7 @@ public void insertFreport(FReportVO frVO) throws SQLException, NamingException {
 		.append(" values(?,?,'y')");
 		pstmt=con.prepareStatement(tstatusQuery.toString());
 		
-		//댓글 구현 이후 주석 해제
-		//pstmt.setString(1, trVO.getcID());
-		pstmt.setString(1,"user");
+		pstmt.setString(1, trVO.getcID());
 		pstmt.setString(2,trVO.getCfNum());
 		rs=pstmt.executeQuery();
 		}finally {
@@ -346,7 +344,6 @@ public void insertFreport(FReportVO frVO) throws SQLException, NamingException {
 			
 		}
 		
-		return flag;
 	}//insertTstatus
 	
 	
