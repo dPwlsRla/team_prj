@@ -33,7 +33,7 @@
 
 </head>
 <body onload="load()">
-  <form action="settings3.jsp" id="frm" accept-charset="UTF-8">
+  <form action="settings3.jsp" id="frm" method="post" accept-charset="UTF-8">
 <div class="site-wrap">
     <%@include file="components/header.jsp"%>
 
@@ -105,7 +105,12 @@
                                             </select>
                                         </div>
                                     </div>
-
+								  <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>프로필 사진 바꾸기</label>
+                                            <input type="file" accept="image/*" class="form-control" id="profile" name="profile">
+                                        </div>
+                                    </div>
                                     <div class="password-group">
                                        <!--  <div class="col-md-7">
                                             <div class="form-group">
@@ -246,6 +251,7 @@ let flag = true;
 			})//id_keyup 
 			
 		 $("#nick").keyup(function () {
+			alert($("#profile").val())
 			if($("#nick").val()==""){
 				$("#red2").html("닉네임일 입력해주세요 ")
 				flag=false;

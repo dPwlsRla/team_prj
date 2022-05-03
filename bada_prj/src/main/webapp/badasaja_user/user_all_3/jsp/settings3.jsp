@@ -40,8 +40,9 @@ out.println(jso.toJSONString());
 if("ok".equals(hid)){
 	/*  중복 체크 */
 	String password="";
+	String pass = request.getParameter("pass");
 	CuVO cuVO3 = new CuVO();
-	if(request.getParameter("pass")!=null){
+	if(pass!=""){
 		DataEncrypt de = new DataEncrypt("abcefghijklmn1234");//키가 안맞아서 에러 났어요
 		password=de.encryption(request.getParameter("pass"));
 	}else{
@@ -59,7 +60,8 @@ if("ok".equals(hid)){
 	cuVO3.setNickName(request.getParameter("nick"));
 	cuVO3.setTel(tel.toString());
 	cuVO3.setEmail(request.getParameter("email"));
-	cuVO3.setGuCode(Integer.parseInt(request.getParameter("gu_code"))); 
+	cuVO3.setGuCode(Integer.parseInt(request.getParameter("gu_code")));
+	cuVO3.setProfile(request.getParameter("profile"));
 
 	MypageDAO uDAO2 = new MypageDAO();
 	uDAO2.updateCustomer(cuVO3);  

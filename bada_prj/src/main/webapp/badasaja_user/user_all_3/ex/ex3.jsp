@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-String data="5vHiHFcC2EgPBtR+Hgm8hQ==";
+String data="c4d6yJ3f5nVaVEfV+AyZcA==";
 
 DataDecrypt de = new DataDecrypt("abcefghijklmn1234");
 

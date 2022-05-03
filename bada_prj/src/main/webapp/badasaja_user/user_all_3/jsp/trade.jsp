@@ -119,6 +119,7 @@ info ="물물교환 게시판 메인"%>
 		
 		id = '<%=(String)session.getAttribute("cId")%>';
 		pName = "기타 물품";
+		
 		if(<%=request.getParameter("product")%>!=null){
 			pName = '<%=request.getParameter("product")%>';
 		}

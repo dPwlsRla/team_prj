@@ -110,6 +110,7 @@ public class MypageDAO {
 	public void updateCustomer(CuVO cuVO) throws SQLException, NamingException, NoSuchAlgorithmException, UnsupportedEncodingException, GeneralSecurityException{
 		Connection con =null;
 		PreparedStatement pstmt=null;
+		PreparedStatement pstmt2=null;
 		DbConnection dc= DbConnection.getInstance();
 		
 		try {
@@ -137,7 +138,6 @@ public class MypageDAO {
 				.append(" where c_id=?");
 				
 				
-				
 				pstmt=con.prepareStatement(updateQuery.toString());
 				pstmt.setInt(1, cuVO.getGuCode());
 				pstmt.setString(2, cuVO.getcPass());
@@ -146,12 +146,27 @@ public class MypageDAO {
 				pstmt.setString(5, cuVO.getEmail());
 				pstmt.setString(6, cuVO.getcID());
 			}
-			
 			pstmt.executeUpdate();
+			if(cuVO.getProfile()!="") {
+				StringBuilder updateQuery2 = new StringBuilder(); 
+				updateQuery2
+				.append("	update CUSTOMER ")
+				.append(" set PROFILE= ?  ")
+				.append(" where c_id=?");
+				
+				pstmt2=con.prepareStatement(updateQuery2.toString());
+				pstmt2.setString(1, cuVO.getProfile());
+				pstmt2.setString(2, cuVO.getcID());
+				pstmt2.executeUpdate();
+			}
+			
+			
+			
 		//5. 쿼리수행 후 결과 얻기
 		}finally {
 		//6. 연결끊기
 			dc.close(null, pstmt, con);
+			if(pstmt2!=null) {pstmt2.close();}
 		}
 		
 	}
@@ -389,7 +404,6 @@ public class MypageDAO {
 	public void updateCStatus(String id) throws SQLException, NamingException, NoSuchAlgorithmException, UnsupportedEncodingException, GeneralSecurityException{
 		Connection con =null;
 		PreparedStatement pstmt=null;
-		ResultSet rs =null;
 		DbConnection dc= DbConnection.getInstance();
 		
 		try {
