@@ -71,6 +71,7 @@ info ="물물교환 게시판 메인"%>
 		pName = dv.innerText;
 		id = '<%=(String)session.getAttribute("cId")%>';
 		
+		
 		$.ajax({
 			url:"http://localhost/bada_prj/badasaja_user/user_all_3/jsp/entire_forum_table.jsp",
 			 data: {
@@ -119,8 +120,7 @@ info ="물물교환 게시판 메인"%>
 		
 		id = '<%=(String)session.getAttribute("cId")%>';
 		pName = "기타 물품";
-		
-		if(<%=request.getParameter("product")%>!=null){
+		if('<%=request.getParameter("product")%>'!=null){
 			pName = '<%=request.getParameter("product")%>';
 		}
 		
@@ -225,9 +225,11 @@ info ="물물교환 게시판 메인"%>
             <div class="row mt-4 mb-4">
                 <div class="col">
                 	<div id="banner">
-          <!--  전체 forum이 표시되는 div -->
+          <!--  배너가 표시되는 div -->
           			</div>
-                    <div id="includeAjax" class="row mb-5">
+          			<div id="includeAjax">
+<!--                     <div id="includeAjax" class="row mb-5">
+           게시글이 표시되는 div
                     </div>
                     <div class="row" data-aos="fade-up">
                         <div class="col-md-12 text-center">
@@ -243,6 +245,7 @@ info ="물물교환 게시판 메인"%>
                                 </ul>
                             </div>
                         </div>
+                    </div> -->
                     </div>
                 </div>
             </div>

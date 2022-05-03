@@ -21,6 +21,5 @@ jsonObj.put("url", bVO.getaURL());
 jsonObj.put("img", bVO.getImg());	
 jsonObj.put("bFlag", bVO.getBFlag());	
 out.println(jsonObj.toJSONString());
-System.out.println(jsonObj.toJSONString());
 
 %>

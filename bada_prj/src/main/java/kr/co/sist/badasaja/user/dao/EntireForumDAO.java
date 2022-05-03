@@ -77,8 +77,16 @@ public class EntireForumDAO {
 	 * @throws NoSuchAlgorithmException 
 	 * @throws UnsupportedEncodingException 
 	 */
-	public List<EntireForumVO> selectEntireForum(String cId, String product) throws SQLException, NamingException, UnsupportedEncodingException, NoSuchAlgorithmException, GeneralSecurityException{
+	public List<EntireForumVO> selectEntireForum(String cId, String product, int num) throws SQLException, NamingException, UnsupportedEncodingException, NoSuchAlgorithmException, GeneralSecurityException{
 		String local = selectCLocal(cId);
+		int startNum =0;
+		int endNum=0;
+		if(num==1) {
+			startNum = 1;
+			endNum = startNum*15;
+		}
+		startNum = (num-1)*15+1;
+		endNum=startNum*15;
 		
 		List<EntireForumVO> eVOList = new ArrayList<EntireForumVO>();
 		Connection con = null;
@@ -97,16 +105,20 @@ public class EntireForumDAO {
 			
 			
 			StringBuilder entireQuery = new StringBuilder();
-			entireQuery.append(" select cf_num, cf_topic, main_img ")
-					.append(" from forum, product ")
-					.append(" where forum.p_code = product.p_code ")
-					.append(" and gu_code= ? ")
-					.append(" and product = ? ")
-					.append(" order by write_date desc ");
+			entireQuery
+			.append(" select cf_num, cf_topic, main_img from ( ")
+			.append(" select cf_num, cf_topic, main_img, ROW_NUMBER() OVER( ORDER BY write_date desc ) rnum ")
+			.append(" from forum, product ")
+			.append(" where forum.p_code = product.p_code ")
+			.append(" and gu_code= ? ")
+			.append(" and product = ? ) ")
+			.append(" where rnum between ? and ? ");
 			// 1, 2, 3, 4, ... 
 			pstmt=con.prepareStatement(entireQuery.toString());
 			pstmt.setString(1, local);
 			pstmt.setString(2, product);
+			pstmt.setInt(3, startNum);
+			pstmt.setInt(4, endNum);
 			rs = pstmt.executeQuery();
 			//System.out.println(local+"/"+product);
 			
@@ -256,7 +268,7 @@ public class EntireForumDAO {
 	}
 	
 	/**
-	 * 제품과 지역에 해당하는 배너의 숫자를 반환
+	 * 제품과 지역에 해당하는 배너의 갯수를 반환
 	 * @return
 	 * @throws SQLException
 	 * @throws NamingException
@@ -302,8 +314,7 @@ public class EntireForumDAO {
 	}//selectBannerCnt
 	
 	/**
-	 * 매개변수로 fomatData 형식을 받아
-	 * 현재날과 현재달에 가입한 회원 수를 반환해주는 메서드
+	 * 아이디와 제품정보를 받아 페이지에 표기될 배너 정보를 반환
 	 * @param fomatDate
 	 * @return
 	 * @throws SQLException 
@@ -368,7 +379,47 @@ public class EntireForumDAO {
 		
 	}//selectSignCustomer
 	
-	
+	/**
+	 * 제품과 지역에 해당하는 게시글의 갯수를 반환
+	 * @return
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
+	public int selectForumCnt(String cId, String product) throws SQLException, NamingException {
+		String guCode = selectCLocal(cId);
+		int fCnt = 0;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 
+		DbConnection dc = DbConnection.getInstance();
+
+		try {
+			con = dc.getConn();
+			
+			StringBuilder entireQuery = new StringBuilder();
+			entireQuery.append(" select count(*) cnt ")
+					.append(" from forum, product ")
+					.append(" where forum.p_code = product.p_code ")
+					.append(" and product = ? ")
+					.append(" and gu_code= ? ");
+			
+			pstmt = con.prepareStatement(entireQuery.toString());
+			
+		//4 바인드 변수 값 할당
+			pstmt.setString(1, product );
+			pstmt.setString(2, guCode );
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				fCnt = rs.getInt("cnt");
+			}//end-if
+			
+
+		} finally {
+			dc.close(rs, pstmt, con);
+		}
+		return fCnt;
+	}//selectBannerCnt
 
 }//class

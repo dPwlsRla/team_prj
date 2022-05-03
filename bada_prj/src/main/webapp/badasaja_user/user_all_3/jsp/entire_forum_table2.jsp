@@ -8,47 +8,77 @@
 <% 
 String cId = request.getParameter("cId");
 String product = request.getParameter("product");
-if(cId == null || product == null){
+String number = request.getParameter("num");
+if(cId == null || product == null || number==null ){
 	return;
 }
+int num = Integer.parseInt(number);
+System.out.println(num);
 EntireForumDAO efDAO = new EntireForumDAO();
-List<EntireForumVO> efList = efDAO.selectEntireForum(cId,product,1);
-pageContext.setAttribute("efList", efList);
+List<EntireForumVO> efList = efDAO.selectEntireForum(cId,product,num);
 int fCnt = efDAO.selectForumCnt(cId, product);
+pageContext.setAttribute("efList", efList);
 pageContext.setAttribute("cId", cId);
 pageContext.setAttribute("fCnt", fCnt);
 
 %>
 <script type="text/javascript">
-	function moreForum(){
-		let dv = event.currentTarget;
-		var number = dv.innerText;
+
+	// 위시 리스트 추가
+	function wishProcess(cfNum){
+		cId = '<%=(String)session.getAttribute("cId")%>';
+		if (cId == null) {
+			alert("login plz");
+			return;
+		}
+		if($("#like_"+cfNum)[0].src.includes('unlike')){
+			$("#like_"+cfNum)[0].src = "../images/like.png";
+			$.ajax({
+				type: "POST",
+				url: "wishProcess.jsp",
+				data:
+					{
+						"process":"insert",
+						"cfNum":cfNum
+					},
+				success: function(resp){alert("찜목록에 추가되었습니다");},
+			})
+		}
+		else{
+			$("#like_"+cfNum)[0].src = "../images/unlike.png";
+			$.ajax({
+				type: "POST",
+				url: "wishProcess.jsp",
+				data:
+					{
+						"process":"delete",
+						"cfNum":cfNum,
+						"cId":cId,
+					},
+				success: function(resp){alert("찜목록에서 삭제되었습니다");},
+			})
+		}
+	}
+	
+	// 게시물 상세 조회
+	function goForum(cfNum){
+		var forumType = cfNum.substr(0,2);
 		
-		id = '<%=cId%>';
-		pName='<%=product%>';
-		
-		$.ajax({
-			url:"http://localhost/bada_prj/badasaja_user/user_all_3/jsp/entire_forum_table2.jsp",
-			 data: {
-				   cId : id,
-				   product : pName,
-				   num : number,
-			},
-			type:"get",
-			dataType:"html",
-			error:function( xhr ){
-				alert( xhr.text + "/" + xhr.status);
-			},
-			success:function(data){
-				$("#forumAjax").html(data);
-			}
-		}) //ajax
-		
-	}//end moreForum
+		//case 1. 일반 게시글일 경우
+		if(forumType=="cf"){
+			document.fFrm.action="forum.jsp"
+		}//case 2. 광고 게시글일 경우
+		else if(forumType=="ad"){
+			document.fFrm.action = "ad_forum.jsp";
+		}
+		document.fFrm.cfNum.value=cfNum;
+		$("#fFrm").submit();
+	} 
 	
 </script>	
-
-<div id="forumAjax" class="row mb-5">
+	<form action="forum.jsp" id="fFrm" name="fFrm" method="post">
+	<input type="hidden" name="cfNum" value="">
+	</form>
 	<c:forEach var="efVO"  items="${efList}" > <!-- pageContext.setattribute한 efList 에서 for문 돔. 원소 하나하나를 efVO로 보겠다. -->
 		<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
 	        <div class="block-4 text-center">
@@ -73,22 +103,5 @@ pageContext.setAttribute("fCnt", fCnt);
 	        </div>
 	    </div>    
 	</c:forEach>
-</div>
 
-<div class="row" data-aos="fade-up">
-     <div class="col-md-12 text-center">
-          <div class="site-block-27">
-          	<ul>
-          	  <c:choose>
-	              <c:when test="${fCnt==0}"></c:when>
-	              <c:when test="${fCnt!=0}">
-	                  <c:forEach var="i" begin="1" end="<%=fCnt/15+1%>" step="1">
-    	              <li><a href="#" onclick="moreForum()">${i}</a></li>
-        	          </c:forEach>
-	              </c:when>	
-	           </c:choose>
-            </ul>
-          </div>
-     </div>
-</div>	
 
