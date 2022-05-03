@@ -1,13 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     info="수정"%>
+<%
+String id="null";
+if(session.getAttribute("cId")!=null){
+	id="exist";
+}
+
+%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <title>바다사자</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  	
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700"> 
     <link rel="stylesheet" href="../fonts/icomoon/style.css">
 	<link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css" rel="stylesheet">
@@ -156,36 +163,70 @@
  
 
   </style>
-  <script type="text/javascript">
-  
-  </script>
+<script type="text/javascript">
+$(function () {
+	$('#cancel').click(function(e){
+		e.preventDefault();
+		$('#Modal').modal("hide");
+	});
+	
+	$('#login').click(function(e){
+		e.preventDefault();
+		$('#Modal').modal("hide");
+		location.href="login.jsp";
+	});
+
+})//ready
+
+</script>
   </head>
   <body>
   
   <div class="site-wrap">
   <%@include file="components/header.jsp"%>
-     
+     <input type="hidden" id="hid" value="<%=id%>">
 
     <div id="div1" style="margin-top: -10px">
     </div>
     <div id="div2" >
    <!--<h2 id="h2">상품카테고리</h2>  -->
+   <%if(id=="null"){ %>
    	<table  id="category">
    	<tr>
-   	<td><span class="emoji">📱</span><br/>전자기기</td>
-   	<td><span class="emoji">🛍️</span><br/>생활용품</td>
-   	<td><span class="emoji">🍎</span><br/>식품</td>
-   	<td><span class="emoji">🐶</span><br/>반려동물 용품</td>   	
-   	<td><span class="emoji">🧥</span><br/>의류</td>   	
+   	<td><a href="javascript:void(0)" class="emoji" onclick="load2()">📱</a><br/>전자기기</td>
+   	<td><a href="javascript:void(0)" class="emoji" onclick="load2()">🛍️</a><br/>생활용품</td>
+   	<td><a href="javascript:void(0)" class="emoji" onclick="load2()">🍎</a><br/>식품</td>
+   	<td><a href="javascript:void(0)" class="emoji" onclick="load2()">🐶</a><br/>반려동물 용품</td>   	
+   	<td><a href="javascript:void(0)" class="emoji" onclick="load2()">🧥</a><br/>의류</td>   	
    	</tr>
    	<tr>
-   	<td><span class="emoji">💄</span><br/>뷰티/미용</td>   	
-   	<td><span class="emoji">🛏️</span><br/>인테리어/가구</td>
-   	<td><span class="emoji">✏️</span><br/>학용품</td>
-   	<td><span class="emoji">🎻</span><br/>악기</td>
-   	<td><span class="emoji">🙋</span><br/>기타물품</td>   	
+   	<td><a href="javascript:void(0)" class="emoji" onclick="load2()">💄</a><br/>뷰티/미용</td>   	
+   	<td><a href="javascript:void(0)" class="emoji" onclick="load2()">🛏️</a><br/>인테리어/가구</td>
+   	<td><a href="javascript:void(0)" class="emoji" onclick="load2()">✏️</a><br/>학용품</td>
+   	<td><a href="javascript:void(0)" class="emoji" onclick="load2()">🎻</a><br/>악기</td>
+   	<td><a href="javascript:void(0)" class="emoji" onclick="load2()">🙋</a><br/>기타물품</td>   	
    	</tr>
    	</table>
+   	<%}else{ %>
+
+   	<table  id="category">
+   	<tr>
+   	<td><a href="trade.jsp?product=전자기기" class="emoji" >📱</a><br/>전자기기</td>
+   	<td><a href="trade.jsp?product=생활용품" class="emoji" >🛍️</a><br/>생활용품</td>
+   	<td><a href="trade.jsp?product=식품" class="emoji" >🍎</a><br/>식품</td>
+   	<td><a href="trade.jsp?product=반려 동물 용품" class="emoji" >🐶</a><br/>반려동물 용품</td>   	
+   	<td><a href="trade.jsp?product=의류" class="emoji" >🧥</a><br/>의류</td>   	
+   	</tr>
+   	<tr>
+   	<td><a href="trade.jsp?product=뷰티,미용" class="emoji" >💄</a><br/>뷰티/미용</td>   	
+   	<td><a href="trade.jsp?product=인테리어,가구" class="emoji" >🛏️</a><br/>인테리어/가구</td>
+   	<td><a href="trade.jsp?product=학용품" class="emoji" >✏️</a><br/>학용품</td>
+   	<td><a href="trade.jsp?product=악기" class="emoji" >🎻</a><br/>악기</td>
+   	<td><a href="trade.jsp?product=기타 물품" class="emoji" >🙋</a><br/>기타물품</td>   	
+   	</tr>
+   	</table>
+   	
+   	<%} %>
     </div>
     <div id="howtouse">
     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
@@ -213,7 +254,26 @@
   
    </div><!--site-wrap  -->
   
-    
+    <!-- 로그인이 필요한 서비스입니다. -->
+<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">앗 바다사자 회원이 아니시군요!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        로그인이 필요한 서비스입니다.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel">CANCEL</button>
+        <button type="button" class="btn btn-primary" id="login">LOGIN</button>
+      </div>
+    </div>
+  </div>
+</div>
 
    		<%@include file="components/footer.jsp"%>							
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

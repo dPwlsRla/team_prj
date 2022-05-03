@@ -126,7 +126,7 @@ function test(text) {
 </head>
 <body onload="load()">
 <form action="forum.jsp" id="MFrm" name="MFrm" method="post">
-	<input type="hidden" name="cfNum" value="">
+	
 </form>
 <div class="site-wrap">
     <%@include file="components/header.jsp"%>
@@ -142,6 +142,7 @@ function test(text) {
                             <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up" >
                                 <div class="block-4 text-center">
                                     <div class="block-4-text p-4">
+                                    <input type="hidden" name="cfNum" value="${efVO.cfNum}">
                                         <a href="javascript:void(0);"  onclick="goForum('${efVO.cfNum}')" > <h3>${efVO.title}</h3></a>
  
 	                                    	<img src = "../images/like.png" id="like_${efVO.cfNum}" style="cursor:pointer;"  onclick="wishProcess('${efVO.cfNum}')">
