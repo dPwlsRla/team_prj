@@ -12,6 +12,7 @@
         request.setCharacterEncoding("UTF-8");
 
         /*
+        testtesttest
         JavaMail를 사용하여 이메일을 전송하기 위한 3가지 절차는 다음과 같다.
         1. 호스트 이름 ,사용자 명, 비밀번호 등과 같은 호스트의 모든 정보를 저장한느 session 객체를 얻습니다.
         2. 메시지르 구성한다.
