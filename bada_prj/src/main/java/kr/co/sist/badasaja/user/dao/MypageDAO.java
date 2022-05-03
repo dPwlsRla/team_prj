@@ -286,6 +286,13 @@ public class MypageDAO {
 		return mpbList;
 	}//selectDoneForum
 	
+	/**
+	 * 거래약속 조회
+	 * @return
+	 * @param id
+	 * @throws SQLException
+	 * @throws NamingException
+	 */
 	public List<MyPostBoardVO> selectMyTransaction(String id) throws SQLException, NamingException{
 		List<MyPostBoardVO> mpbList = new ArrayList<MyPostBoardVO>();
 		
@@ -301,9 +308,13 @@ public class MypageDAO {
 			StringBuilder selectTrans = new StringBuilder();
 			
 			selectTrans
-			.append(" select cf_num, cf_topic, main_img, TO_CHAR(WRITE_DATE, 'YYYY-MM-DD') write_date ")
-			.append(" from c_forum ")
-			.append(" where c_id=? and cf_status='거래약속'  ");
+			.append(" select c.cf_num, c.cf_topic, c.main_img, TO_CHAR(c.WRITE_DATE, 'YYYY-MM-DD') write_date ")
+			.append(" from c_forum c , transaction t ")
+			.append(" where c.cf_num=t.cf_num and c.c_id=? and t_status='y' ");
+			
+			
+			
+			
 			
 			pstmt=con.prepareStatement(selectTrans.toString());
 			
@@ -355,10 +366,10 @@ public class MypageDAO {
 			StringBuilder updateTrans = new StringBuilder();
 			
 			updateTrans
-			.append(" 	update c_forum			   ")
-			.append("  set cf_status ='거래완료' ")
-			.append("  where cf_num = ? ");
-			
+			.append(" 	update transaction ")
+			.append("  set t_status='s' ")
+			.append("  where cf_num= ? ");
+			  
 			pstmt=con.prepareStatement(updateTrans.toString());
 			
 			pstmt.setString(1,cfNum);

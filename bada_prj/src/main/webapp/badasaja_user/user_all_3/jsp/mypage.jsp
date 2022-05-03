@@ -56,7 +56,7 @@ function updateStatus(cfNum){
 
 //내가 쓴 글 상세 조회
 function goForum(cfNum){
-	document.fFrm.cfNum.value = cfNum;
+	document.Frm.cfNum.value = cfNum;
 	$("#Frm").submit();
 }
 
@@ -145,10 +145,10 @@ function goForum(cfNum){
                                 </div>
                                 <div class="row align-items-center">
                                     <div class="image">
-                                        <a href="#"><img src="" alt="Image placeholder" class="img"></a>
+                                         <a href="javascript:void(0);"  onclick="goForum('${mpbVO.cfNum}')" ><img src="${mpbVO.mainImg}" alt="Image placeholder" class="img"></a>
                                     </div>
                                     <div class="text">
-                                        <h6>${mpbVO.cfTopic}</h6>
+                                       <a href="javascript:void(0);"  onclick="goForum('${mpbVO.cfNum}')" ><h6>${mpbVO.cfTopic}</h6></a>
                                         <h6>거래한 분 : ${mpbVO.nickname}</h6>
                                     </div>
                                 </div>
@@ -166,13 +166,13 @@ function goForum(cfNum){
                                 </div>
                                 <div class="row align-items-center">
                                     <div class="image">
-                                        <a href="#"><img src="${mpbVO.mainImg}" alt="Image placeholder" class="img"></a>
+                                        <a href="javascript:void(0);"  onclick="goForum('${mpbVO.cfNum}')" ><img src="${mpbVO.mainImg}" alt="Image placeholder" class="img"></a>
                                     </div>
                                     <div class="text">
                                     <input type="button" value="완료" style="
                                     width: 50px; height: 30px; float: right; margin-right: 50px; margin-bottom: 50px;color: white;background-color: #2a90ab"
                                  	id="completeBtn" onclick="updateStatus('${mpbVO.cfNum}')">
-                                        <h6>${mpbVO.cfTopic}</h6>
+                                        <a href="javascript:void(0);"  onclick="goForum('${mpbVO.cfNum}')" ><h6>${mpbVO.cfTopic}</h6></a>
                                     </div>
                                 </div>
                             </div>

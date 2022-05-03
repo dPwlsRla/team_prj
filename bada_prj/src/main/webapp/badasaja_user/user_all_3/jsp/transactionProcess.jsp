@@ -5,17 +5,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-//String id= request.getParameter("id");
 TransactionVO trVO = new TransactionVO();
+String id=(String)session.getAttribute("cId");
 
 trVO.setcID(request.getParameter("cId"));
 trVO.setCfNum(request.getParameter("cfNum"));
 
 DetailCForumDAO dcfDAO = new DetailCForumDAO();
-boolean result=false;
 
-result = dcfDAO.insertTstatus(trVO);
-
+dcfDAO.insertTstatus(trVO);
 	
 
 
