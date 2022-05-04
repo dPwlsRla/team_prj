@@ -117,7 +117,7 @@
     // 배너조회 ajax
     function getSelectData(){
     	$.ajax({
-			url:"http://localhost/bada_prj/badasaja_admin/jsp/ad_banner_list_process.jsp",
+			url:"ad_banner_list_process.jsp",
 			 data: {
 				   aID : $("#aID").val(),
 				   gu : $("#gu").val(),

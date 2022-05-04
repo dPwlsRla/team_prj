@@ -103,7 +103,7 @@
 		
 		$.ajax({
 			
-			url:"http://localhost/bada_prj/badasaja_admin/jsp/report_post_process.jsp",
+			url:"report_post_process.jsp",
 			data : {
 				rID : $("#rID").val(),
 				ty : $("#type").val(),
@@ -159,7 +159,7 @@
 	function printFrMain(param){
 		
 		$.ajax({
-			url:"http://localhost/bada_prj/badasaja_admin/jsp/report_post_info_process.jsp",
+			url:"report_post_info_process.jsp",
 			type:"get",
 			data: param,
 			async: true,

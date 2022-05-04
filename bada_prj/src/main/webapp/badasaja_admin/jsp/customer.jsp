@@ -118,7 +118,7 @@
 	function getSearchData(){
 		
 		$.ajax({
-			url:"http://localhost/bada_prj/badasaja_admin/jsp/customer_process.jsp",
+			url:"customer_process.jsp",
 			data: {
 				cID : $("#cID").val(),
 				gu : $("#gu").val(),
@@ -170,7 +170,7 @@
 	// 유저 상제 조회 ajax
 	function getInfoData(param){
 		$.ajax({
-			url:"http://localhost/bada_prj/badasaja_admin/jsp/customer_info_process.jsp",
+			url:"customer_info_process.jsp",
 			type:"get",
 			data: param,
 			async: true,
@@ -188,7 +188,7 @@
 	// 유저 상태 ajax
 	function modifyStatus(param){
 		$.ajax({
-			url:"http://localhost/bada_prj/badasaja_admin/jsp/customer_status_process.jsp",
+			url:"customer_status_process.jsp",
 			type:"get",
 			data: param,
 			async: true,
@@ -206,7 +206,7 @@
 	// 상세조회 출력 function
 	function printCustomerInfo(jsonObj){
 		
-		$("#profile").attr("src","http://localhost/bada_prj/badasaja_user/user_all_3/profile/" + jsonObj.profile)
+		$("#profile").attr("src","http://211.63.89.157/bada_prj/badasaja_user/user_all_3/profile/" + jsonObj.profile)
 		$("#customer_nickcname").html(jsonObj.nickname);
 		$("#customer-id").html('ID : ' + jsonObj.cID);
 		$("#customer-gender").html('gender : ' + jsonObj.gender);

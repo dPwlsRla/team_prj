@@ -104,7 +104,7 @@
 		
 		$.ajax({
 			
-			url:"http://localhost/bada_prj/badasaja_admin/jsp/report_user_process.jsp",
+			url:"http://211.63.89.157/bada_prj/badasaja_admin/jsp/report_user_process.jsp",
 			data : {
 				rID : $("#rID").val(),
 				ty : $("#type").val(),

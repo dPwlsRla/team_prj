@@ -75,7 +75,7 @@
 			var iKey = $("#iKey").val();
 			
 			$.ajax({
-				url:"http://localhost/bada_prj/badasaja_admin/jsp/prohibit_in_process.jsp",
+				url:"http://211.63.89.157/bada_prj/badasaja_admin/jsp/prohibit_in_process.jsp",
 				data : { ikey : iKey},
 				type:"get",
 				error:function( xhr ){
@@ -98,7 +98,7 @@
 			var oID = $("#operID").text();
 			
 		 	$.ajax({
-				url:"http://localhost/bada_prj/badasaja_admin/jsp/notice_in_process.jsp",
+				url:"http://211.63.89.157/bada_prj/badasaja_admin/jsp/notice_in_process.jsp",
 				data : { oID : oID, iNo : iNotice },
 				type:"get",
 				error:function( xhr ){
@@ -121,7 +121,7 @@
 		
 		$.ajax({
 			
-			url:"http://localhost/bada_prj/badasaja_admin/jsp/prohibit_process.jsp",
+			url:"http://211.63.89.157/bada_prj/badasaja_admin/jsp/prohibit_process.jsp",
 			data : {
 				key : $("#key").val(),
 			},
@@ -149,7 +149,7 @@ function getSearchNotice(){
 		
 		$.ajax({
 			
-			url:"http://localhost/bada_prj/badasaja_admin/jsp/notice_process.jsp",
+			url:"http://211.63.89.157/bada_prj/badasaja_admin/jsp/notice_process.jsp",
 			data : {
 				key : $("#key").val(),
 			},

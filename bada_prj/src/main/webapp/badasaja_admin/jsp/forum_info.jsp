@@ -233,16 +233,16 @@ pageContext.setAttribute("comVOList", comVOList);
 		$("#forumMain").val("<%=cfVO.getCfMain()%>")
 		$("#category").val("<%=cfVO.getpCode()%>")
 		$("#cstatus").val("<%=cfVO.getCfStatus()%>")
- 		  $("#preview").attr("src","http://localhost/bada_prj/badasaja_user/user_all_3/forum_img/KakaoTalk_20220226_211221631_03.jpg"  + "<%=cfVO.getMainImg()%>" )
+ 		  $("#preview").attr("src","http://211.63.89.157/bada_prj/badasaja_user/user_all_3/forum_img/"  + "<%=cfVO.getMainImg()%>" )
 		
 	 	var str = '<%=imgs%>'
 		if( str != ""){
 			var imgs = str.split(",");
 			if(imgs.length == 1){
-			$("#preview1").attr("src","http://localhost/bada_prj/badasaja_user/user_all_3/forum_img/KakaoTalk_20220226_211221631_03.jpg"  + imgs[0]  )
+			$("#preview1").attr("src","http://211.63.89.157/bada_prj/badasaja_user/user_all_3/forum_img/"  + imgs[0]  )
 			} else if( imgs.length == 2){
-			$("#preview1").attr("src","http://localhost/bada_prj/badasaja_user/user_all_3/forum_img/KakaoTalk_20220226_211221631_03.jpg"  + imgs[0]  )
-			$("#preview2").attr("src","http://localhost/bada_prj/badasaja_user/user_all_3/forum_img/KakaoTalk_20220226_211221631_03.jpg"  + imgs[1]  )
+			$("#preview1").attr("src","http://211.63.89.157/bada_prj/badasaja_user/user_all_3/forum_img/"  + imgs[0]  )
+			$("#preview2").attr("src","http://211.63.89.157/bada_prj/badasaja_user/user_all_3/forum_img/"  + imgs[1]  )
 			}
 		}
 	 	

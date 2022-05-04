@@ -108,7 +108,7 @@
 	// 광고게시글 전체조회 method
 	function getSearchData() {
 		$.ajax({
-			url : "http://localhost/bada_prj/badasaja_admin/jsp/ad_forum_list_process.jsp",
+			url : "ad_forum_list_process.jsp",
 			data : {
 				aID : $("#aID").val(),
 				gu : $("#gu").val(),
