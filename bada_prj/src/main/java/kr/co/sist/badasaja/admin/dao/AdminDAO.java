@@ -73,41 +73,6 @@ public class AdminDAO {
 	} // selectAdminLogin
 
 	/**
-	 * 전체 회원 조회 method
-	 * 
-	 * @param c_id 유저 ID
-	 * @param gu   지역
-	 * @param st   상태
-	 * @return
-	 * @throws SQLException
-	 * @throws NamingException
-	 */
-	/*
-	 * public List<CuVO> selectAllCustomer(String c_id, String gu, String st) throws
-	 * SQLException, NamingException { List<CuVO> list = new ArrayList<CuVO>();
-	 * 
-	 * Connection con = null; PreparedStatement pstmt = null; ResultSet rs = null;
-	 * 
-	 * DbConnection dc = DbConnection.getInstance(); try {
-	 * 
-	 * con = dc.getConn();
-	 * 
-	 * pstmt = con.
-	 * prepareStatement("select c_id, nickname, c_status, sign_date, access_date from customer order by c_id"
-	 * );
-	 * 
-	 * rs = pstmt.executeQuery();
-	 * 
-	 * CuVO cuVO = null; while (rs.next()) { cuVO = new CuVO();
-	 * cuVO.setcID(rs.getString("c_id"));
-	 * cuVO.setNickName(rs.getString("nickname")); }
-	 * 
-	 * } finally { dc.close(rs, pstmt, con); }
-	 * 
-	 * return list; }
-	 */
-
-	/**
 	 * ID Check Method
 	 * 
 	 * @param aID 광고주 ID

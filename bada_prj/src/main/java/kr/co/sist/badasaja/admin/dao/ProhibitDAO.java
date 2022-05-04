@@ -71,7 +71,7 @@ public class ProhibitDAO {
 	}
 	
 	/**
-	 * 금지 품목 조회 method
+	 * 금지 품목 등록 method
 	 * @param iKey 금지 품목
 	 * @throws SQLException
 	 * @throws NamingException

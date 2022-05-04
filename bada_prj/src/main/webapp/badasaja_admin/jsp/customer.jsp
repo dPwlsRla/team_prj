@@ -206,7 +206,7 @@
 	// 상세조회 출력 function
 	function printCustomerInfo(jsonObj){
 		
-		$("#profile").attr("src","http://localhost/bada_prj/badasaja_user/user_all_3/forum_img/" + jsonObj.profile)
+		$("#profile").attr("src","http://localhost/bada_prj/badasaja_user/user_all_3/profile/" + jsonObj.profile)
 		$("#customer_nickcname").html(jsonObj.nickname);
 		$("#customer-id").html('ID : ' + jsonObj.cID);
 		$("#customer-gender").html('gender : ' + jsonObj.gender);
