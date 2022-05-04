@@ -60,25 +60,9 @@ pageContext.setAttribute("fCnt", fCnt);
 		}
 	}
 	
-	// 게시물 상세 조회
-	function goForum(cfNum){
-		var forumType = cfNum.substr(0,2);
-		
-		//case 1. 일반 게시글일 경우
-		if(forumType=="cf"){
-			document.fFrm.action="forum.jsp"
-		}//case 2. 광고 게시글일 경우
-		else if(forumType=="ad"){
-			document.fFrm.action = "ad_forum.jsp";
-		}
-		document.fFrm.cfNum.value=cfNum;
-		$("#fFrm").submit();
-	} 
 	
 </script>	
-	<form action="forum.jsp" id="fFrm" name="fFrm" method="post">
-	<input type="hidden" name="cfNum" value="">
-	</form>
+
 	<c:forEach var="efVO"  items="${efList}" > <!-- pageContext.setattribute한 efList 에서 for문 돔. 원소 하나하나를 efVO로 보겠다. -->
 		<div class="col-sm-6 col-lg-3 mb-4" style="background-color:white;" data-aos="fade-up">
 	        <div class="block-4 text-center">

@@ -26,7 +26,7 @@ info ="물물교환 게시판 메인"%>
     <link rel="stylesheet" href="../css/aos.css">
     <link rel="stylesheet" href="../css/style.css">
 <%
-
+	
 	
 	//DAO 불러오기
 	EntireForumDAO efDAO = new EntireForumDAO();
@@ -36,7 +36,7 @@ info ="물물교환 게시판 메인"%>
 	pageContext.setAttribute("pList", pList);
 	
 	String id = (String)session.getAttribute("cId");
-
+	String cfNum = request.getParameter("fFrm");
 
  	if(id==null) {
 		response.sendRedirect("login.jsp");
@@ -46,20 +46,21 @@ info ="물물교환 게시판 메인"%>
 %>
 
 <script type="text/javascript">
-	
+ 	
 	// 게시물 상세 조회
-	function goForum(cfNum){
+ 	function goForum(cfNum){
 		var forumType = cfNum.substr(0,2);
+		document.fFrm.cfNum.value=cfNum;
 		
 		//case 1. 일반 게시글일 경우
 		if(forumType=="cf"){
-			document.fFrm.action="forum.jsp"
+			document.fFrm.action="forum.jsp";
 		}//case 2. 광고 게시글일 경우
 		else if(forumType=="ad"){
-			document.fFrm.cfNum.value = "ad_forum.jsp";
+			document.fFrm.action = "ad_forum.jsp";
 		}
 		$("#fFrm").submit();
-	} 
+	}   
 	
 	function activeA(){
 		$(".nav-link").css("background-color","white");
@@ -194,9 +195,12 @@ info ="물물교환 게시판 메인"%>
 </head>
 
 <body onload="activeLoad()">
+
 <div class="site-wrap">
     <%@include file="components/header.jsp"%>
-
+	<form action="forum.jsp" id="fFrm" name="fFrm" method="post">
+	<input type="hidden" name="cfNum" value="">
+	</form>
 
     <div class="site-section">
         <div class="container">
@@ -228,24 +232,6 @@ info ="물물교환 게시판 메인"%>
           <!--  배너가 표시되는 div -->
           			</div>
           			<div id="includeAjax">
-<!--                     <div id="includeAjax" class="row mb-5">
-           게시글이 표시되는 div
-                    </div>
-                    <div class="row" data-aos="fade-up">
-                        <div class="col-md-12 text-center">
-                            <div class="site-block-27">
-                                <ul>
-                                    <li><a href="#">&lt;</a></li>
-                                    <li class="active"><span>1</span></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">4</a></li>
-                                    <li><a href="#">5</a></li>
-                                    <li><a href="#">&gt;</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div> -->
                     </div>
                 </div>
             </div>
