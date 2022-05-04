@@ -80,7 +80,7 @@ pageContext.setAttribute("fCnt", fCnt);
 	<input type="hidden" name="cfNum" value="">
 	</form>
 	<c:forEach var="efVO"  items="${efList}" > <!-- pageContext.setattribute한 efList 에서 for문 돔. 원소 하나하나를 efVO로 보겠다. -->
-		<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
+		<div class="col-sm-6 col-lg-3 mb-4" style="background-color:white;" data-aos="fade-up">
 	        <div class="block-4 text-center">
 	            <div class="block-4-text p-4" id="efDiv">
 	                   <a href="javascript:void(0);"  onclick="goForum('${efVO.cfNum}')" ><h3>${efVO.title}</h3></a>

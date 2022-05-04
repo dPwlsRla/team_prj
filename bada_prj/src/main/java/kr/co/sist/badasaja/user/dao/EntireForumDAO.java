@@ -83,10 +83,10 @@ public class EntireForumDAO {
 		int endNum=0;
 		if(num==1) {
 			startNum = 1;
-			endNum = startNum*15;
+			endNum = startNum*16;
 		}
-		startNum = (num-1)*15+1;
-		endNum=startNum*15;
+		startNum = (num-1)*16+1;
+		endNum=startNum*16;
 		
 		List<EntireForumVO> eVOList = new ArrayList<EntireForumVO>();
 		Connection con = null;
