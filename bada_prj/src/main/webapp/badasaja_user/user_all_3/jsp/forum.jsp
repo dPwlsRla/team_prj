@@ -11,7 +11,7 @@
 <%@page import="kr.co.sist.badasaja.vo.CImgVO" %>
 <%@page import="kr.co.sist.badasaja.vo.HashTagVO" %>
 <%@page import="kr.co.sist.badasaja.vo.CuVO" %>
-
+ 
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 
@@ -489,7 +489,7 @@
   }
   
   
-  
+  $(function(){
   
   
 	//게시물 신고 버튼을 눌렀을 때 모달 띄우기
@@ -655,7 +655,7 @@
 		$("#testModal5").modal("hide");	
 	});//transClick
 
-
+	});//ready
 function goEditForum(){
 	$("#fFrm").submit();
 }
